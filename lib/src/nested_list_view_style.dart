@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class NestedListViewStyle {
   const NestedListViewStyle({
+    this.searchFieldMargin = const EdgeInsets.all(4),
     this.itemShape = const RoundedRectangleBorder(
       side: BorderSide(
         color: Color.fromARGB(255, 189, 189, 189),
@@ -17,6 +18,7 @@ class NestedListViewStyle {
     this.labelStyle,
     this.listPadding,
     this.itemMargin,
+    this.searchFieldDecoration,
   });
 
   final ShapeBorder? itemShape;
@@ -24,4 +26,7 @@ class NestedListViewStyle {
   final TextStyle? labelStyle;
   final EdgeInsets? listPadding;
   final EdgeInsets? itemMargin;
+  //
+  final EdgeInsets searchFieldMargin;
+  final InputDecoration? searchFieldDecoration;
 }
