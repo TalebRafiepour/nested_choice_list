@@ -12,46 +12,55 @@ class NestedListView extends StatelessWidget {
 
   final List<NestedChoiceEntity> items;
   final NestedListViewStyle style;
-  final Function(int)? onTapItem;
+  final Function(NestedChoiceEntity)? onTapItem;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: items.length,
-      padding: style.listPadding,
-      itemBuilder: (_, index) {
-        return Padding(
-          padding: style.itemMargin ?? const EdgeInsets.all(4),
-          child: Material(
-            child: ListTile(
-              shape: style.itemShape,
-              enabled: !items[index].isDisabled,
-              title: Text(
-                items[index].label,
-                style: style.labelStyle ?? Theme.of(context).textTheme.titleMedium,
-              ),
-              trailing: items[index].hasChildren
-                  ? style.trailingIcon
-                  : null,
-              onTap: () async {
-                if (items[index].hasChildren) {
-                  await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => NestedListView(
-                        items: items[index].children,
-                        onTapItem: onTapItem,
-                        style: style,
+    if (items.isEmpty) {
+      return const Center(
+        child: Icon(
+          Icons.now_widgets_sharp,
+          color: Color.fromARGB(255, 169, 168, 168),
+          size: 48,
+        ),
+      );
+    } else {
+      return ListView.builder(
+        itemCount: items.length,
+        padding: style.listPadding,
+        itemBuilder: (_, index) {
+          return Padding(
+            padding: style.itemMargin ?? const EdgeInsets.all(4),
+            child: Material(
+              child: ListTile(
+                shape: style.itemShape,
+                enabled: !items[index].isDisabled,
+                title: Text(
+                  items[index].label,
+                  style: style.labelStyle ??
+                      Theme.of(context).textTheme.titleMedium,
+                ),
+                trailing: items[index].hasChildren ? style.trailingIcon : null,
+                onTap: () async {
+                  if (items[index].hasChildren) {
+                    await Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => NestedListView(
+                          items: items[index].children,
+                          onTapItem: onTapItem,
+                          style: style,
+                        ),
                       ),
-                    ),
-                  );
-                } else {
-                  onTapItem?.call(index);
-                }
-              },
+                    );
+                  } else {
+                    onTapItem?.call(items[index]);
+                  }
+                },
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    }
   }
 }

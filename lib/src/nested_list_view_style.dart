@@ -18,7 +18,18 @@ class NestedListViewStyle {
     this.labelStyle,
     this.listPadding,
     this.itemMargin,
-    this.searchFieldDecoration,
+    this.searchInputDecoration = const InputDecoration(
+      border: OutlineInputBorder(),
+      prefixIcon: Icon(
+        Icons.search,
+        size: 24,
+      ),
+      hintText: 'Search',
+      hintStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+    ),
   });
 
   final ShapeBorder? itemShape;
@@ -28,5 +39,26 @@ class NestedListViewStyle {
   final EdgeInsets? itemMargin;
   //
   final EdgeInsets searchFieldMargin;
-  final InputDecoration? searchFieldDecoration;
+  final InputDecoration searchInputDecoration;
+
+  NestedListViewStyle copyWith({
+    ShapeBorder? itemShape,
+    Icon? trailingIcon,
+    TextStyle? labelStyle,
+    EdgeInsets? listPadding,
+    EdgeInsets? itemMargin,
+    EdgeInsets? searchFieldMargin,
+    InputDecoration? searchInputDecoration,
+  }) {
+    return NestedListViewStyle(
+      itemShape: itemShape ?? this.itemShape,
+      trailingIcon: trailingIcon ?? this.trailingIcon,
+      labelStyle: labelStyle ?? this.labelStyle,
+      listPadding: listPadding ?? this.listPadding,
+      itemMargin: itemMargin ?? this.itemMargin,
+      searchFieldMargin: searchFieldMargin ?? this.searchFieldMargin,
+      searchInputDecoration:
+          searchInputDecoration ?? this.searchInputDecoration,
+    );
+  }
 }

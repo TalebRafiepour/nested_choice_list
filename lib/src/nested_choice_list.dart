@@ -11,6 +11,7 @@ class NestedChoiceList extends StatefulWidget {
     this.enableSearch = true,
     this.searchDebouncer,
     this.style = const NestedListViewStyle(),
+    this.onTapItem,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class NestedChoiceList extends StatefulWidget {
   final bool enableSearch;
   final SearchDebouncer? searchDebouncer;
   final NestedListViewStyle style;
+  final Function(NestedChoiceEntity)? onTapItem;
 
   @override
   State<NestedChoiceList> createState() => _NestedChoiceListState();
@@ -42,9 +44,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                 return NestedListView(
                   items: itemsToShow,
                   style: widget.style,
-                  onTapItem: (p0) {
-                    Navigator.of(context).pop(p0);
-                  },
+                  onTapItem: widget.onTapItem,
                 );
               },
             );
@@ -52,6 +52,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
         ),
         bottomNavigationBar: widget.enableSearch
             ? SearchField(
+                inputDecoration: widget.style.searchInputDecoration,
                 searchDebouncer: widget.searchDebouncer,
                 margin: widget.style.searchFieldMargin,
                 onSearch: (filter) {

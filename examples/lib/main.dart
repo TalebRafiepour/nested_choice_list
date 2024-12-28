@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final items = [
+  final items =  const [
     NestedChoiceEntity(
       value: 'value1',
       label: 'label1',
@@ -80,8 +80,14 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: NestedChoiceList(
         items: items,
+        onTapItem: (item) {
+          print(item);
+          Navigator.of(context).pop();
+        },
       ),
-      body: const Center(child: Text('Nested Choice List'),),
+      body: const Center(
+        child: Text('Nested Choice List'),
+      ),
     );
   }
 }

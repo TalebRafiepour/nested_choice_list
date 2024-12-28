@@ -3,6 +3,7 @@ import 'package:nested_choice_list/src/search_debouncer.dart';
 
 class SearchField extends StatefulWidget {
   const SearchField({
+    required this.inputDecoration,
     this.onSearch,
     this.searchDebouncer,
     this.margin = const EdgeInsets.symmetric(
@@ -12,6 +13,7 @@ class SearchField extends StatefulWidget {
     super.key,
   });
 
+  final InputDecoration inputDecoration;
   final EdgeInsets margin;
   final SearchDebouncer? searchDebouncer;
   final Function(String)? onSearch;
@@ -49,14 +51,7 @@ class _SearchFieldState extends State<SearchField> {
               MediaQuery.of(context).viewInsets.bottom + widget.margin.bottom,
         ),
         child: TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            prefix: Icon(
-              Icons.search,
-              size: 24,
-            ),
-            hintText: 'Search',
-          ),
+          decoration: widget.inputDecoration,
           onChanged: (value) {
             searchDebouncer.run(() {
               widget.onSearch?.call(value);
