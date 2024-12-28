@@ -1,39 +1,100 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+A flutter package for handling nested list item selection without limitation for the depth of the nested list.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+import 'package:flutter/material.dart';
+import 'package:nested_choice_list/nested_choice_list.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(
+        title: 'Two level nested choice list with single selection',
+      ),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final items =  const [
+    NestedChoiceEntity(
+      value: 'value1',
+      label: 'label1',
+      children: [
+        NestedChoiceEntity(value: 'value2', label: 'label2'),
+        NestedChoiceEntity(value: 'value3', label: 'label3'),
+        NestedChoiceEntity(value: 'value4', label: 'label4'),
+      ],
+    ),
+    NestedChoiceEntity(
+      value: 'value2',
+      label: 'label2',
+      children: [
+        NestedChoiceEntity(value: 'value2', label: 'label2'),
+        NestedChoiceEntity(value: 'value3', label: 'label3'),
+        NestedChoiceEntity(
+          value: 'value4',
+          label: 'label4',
+          children: [
+            NestedChoiceEntity(value: 'value2', label: 'label2'),
+            NestedChoiceEntity(value: 'value3', label: 'label3'),
+            NestedChoiceEntity(value: 'value4', label: 'label4'),
+          ],
+        ),
+      ],
+    ),
+    NestedChoiceEntity(
+      value: 'value3',
+      label: 'label3',
+      children: [
+        NestedChoiceEntity(value: 'value2', label: 'label2'),
+        NestedChoiceEntity(value: 'value3', label: 'label3'),
+        NestedChoiceEntity(value: 'value4', label: 'label4'),
+      ],
+    ),
+    NestedChoiceEntity(value: 'value4', label: 'label4'),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      drawer: NestedChoiceList(
+        items: items,
+        onTapItem: (item) {
+          print(item);
+          Navigator.of(context).pop();
+        },
+      ),
+      body: const Center(
+        child: Text('Nested Choice List'),
+      ),
+    );
+  }
+}
+
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
