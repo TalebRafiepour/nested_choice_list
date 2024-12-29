@@ -54,8 +54,8 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
           ),
         ),
       );
-    } else {
-      // todo
+    } else if (!widget.isMultiSelect) {
+      widget.onTapItem?.call(item);
     }
   }
 

@@ -1,3 +1,8 @@
+## 0.0.4
+
+* update CHANGELOG.me file
+* update examples
+
 ## 0.0.3
 
 * update CHANGELOG.me file

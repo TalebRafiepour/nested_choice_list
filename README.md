@@ -1,43 +1,82 @@
 A flutter package for handling nested list item selection without limitation for the depth of the nested list.
 
-## Usage
+## NestedChoiceList with single item selection example
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:nested_choice_list/nested_choice_list.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+class SingleSelectionExample extends StatelessWidget {
+  const SingleSelectionExample({super.key});
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final items = const [
+    NestedChoiceEntity(
+      value: 'value1',
+      label: 'label1',
+      children: [
+        NestedChoiceEntity(value: 'value2', label: 'label2'),
+        NestedChoiceEntity(value: 'value3', label: 'label3'),
+        NestedChoiceEntity(value: 'value4', label: 'label4'),
+      ],
+    ),
+    NestedChoiceEntity(
+      value: 'value2',
+      label: 'label2',
+      children: [
+        NestedChoiceEntity(value: 'value2', label: 'label2'),
+        NestedChoiceEntity(value: 'value3', label: 'label3'),
+        NestedChoiceEntity(
+          value: 'value4',
+          label: 'label4',
+          children: [
+            NestedChoiceEntity(value: 'value2', label: 'label2'),
+            NestedChoiceEntity(value: 'value3', label: 'label3'),
+            NestedChoiceEntity(value: 'value4', label: 'label4'),
+          ],
+        ),
+      ],
+    ),
+    NestedChoiceEntity(
+      value: 'value3',
+      label: 'label3',
+      children: [
+        NestedChoiceEntity(value: 'value2', label: 'label2'),
+        NestedChoiceEntity(value: 'value3', label: 'label3'),
+        NestedChoiceEntity(value: 'value4', label: 'label4'),
+      ],
+    ),
+    NestedChoiceEntity(value: 'value4', label: 'label4'),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text('Nested Choice List with single selection'),
       ),
-      home: const MyHomePage(
-        title: 'Two level nested choice list with single selection',
+      body: NestedChoiceList(
+        items: items,
+        onTapItem: (item) {
+          print(item);
+          Navigator.pop(context);
+        },
       ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+```
 
-  final String title;
+## NestedChoiceList with multiple item selection example
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+```dart
+import 'package:flutter/material.dart';
+import 'package:nested_choice_list/nested_choice_list.dart';
 
-class _MyHomePageState extends State<MyHomePage> {
+class MultiSelectionExample extends StatelessWidget {
+  const MultiSelectionExample({super.key});
+
   final items =  const [
     NestedChoiceEntity(
       value: 'value1',
@@ -76,25 +115,22 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
     NestedChoiceEntity(value: 'value4', label: 'label4'),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text('Nested Choice List with mulitple selection'),
       ),
-      drawer: NestedChoiceList(
+      body: NestedChoiceList(
         items: items,
+        isMultiSelect: true,
         onTapItem: (item) {
           print(item);
-          Navigator.of(context).pop();
         },
-      ),
-      body: const Center(
-        child: Text('Nested Choice List'),
       ),
     );
   }
 }
-
 ```
