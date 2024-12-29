@@ -17,7 +17,7 @@ class NestedListViewStyle {
     ),
     this.labelStyle,
     this.listPadding,
-    this.itemMargin,
+    this.itemMargin = const EdgeInsets.all(4),
     this.searchInputDecoration = const InputDecoration(
       border: OutlineInputBorder(),
       prefixIcon: Icon(
@@ -36,7 +36,7 @@ class NestedListViewStyle {
   final Icon? trailingIcon;
   final TextStyle? labelStyle;
   final EdgeInsets? listPadding;
-  final EdgeInsets? itemMargin;
+  final EdgeInsets itemMargin;
   //
   final EdgeInsets searchFieldMargin;
   final InputDecoration searchInputDecoration;

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(
-        title: 'Two level nested choice list with single selection',
+        title: 'Multi level nested choice list with single selection',
       ),
     );
   }

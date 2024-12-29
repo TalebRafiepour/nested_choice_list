@@ -8,6 +8,7 @@ import 'package:nested_choice_list/src/search_field.dart';
 class NestedChoiceList extends StatefulWidget {
   const NestedChoiceList({
     required this.items,
+    this.isMultiSelect = false,
     this.enableSearch = true,
     this.searchDebouncer,
     this.style = const NestedListViewStyle(),
@@ -15,6 +16,7 @@ class NestedChoiceList extends StatefulWidget {
     super.key,
   });
 
+  final bool isMultiSelect;
   final List<NestedChoiceEntity> items;
   final bool enableSearch;
   final SearchDebouncer? searchDebouncer;
@@ -27,6 +29,36 @@ class NestedChoiceList extends StatefulWidget {
 
 class _NestedChoiceListState extends State<NestedChoiceList> {
   late final itemsToShow = List<NestedChoiceEntity>.from(widget.items);
+  final List<NestedChoiceEntity> selectedItems = [];
+
+  void _onToggleSelection(NestedChoiceEntity item) {
+    widget.onTapItem?.call(item);
+    if (selectedItems.contains(item)) {
+      selectedItems.remove(item);
+    } else {
+      selectedItems.add(item);
+    }
+  }
+
+  void _onTapItem(item, BuildContext ctx) {
+    if (item.hasChildren) {
+      Navigator.of(ctx).push(
+        MaterialPageRoute(
+          builder: (context) => NestedListView(
+            items: item.children,
+            isMultiSelect: widget.isMultiSelect,
+            selectedItems: selectedItems,
+            onTapItem: (item) => _onTapItem(item, context),
+            style: widget.style,
+            onToggleSelection: _onToggleSelection,
+          ),
+        ),
+      );
+    } else {
+      // todo
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -40,11 +72,14 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
         body: Navigator(
           onGenerateRoute: (settings) {
             return MaterialPageRoute(
-              builder: (_) {
+              builder: (ctx) {
                 return NestedListView(
                   items: itemsToShow,
+                  isMultiSelect: widget.isMultiSelect,
                   style: widget.style,
-                  onTapItem: widget.onTapItem,
+                  selectedItems: selectedItems,
+                  onToggleSelection: _onToggleSelection,
+                  onTapItem: (item) => _onTapItem(item, ctx),
                 );
               },
             );
