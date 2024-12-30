@@ -61,8 +61,9 @@ class NestedListView extends StatelessWidget {
                         style: style.labelStyle ??
                             Theme.of(context).textTheme.titleMedium,
                       ),
-                      trailing:
-                          items[index].hasChildren ? style.trailingIcon : null,
+                      trailing: items[index].hasChildren
+                          ? style.trailingIcon
+                          : null,
                       onTap: () {
                         onTapItem?.call(items[index], context);
                       },

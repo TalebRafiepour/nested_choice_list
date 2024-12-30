@@ -68,15 +68,14 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (FocusScope.of(context).hasFocus) {
-          FocusScope.of(context).unfocus();
-        }
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Column(
+    return Material(
+      child: InkWell(
+        onTap: () {
+          if (FocusScope.of(context).hasFocus) {
+            FocusScope.of(context).unfocus();
+          }
+        },
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (widget.isMultiSelect && selectedItems.isNotEmpty)
@@ -108,10 +107,8 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                 },
               ),
             ),
-          ],
-        ),
-        bottomNavigationBar: widget.enableSearch
-            ? SearchField(
+            if (widget.enableSearch)
+              SearchField(
                 inputDecoration: widget.style.searchInputDecoration,
                 searchDebouncer: widget.searchDebouncer,
                 margin: widget.style.searchFieldMargin,
@@ -126,8 +123,9 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                   );
                   setState(() {});
                 },
-              )
-            : null,
+              ),
+          ],
+        ),
       ),
     );
   }
