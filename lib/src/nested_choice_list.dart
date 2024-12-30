@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_list_view.dart';
 import 'package:nested_choice_list/src/nested_list_view_style.dart';
 import 'package:nested_choice_list/src/search_debouncer.dart';
 import 'package:nested_choice_list/src/search_field.dart';
+import 'package:nested_choice_list/src/seleted_item_chip_list.dart';
 
 class NestedChoiceList extends StatefulWidget {
   const NestedChoiceList({
@@ -38,20 +40,25 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
     } else {
       selectedItems.add(item);
     }
+    setState(() {});
   }
 
   void _onTapItem(item, BuildContext ctx) {
     if (item.hasChildren) {
       Navigator.of(ctx).push(
         MaterialPageRoute(
-          builder: (context) => NestedListView(
-            items: item.children,
-            isMultiSelect: widget.isMultiSelect,
-            selectedItems: selectedItems,
-            onTapItem: (item) => _onTapItem(item, context),
-            style: widget.style,
-            onToggleSelection: _onToggleSelection,
-          ),
+          builder: (context) {
+            return InheritedNestedListView(
+              selectedItems: selectedItems,
+              child: NestedListView(
+                items: item.children,
+                isMultiSelect: widget.isMultiSelect,
+                onTapItem: _onTapItem,
+                style: widget.style,
+                onToggleSelection: _onToggleSelection,
+              ),
+            );
+          },
         ),
       );
     } else if (!widget.isMultiSelect) {
@@ -69,21 +76,39 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Navigator(
-          onGenerateRoute: (settings) {
-            return MaterialPageRoute(
-              builder: (ctx) {
-                return NestedListView(
-                  items: itemsToShow,
-                  isMultiSelect: widget.isMultiSelect,
-                  style: widget.style,
-                  selectedItems: selectedItems,
-                  onToggleSelection: _onToggleSelection,
-                  onTapItem: (item) => _onTapItem(item, ctx),
-                );
-              },
-            );
-          },
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (widget.isMultiSelect && selectedItems.isNotEmpty)
+              SeletedItemChipList(
+                selectedEntities: selectedItems,
+                onDeleted: (item) {
+                  selectedItems.remove(item);
+                  widget.onTapItem?.call(item);
+                  setState(() {});
+                },
+              ),
+            Expanded(
+              child: Navigator(
+                onGenerateRoute: (settings) {
+                  return MaterialPageRoute(
+                    builder: (ctx) {
+                      return InheritedNestedListView(
+                        selectedItems: selectedItems,
+                        child: NestedListView(
+                          items: itemsToShow,
+                          isMultiSelect: widget.isMultiSelect,
+                          style: widget.style,
+                          onToggleSelection: _onToggleSelection,
+                          onTapItem: _onTapItem,
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
         bottomNavigationBar: widget.enableSearch
             ? SearchField(

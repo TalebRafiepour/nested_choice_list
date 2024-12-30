@@ -53,7 +53,7 @@ class SingleSelectionExample extends StatelessWidget {
       body: NestedChoiceList(
         items: items,
         onTapItem: (item) {
-          print(item);
+          debugPrint(item.toString());
           Navigator.pop(context);
         },
       ),
