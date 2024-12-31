@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
-import 'package:nested_choice_list/src/selected_item_chip.dart';
+import 'package:nested_choice_list/src/selected_item_chip_list/selected_item_chip.dart';
 
 class SeletedItemChipList extends StatelessWidget {
   const SeletedItemChipList({

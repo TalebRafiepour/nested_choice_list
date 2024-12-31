@@ -3,9 +3,9 @@ import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_list_view.dart';
 import 'package:nested_choice_list/src/nested_list_view_style.dart';
-import 'package:nested_choice_list/src/search_debouncer.dart';
-import 'package:nested_choice_list/src/search_field.dart';
-import 'package:nested_choice_list/src/seleted_item_chip_list.dart';
+import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
+import 'package:nested_choice_list/src/search_field/search_field.dart';
+import 'package:nested_choice_list/src/selected_item_chip_list/seleted_item_chip_list.dart';
 
 class NestedChoiceList extends StatefulWidget {
   const NestedChoiceList({
@@ -78,6 +78,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            //const NavigationPath(pathes: ['path1', 'path2','path3']),
             if (widget.isMultiSelect && selectedItems.isNotEmpty)
               SeletedItemChipList(
                 selectedEntities: selectedItems,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nested_choice_list/src/search_debouncer.dart';
+import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
 
 class SearchField extends StatefulWidget {
   const SearchField({
