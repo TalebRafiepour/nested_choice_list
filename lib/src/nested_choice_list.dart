@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
+import 'package:nested_choice_list/src/breadcrumbs_path/breadcrumbs_path.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_list_view.dart';
 import 'package:nested_choice_list/src/nested_list_view_style.dart';
@@ -10,14 +11,16 @@ import 'package:nested_choice_list/src/selected_item_chip_list/seleted_item_chip
 class NestedChoiceList extends StatefulWidget {
   const NestedChoiceList({
     required this.items,
+    this.showNavigationPath = false,
     this.isMultiSelect = false,
-    this.enableSearch = true,
+    this.enableSearch = false,
     this.searchDebouncer,
     this.style = const NestedListViewStyle(),
     this.onTapItem,
     super.key,
   });
 
+  final bool showNavigationPath;
   final bool isMultiSelect;
   final List<NestedChoiceEntity> items;
   final bool enableSearch;
@@ -30,8 +33,24 @@ class NestedChoiceList extends StatefulWidget {
 }
 
 class _NestedChoiceListState extends State<NestedChoiceList> {
+  final navigationPathes = <String>[];
   late final itemsToShow = List<NestedChoiceEntity>.from(widget.items);
   final List<NestedChoiceEntity> selectedItems = [];
+  final _nestedNavKey = GlobalKey<NavigatorState>();
+
+  void _onNavigationPathTapped(index) {
+    if (index == navigationPathes.length - 1) return;
+    final totalPathLength = navigationPathes.length;
+    navigationPathes.removeRange(
+      index + 1,
+      navigationPathes.length,
+    );
+    final popCount = totalPathLength - index - 1;
+    for (var i = 0; i < popCount; i++) {
+      _nestedNavKey.currentState?.maybePop();
+    }
+    setState(() {});
+  }
 
   void _onToggleSelection(NestedChoiceEntity item) {
     widget.onTapItem?.call(item);
@@ -45,6 +64,8 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
 
   void _onTapItem(item, BuildContext ctx) {
     if (item.hasChildren) {
+      navigationPathes.add(item.label);
+      setState(() {});
       Navigator.of(ctx).push(
         MaterialPageRoute(
           builder: (context) {
@@ -78,7 +99,11 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //const NavigationPath(pathes: ['path1', 'path2','path3']),
+            if (widget.showNavigationPath && navigationPathes.isNotEmpty)
+              BreadcrumbsPath(
+                pathes: navigationPathes,
+                onTap: _onNavigationPathTapped,
+              ),
             if (widget.isMultiSelect && selectedItems.isNotEmpty)
               SeletedItemChipList(
                 selectedEntities: selectedItems,
@@ -90,6 +115,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
               ),
             Expanded(
               child: Navigator(
+                key: _nestedNavKey,
                 onGenerateRoute: (settings) {
                   return MaterialPageRoute(
                     builder: (ctx) {
