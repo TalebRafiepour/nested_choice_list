@@ -38,18 +38,18 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
   final List<NestedChoiceEntity> selectedItems = [];
   final _nestedNavKey = GlobalKey<NavigatorState>();
 
-  void _onNavigationPathTapped(index) {
+  void _onPopInvokedWithResult(_, result) {
+    navigationPathes.removeLast();
+    setState(() {});
+  }
+
+  Future<void> _onNavigationPathTapped(index) async {
     if (index == navigationPathes.length - 1) return;
     final totalPathLength = navigationPathes.length;
-    navigationPathes.removeRange(
-      index + 1,
-      navigationPathes.length,
-    );
     final popCount = totalPathLength - index - 1;
     for (var i = 0; i < popCount; i++) {
-      _nestedNavKey.currentState?.maybePop();
+      await _nestedNavKey.currentState?.maybePop();
     }
-    setState(() {});
   }
 
   void _onToggleSelection(NestedChoiceEntity item) {
@@ -77,6 +77,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                 onTapItem: _onTapItem,
                 style: widget.style,
                 onToggleSelection: _onToggleSelection,
+                onPopInvokedWithResult: _onPopInvokedWithResult,
               ),
             );
           },
@@ -89,37 +90,46 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-        onTap: () {
-          if (FocusScope.of(context).hasFocus) {
-            FocusScope.of(context).unfocus();
-          }
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (widget.showNavigationPath && navigationPathes.isNotEmpty)
-              BreadcrumbsPath(
-                pathes: navigationPathes,
-                onTap: _onNavigationPathTapped,
-              ),
-            if (widget.isMultiSelect && selectedItems.isNotEmpty)
-              SeletedItemChipList(
-                selectedEntities: selectedItems,
-                onDeleted: (item) {
-                  selectedItems.remove(item);
-                  widget.onTapItem?.call(item);
-                  setState(() {});
-                },
-              ),
-            Expanded(
-              child: Navigator(
-                key: _nestedNavKey,
-                onGenerateRoute: (settings) {
-                  return MaterialPageRoute(
-                    builder: (ctx) {
-                      return InheritedNestedListView(
+    return PopScope(
+      canPop: navigationPathes.isEmpty,
+      onPopInvokedWithResult: (didPop, result) {
+        final nestedNavCanPop = _nestedNavKey.currentState?.canPop() ?? false;
+        if (nestedNavCanPop) {
+          _nestedNavKey.currentState?.maybePop();
+        } else if (navigationPathes.isEmpty) {
+          Navigator.maybePop(context);
+        }
+      },
+      child: Material(
+        child: InkWell(
+          onTap: () {
+            if (FocusScope.of(context).hasFocus) {
+              FocusScope.of(context).unfocus();
+            }
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (widget.showNavigationPath && navigationPathes.isNotEmpty)
+                BreadcrumbsPath(
+                  pathes: navigationPathes,
+                  onTap: _onNavigationPathTapped,
+                ),
+              if (widget.isMultiSelect && selectedItems.isNotEmpty)
+                SeletedItemChipList(
+                  selectedEntities: selectedItems,
+                  onDeleted: (item) {
+                    selectedItems.remove(item);
+                    widget.onTapItem?.call(item);
+                    setState(() {});
+                  },
+                ),
+              Expanded(
+                child: Navigator(
+                  key: _nestedNavKey,
+                  onGenerateRoute: (settings) {
+                    return MaterialPageRoute(
+                      builder: (_) => InheritedNestedListView(
                         selectedItems: selectedItems,
                         child: NestedListView(
                           items: itemsToShow,
@@ -127,31 +137,32 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                           style: widget.style,
                           onToggleSelection: _onToggleSelection,
                           onTapItem: _onTapItem,
+                          onPopInvokedWithResult: _onPopInvokedWithResult,
                         ),
-                      );
-                    },
-                  );
-                },
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-            if (widget.enableSearch)
-              SearchField(
-                inputDecoration: widget.style.searchInputDecoration,
-                searchDebouncer: widget.searchDebouncer,
-                margin: widget.style.searchFieldMargin,
-                onSearch: (filter) {
-                  itemsToShow.clear();
-                  itemsToShow.addAll(
-                    widget.items.where(
-                      (element) => element.label.toLowerCase().contains(
-                            filter.toLowerCase(),
-                          ),
-                    ),
-                  );
-                  setState(() {});
-                },
-              ),
-          ],
+              if (widget.enableSearch)
+                SearchField(
+                  inputDecoration: widget.style.searchInputDecoration,
+                  searchDebouncer: widget.searchDebouncer,
+                  margin: widget.style.searchFieldMargin,
+                  onSearch: (filter) {
+                    itemsToShow.clear();
+                    itemsToShow.addAll(
+                      widget.items.where(
+                        (element) => element.label.toLowerCase().contains(
+                              filter.toLowerCase(),
+                            ),
+                      ),
+                    );
+                    setState(() {});
+                  },
+                ),
+            ],
+          ),
         ),
       ),
     );
