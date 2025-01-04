@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
-import 'package:nested_choice_list/src/nested_list_view_style.dart';
+import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.dart';
 
 class NestedListView extends StatelessWidget {
   const NestedListView({
     required this.items,
-    required this.style,
+    required this.itemStyle,
     this.onPopInvokedWithResult,
     this.isMultiSelect = false,
     this.onTapItem,
@@ -16,7 +16,7 @@ class NestedListView extends StatelessWidget {
 
   final bool isMultiSelect;
   final List<NestedChoiceEntity> items;
-  final NestedListViewStyle style;
+  final NestedListItemStyle itemStyle;
   final Function(NestedChoiceEntity, BuildContext)? onTapItem;
   final Function(NestedChoiceEntity)? onToggleSelection;
   final PopInvokedWithResultCallback? onPopInvokedWithResult;
@@ -37,35 +37,39 @@ class NestedListView extends StatelessWidget {
             )
           : ListView.builder(
               itemCount: items.length,
-              padding: style.listPadding,
+              padding: itemStyle.listPadding,
               itemBuilder: (_, index) {
                 return Padding(
-                  padding: style.itemMargin,
+                  padding: itemStyle.margin,
                   child: Material(
+                    type: MaterialType.transparency,
                     child: isMultiSelect && !items[index].hasChildren
                         ? CheckboxListTile(
                             value: selectedItems.contains(items[index]),
                             onChanged: (isSelected) {
                               onToggleSelection?.call(items[index]);
                             },
-                            shape: style.itemShape,
+                            shape: itemStyle.shape,
+                            fillColor:
+                                WidgetStatePropertyAll(itemStyle.bgColor),
                             enabled: !items[index].isDisabled,
                             title: Text(
                               items[index].label,
-                              style: style.labelStyle ??
+                              style: itemStyle.labelStyle ??
                                   Theme.of(context).textTheme.titleMedium,
                             ),
                           )
                         : ListTile(
-                            shape: style.itemShape,
+                            shape: itemStyle.shape,
                             enabled: !items[index].isDisabled,
+                            tileColor: itemStyle.bgColor,
                             title: Text(
                               items[index].label,
-                              style: style.labelStyle ??
+                              style: itemStyle.labelStyle ??
                                   Theme.of(context).textTheme.titleMedium,
                             ),
                             trailing: items[index].hasChildren
-                                ? style.trailingIcon
+                                ? itemStyle.trailingIcon
                                 : null,
                             onTap: () {
                               onTapItem?.call(items[index], context);

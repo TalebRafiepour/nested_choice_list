@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
 import 'package:nested_choice_list/src/breadcrumbs_path/breadcrumbs_path.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
+import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.dart';
+import 'package:nested_choice_list/src/nested_list_style/nested_list_searchfield_style.dart';
+import 'package:nested_choice_list/src/nested_list_style/nested_list_style.dart';
 import 'package:nested_choice_list/src/nested_list_view.dart';
-import 'package:nested_choice_list/src/nested_list_view_style.dart';
 import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
 import 'package:nested_choice_list/src/search_field/search_field.dart';
 import 'package:nested_choice_list/src/selected_item_chip_list/seleted_item_chip_list.dart';
@@ -15,7 +17,9 @@ class NestedChoiceList extends StatefulWidget {
     this.isMultiSelect = false,
     this.enableSearch = false,
     this.searchDebouncer,
-    this.style = const NestedListViewStyle(),
+    this.style = const NestedListStyle(),
+    this.searchfieldStyle = const NestedListSearchfieldStyle(),
+    this.itemStyle = const NestedListItemStyle(),
     this.onTapItem,
     super.key,
   });
@@ -25,7 +29,9 @@ class NestedChoiceList extends StatefulWidget {
   final List<NestedChoiceEntity> items;
   final bool enableSearch;
   final SearchDebouncer? searchDebouncer;
-  final NestedListViewStyle style;
+  final NestedListStyle style;
+  final NestedListSearchfieldStyle searchfieldStyle;
+  final NestedListItemStyle itemStyle;
   final Function(NestedChoiceEntity)? onTapItem;
 
   @override
@@ -75,7 +81,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                 items: item.children,
                 isMultiSelect: widget.isMultiSelect,
                 onTapItem: _onTapItem,
-                style: widget.style,
+                itemStyle: widget.itemStyle,
                 onToggleSelection: _onToggleSelection,
                 onPopInvokedWithResult: _onPopInvokedWithResult,
               ),
@@ -101,6 +107,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
         }
       },
       child: Material(
+        color: widget.style.bgColor,
         child: InkWell(
           onTap: () {
             if (FocusScope.of(context).hasFocus) {
@@ -134,7 +141,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                         child: NestedListView(
                           items: itemsToShow,
                           isMultiSelect: widget.isMultiSelect,
-                          style: widget.style,
+                          itemStyle: widget.itemStyle,
                           onToggleSelection: _onToggleSelection,
                           onTapItem: _onTapItem,
                           onPopInvokedWithResult: _onPopInvokedWithResult,
@@ -146,9 +153,9 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
               ),
               if (widget.enableSearch)
                 SearchField(
-                  inputDecoration: widget.style.searchInputDecoration,
+                  inputDecoration: widget.searchfieldStyle.inputDecoration,
                   searchDebouncer: widget.searchDebouncer,
-                  margin: widget.style.searchFieldMargin,
+                  margin: widget.searchfieldStyle.margin,
                   onSearch: (filter) {
                     itemsToShow.clear();
                     itemsToShow.addAll(
