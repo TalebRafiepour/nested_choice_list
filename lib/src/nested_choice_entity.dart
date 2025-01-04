@@ -43,7 +43,7 @@ class NestedChoiceEntity<T extends Object> {
 
   @override
   String toString() {
-    if (children.isNotEmpty) {
+    if (hasChildren) {
       return '{$label : [${children.map((e) => e.toString()).join(', ')}],}';
     } else {
       return '{$label}';

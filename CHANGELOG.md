@@ -1,3 +1,7 @@
+## 0.0.6
+
+* handle navigation by back button press and swipe
+
 ## 0.0.5
 
 * add new feature > showing navigation path which shows hierarchy of nested list 
