@@ -14,6 +14,8 @@ class NestedChoiceList extends StatefulWidget {
   const NestedChoiceList({
     required this.items,
     this.selectedItems = const [],
+    this.enableSelectAll = true,
+    this.selectAllLabel = 'Select all',
     this.showNavigationPath = false,
     this.isMultiSelect = false,
     this.enableSearch = false,
@@ -26,6 +28,8 @@ class NestedChoiceList extends StatefulWidget {
     super.key,
   });
 
+  final String selectAllLabel;
+  final bool enableSelectAll;
   final bool showNavigationPath;
   final bool isMultiSelect;
   final List<NestedChoiceEntity> selectedItems;
@@ -45,9 +49,27 @@ class NestedChoiceList extends StatefulWidget {
 class _NestedChoiceListState extends State<NestedChoiceList> {
   final navigationPathes = <String>[];
   late final itemsToShow = List<NestedChoiceEntity>.from(widget.items);
-  late final List<NestedChoiceEntity> selectedItems =
-      List.from(widget.selectedItems);
+  late final Set<NestedChoiceEntity> selectedItems =
+      Set.from(widget.selectedItems);
   final _nestedNavKey = GlobalKey<NavigatorState>();
+
+  void _onSelectAllCallback(
+    bool isSelected,
+    List<NestedChoiceEntity> items,
+  ) {
+    if (isSelected) {
+      for (var i = 0; i < items.length; i++) {
+        if (!items[i].hasChildren) {
+          selectedItems.add(items[i]);
+        }
+      }
+    } else {
+      for (var i = 0; i < items.length; i++) {
+        selectedItems.remove(items[i]);
+      }
+    }
+    setState(() {});
+  }
 
   void _onPopInvokedWithResult(_, result) {
     navigationPathes.removeLast();
@@ -84,12 +106,15 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
               selectedItems: selectedItems,
               child: NestedListView(
                 items: item.children,
+                enableSelectAll: widget.enableSelectAll,
+                selectAllLabel: widget.selectAllLabel,
                 isMultiSelect: widget.isMultiSelect,
                 itemLeadingBuilder: widget.itemLeadingBuilder,
                 onTapItem: _onTapItem,
                 itemStyle: widget.itemStyle,
                 onToggleSelection: _onToggleSelection,
                 onPopInvokedWithResult: _onPopInvokedWithResult,
+                onSelectAllCallback: _onSelectAllCallback,
               ),
             );
           },
@@ -148,12 +173,15 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                         selectedItems: selectedItems,
                         child: NestedListView(
                           items: itemsToShow,
+                          enableSelectAll: widget.enableSelectAll,
                           isMultiSelect: widget.isMultiSelect,
+                          selectAllLabel: widget.selectAllLabel,
                           itemStyle: widget.itemStyle,
                           onToggleSelection: _onToggleSelection,
                           onTapItem: _onTapItem,
                           onPopInvokedWithResult: _onPopInvokedWithResult,
                           itemLeadingBuilder: widget.itemLeadingBuilder,
+                          onSelectAllCallback: _onSelectAllCallback,
                         ),
                       ),
                     );

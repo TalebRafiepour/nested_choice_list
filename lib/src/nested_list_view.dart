@@ -10,33 +10,60 @@ typedef ItemLeadingBuilder = Widget? Function(
   int index,
 );
 
-class NestedListView extends StatelessWidget {
+typedef OnSelectAllCallback = void Function(
+  bool isSelected,
+  List<NestedChoiceEntity> items,
+);
+
+class NestedListView extends StatefulWidget {
   const NestedListView({
     required this.items,
-    required this.itemStyle,
+    required this.onSelectAllCallback,
+    this.selectAllLabel = 'Select all',
+    this.itemStyle = const NestedListItemStyle(),
+    this.selectAllItemStyle = const NestedListItemStyle(),
     this.onPopInvokedWithResult,
     this.isMultiSelect = false,
+    this.enableSelectAll = true,
     this.onTapItem,
     this.onToggleSelection,
     this.itemLeadingBuilder,
     super.key,
   });
 
+  final String selectAllLabel;
+  final bool enableSelectAll;
   final bool isMultiSelect;
   final List<NestedChoiceEntity> items;
   final NestedListItemStyle itemStyle;
+  final NestedListItemStyle selectAllItemStyle;
   final Function(NestedChoiceEntity, BuildContext)? onTapItem;
   final Function(NestedChoiceEntity)? onToggleSelection;
   final PopInvokedWithResultCallback? onPopInvokedWithResult;
   final ItemLeadingBuilder? itemLeadingBuilder;
+  final OnSelectAllCallback onSelectAllCallback;
+
+  @override
+  State<NestedListView> createState() => _NestedListViewState();
+}
+
+class _NestedListViewState extends State<NestedListView> {
+  late bool isSelectedAll = false;
+  late final bool hasAnySelectableChild;
+
+  @override
+  void initState() {
+    hasAnySelectableChild = widget.items.any((e) => !e.hasChildren);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final selectedItems =
-        InheritedNestedListView.of(context)?.selectedItems ?? [];
+        InheritedNestedListView.of(context)?.selectedItems ?? {};
     return PopScope(
-      onPopInvokedWithResult: onPopInvokedWithResult,
-      child: items.isEmpty
+      onPopInvokedWithResult: widget.onPopInvokedWithResult,
+      child: widget.items.isEmpty
           ? const Center(
               child: Icon(
                 Icons.now_widgets_sharp,
@@ -44,24 +71,49 @@ class NestedListView extends StatelessWidget {
                 size: 48,
               ),
             )
-          : ListView.builder(
-              itemCount: items.length,
-              padding: itemStyle.listPadding,
-              itemBuilder: (_, index) {
-                return NestedListViewItem(
-                  item: items[index],
-                  itemStyle: itemStyle,
-                  isMultiSelect: isMultiSelect,
-                  isChecked: selectedItems.contains(items[index]),
-                  onTapItem: onTapItem,
-                  onToggleSelection: onToggleSelection,
-                  leading: itemLeadingBuilder?.call(
-                    context,
-                    items[index],
-                    index,
+          : Column(
+              children: [
+                if (widget.enableSelectAll &&
+                    widget.isMultiSelect &&
+                    hasAnySelectableChild)
+                  NestedListViewItem(
+                    isMultiSelect: true,
+                    isChecked: isSelectedAll,
+                    itemStyle: widget.selectAllItemStyle,
+                    item: NestedChoiceEntity(
+                      value: 'value',
+                      label: widget.selectAllLabel,
+                    ),
+                    onToggleSelection: (_) {
+                      isSelectedAll = !isSelectedAll;
+                      widget.onSelectAllCallback.call(
+                        isSelectedAll,
+                        widget.items,
+                      );
+                    },
                   ),
-                );
-              },
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: widget.items.length,
+                    padding: widget.itemStyle.listPadding,
+                    itemBuilder: (_, index) {
+                      return NestedListViewItem(
+                        item: widget.items[index],
+                        itemStyle: widget.itemStyle,
+                        isMultiSelect: widget.isMultiSelect,
+                        isChecked: selectedItems.contains(widget.items[index]),
+                        onTapItem: widget.onTapItem,
+                        onToggleSelection: widget.onToggleSelection,
+                        leading: widget.itemLeadingBuilder?.call(
+                          context,
+                          widget.items[index],
+                          index,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
     );
   }

@@ -8,7 +8,7 @@ class InheritedNestedListView extends InheritedWidget {
     required this.selectedItems,
   });
 
-  final List<NestedChoiceEntity> selectedItems;
+  final Set<NestedChoiceEntity> selectedItems;
 
   static InheritedNestedListView? of(BuildContext context) {
     return context

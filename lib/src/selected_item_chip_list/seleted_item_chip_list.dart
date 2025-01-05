@@ -9,7 +9,7 @@ class SeletedItemChipList extends StatelessWidget {
     super.key,
   });
 
-  final List<NestedChoiceEntity> selectedEntities;
+  final Set<NestedChoiceEntity> selectedEntities;
   final Function(NestedChoiceEntity)? onDeleted;
 
   void scrollToEndOfList(ScrollController scrollController) {
