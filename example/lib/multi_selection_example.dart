@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:nested_choice_list/nested_choice_list.dart';
 
 class MultiSelectionExample extends StatelessWidget {
-  const MultiSelectionExample({required this.items,super.key});
+  const MultiSelectionExample({
+    required this.items,
+    this.selectedItems = const [],
+    super.key,
+  });
   final List<NestedChoiceEntity> items;
+  final List<NestedChoiceEntity> selectedItems;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +20,7 @@ class MultiSelectionExample extends StatelessWidget {
       body: NestedChoiceList(
         items: items,
         isMultiSelect: true,
+        selectedItems: selectedItems,
         onTapItem: (item) {
           debugPrint(item.toString());
         },

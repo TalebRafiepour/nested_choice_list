@@ -13,6 +13,7 @@ import 'package:nested_choice_list/src/selected_item_chip_list/seleted_item_chip
 class NestedChoiceList extends StatefulWidget {
   const NestedChoiceList({
     required this.items,
+    this.selectedItems = const [],
     this.showNavigationPath = false,
     this.isMultiSelect = false,
     this.enableSearch = false,
@@ -26,6 +27,7 @@ class NestedChoiceList extends StatefulWidget {
 
   final bool showNavigationPath;
   final bool isMultiSelect;
+  final List<NestedChoiceEntity> selectedItems;
   final List<NestedChoiceEntity> items;
   final bool enableSearch;
   final SearchDebouncer? searchDebouncer;
@@ -41,7 +43,8 @@ class NestedChoiceList extends StatefulWidget {
 class _NestedChoiceListState extends State<NestedChoiceList> {
   final navigationPathes = <String>[];
   late final itemsToShow = List<NestedChoiceEntity>.from(widget.items);
-  final List<NestedChoiceEntity> selectedItems = [];
+  late final List<NestedChoiceEntity> selectedItems =
+      List.from(widget.selectedItems);
   final _nestedNavKey = GlobalKey<NavigatorState>();
 
   void _onPopInvokedWithResult(_, result) {

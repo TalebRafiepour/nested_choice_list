@@ -99,7 +99,9 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => SingleSelectionExample(items: items,),
+                    builder: (_) => SingleSelectionExample(
+                      items: items,
+                    ),
                   ),
                 );
               },
@@ -112,7 +114,18 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => MultiSelectionExample(items: items,),
+                    builder: (_) => MultiSelectionExample(
+                        items: items,
+                        selectedItems: const [
+                          NestedChoiceEntity(
+                            value: 'value2',
+                            label: 'label2 level 3',
+                          ),
+                          NestedChoiceEntity(
+                            value: 'value3',
+                            label: 'label3 level 3',
+                          ),
+                        ]),
                   ),
                 );
               },

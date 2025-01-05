@@ -49,4 +49,23 @@ class NestedChoiceEntity<T extends Object> {
       return '{$label}';
     }
   }
+
+  @override
+  int get hashCode => Object.hash(
+        label,
+        value,
+        group,
+        isDisabled,
+        children,
+      );
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return (other is NestedChoiceEntity) &&
+        label == other.label &&
+        value == other.value &&
+        group == other.group &&
+        children == other.children;
+  }
 }

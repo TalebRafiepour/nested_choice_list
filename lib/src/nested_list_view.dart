@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.dart';
+import 'package:nested_choice_list/src/nested_list_view_item.dart';
 
 class NestedListView extends StatelessWidget {
   const NestedListView({
@@ -39,43 +40,13 @@ class NestedListView extends StatelessWidget {
               itemCount: items.length,
               padding: itemStyle.listPadding,
               itemBuilder: (_, index) {
-                return Padding(
-                  padding: itemStyle.margin,
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: isMultiSelect && !items[index].hasChildren
-                        ? CheckboxListTile(
-                            value: selectedItems.contains(items[index]),
-                            onChanged: (isSelected) {
-                              onToggleSelection?.call(items[index]);
-                            },
-                            shape: itemStyle.shape,
-                            fillColor:
-                                WidgetStatePropertyAll(itemStyle.bgColor),
-                            enabled: !items[index].isDisabled,
-                            title: Text(
-                              items[index].label,
-                              style: itemStyle.labelStyle ??
-                                  Theme.of(context).textTheme.titleMedium,
-                            ),
-                          )
-                        : ListTile(
-                            shape: itemStyle.shape,
-                            enabled: !items[index].isDisabled,
-                            tileColor: itemStyle.bgColor,
-                            title: Text(
-                              items[index].label,
-                              style: itemStyle.labelStyle ??
-                                  Theme.of(context).textTheme.titleMedium,
-                            ),
-                            trailing: items[index].hasChildren
-                                ? itemStyle.trailingIcon
-                                : null,
-                            onTap: () {
-                              onTapItem?.call(items[index], context);
-                            },
-                          ),
-                  ),
+                return NestedListViewItem(
+                  item: items[index],
+                  itemStyle: itemStyle,
+                  isMultiSelect: isMultiSelect,
+                  isChecked: selectedItems.contains(items[index]),
+                  onTapItem: onTapItem,
+                  onToggleSelection: onToggleSelection,
                 );
               },
             ),
