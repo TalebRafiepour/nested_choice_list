@@ -22,6 +22,7 @@ class NestedChoiceList extends StatefulWidget {
     this.searchfieldStyle = const NestedListSearchfieldStyle(),
     this.itemStyle = const NestedListItemStyle(),
     this.onTapItem,
+    this.itemLeadingBuilder,
     super.key,
   });
 
@@ -35,6 +36,7 @@ class NestedChoiceList extends StatefulWidget {
   final NestedListSearchfieldStyle searchfieldStyle;
   final NestedListItemStyle itemStyle;
   final Function(NestedChoiceEntity)? onTapItem;
+  final ItemLeadingBuilder? itemLeadingBuilder;
 
   @override
   State<NestedChoiceList> createState() => _NestedChoiceListState();
@@ -83,6 +85,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
               child: NestedListView(
                 items: item.children,
                 isMultiSelect: widget.isMultiSelect,
+                itemLeadingBuilder: widget.itemLeadingBuilder,
                 onTapItem: _onTapItem,
                 itemStyle: widget.itemStyle,
                 onToggleSelection: _onToggleSelection,
@@ -150,6 +153,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                           onToggleSelection: _onToggleSelection,
                           onTapItem: _onTapItem,
                           onPopInvokedWithResult: _onPopInvokedWithResult,
+                          itemLeadingBuilder: widget.itemLeadingBuilder,
                         ),
                       ),
                     );

@@ -4,6 +4,12 @@ import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.dart';
 import 'package:nested_choice_list/src/nested_list_view_item.dart';
 
+typedef ItemLeadingBuilder = Widget? Function(
+  BuildContext context,
+  NestedChoiceEntity item,
+  int index,
+);
+
 class NestedListView extends StatelessWidget {
   const NestedListView({
     required this.items,
@@ -12,6 +18,7 @@ class NestedListView extends StatelessWidget {
     this.isMultiSelect = false,
     this.onTapItem,
     this.onToggleSelection,
+    this.itemLeadingBuilder,
     super.key,
   });
 
@@ -21,6 +28,7 @@ class NestedListView extends StatelessWidget {
   final Function(NestedChoiceEntity, BuildContext)? onTapItem;
   final Function(NestedChoiceEntity)? onToggleSelection;
   final PopInvokedWithResultCallback? onPopInvokedWithResult;
+  final ItemLeadingBuilder? itemLeadingBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +55,11 @@ class NestedListView extends StatelessWidget {
                   isChecked: selectedItems.contains(items[index]),
                   onTapItem: onTapItem,
                   onToggleSelection: onToggleSelection,
+                  leading: itemLeadingBuilder?.call(
+                    context,
+                    items[index],
+                    index,
+                  ),
                 );
               },
             ),

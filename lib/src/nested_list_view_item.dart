@@ -10,6 +10,7 @@ class NestedListViewItem extends StatelessWidget {
     this.isChecked = false,
     this.onTapItem,
     this.onToggleSelection,
+    this.leading,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class NestedListViewItem extends StatelessWidget {
   final bool isChecked;
   final Function(NestedChoiceEntity, BuildContext)? onTapItem;
   final Function(NestedChoiceEntity)? onToggleSelection;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class NestedListViewItem extends StatelessWidget {
                 onChanged: (isSelected) {
                   onToggleSelection?.call(item);
                 },
+                secondary: leading,
                 shape: itemStyle.shape,
                 tileColor: itemStyle.bgColor,
                 enabled: !item.isDisabled,
@@ -45,6 +48,7 @@ class NestedListViewItem extends StatelessWidget {
                 shape: itemStyle.shape,
                 enabled: !item.isDisabled,
                 tileColor: itemStyle.bgColor,
+                leading: leading,
                 title: Text(
                   item.label,
                   style: itemStyle.labelStyle ??

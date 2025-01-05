@@ -16,7 +16,7 @@ class NestedListItemStyle {
       size: 24,
     ),
     this.labelStyle,
-    this.listPadding = const EdgeInsets.all(4),
+    this.listPadding = EdgeInsets.zero,
     this.margin = const EdgeInsets.all(4),
   });
 
