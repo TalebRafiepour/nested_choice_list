@@ -20,6 +20,7 @@ class MultiSelectionExample extends StatelessWidget {
       body: NestedChoiceList(
         items: items,
         isMultiSelect: true,
+        enableSearch: true,
         selectedItems: selectedItems,
         onTapItem: (item) {
           debugPrint(item.toString());

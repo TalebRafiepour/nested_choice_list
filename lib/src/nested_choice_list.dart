@@ -7,7 +7,6 @@ import 'package:nested_choice_list/src/nested_list_style/nested_list_searchfield
 import 'package:nested_choice_list/src/nested_list_style/nested_list_style.dart';
 import 'package:nested_choice_list/src/nested_list_view.dart';
 import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
-import 'package:nested_choice_list/src/search_field/search_field.dart';
 import 'package:nested_choice_list/src/selected_item_chip_list/seleted_item_chip_list.dart';
 
 class NestedChoiceList extends StatefulWidget {
@@ -50,7 +49,6 @@ class NestedChoiceList extends StatefulWidget {
 
 class _NestedChoiceListState extends State<NestedChoiceList> {
   final navigationPathes = <String>[];
-  late final itemsToShow = List<NestedChoiceEntity>.from(widget.items);
   late final Set<NestedChoiceEntity> selectedItems =
       Set.from(widget.selectedItems);
   final _nestedNavKey = GlobalKey<NavigatorState>();
@@ -108,11 +106,14 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
               selectedItems: selectedItems,
               child: NestedListView(
                 items: item.children,
+                searchDebouncer: widget.searchDebouncer,
+                enableSearch: widget.enableSearch,
                 enableSelectAll: widget.enableSelectAll,
                 selectAllLabel: widget.selectAllLabel,
                 isMultiSelect: widget.isMultiSelect,
                 itemLeadingBuilder: widget.itemLeadingBuilder,
                 onTapItem: _onTapItem,
+                searchfieldStyle: widget.searchfieldStyle,
                 itemStyle: widget.itemStyle,
                 selectAllItemStyle: widget.selectAllItemStyle,
                 onToggleSelection: _onToggleSelection,
@@ -175,10 +176,13 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                       builder: (_) => InheritedNestedListView(
                         selectedItems: selectedItems,
                         child: NestedListView(
-                          items: itemsToShow,
+                          items: widget.items,
+                          enableSearch: widget.enableSearch,
+                          searchDebouncer: widget.searchDebouncer,
                           enableSelectAll: widget.enableSelectAll,
                           isMultiSelect: widget.isMultiSelect,
                           selectAllLabel: widget.selectAllLabel,
+                          searchfieldStyle: widget.searchfieldStyle,
                           itemStyle: widget.itemStyle,
                           selectAllItemStyle: widget.selectAllItemStyle,
                           onToggleSelection: _onToggleSelection,
@@ -192,23 +196,6 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                   },
                 ),
               ),
-              if (widget.enableSearch)
-                SearchField(
-                  inputDecoration: widget.searchfieldStyle.inputDecoration,
-                  searchDebouncer: widget.searchDebouncer,
-                  margin: widget.searchfieldStyle.margin,
-                  onSearch: (filter) {
-                    itemsToShow.clear();
-                    itemsToShow.addAll(
-                      widget.items.where(
-                        (element) => element.label.toLowerCase().contains(
-                              filter.toLowerCase(),
-                            ),
-                      ),
-                    );
-                    setState(() {});
-                  },
-                ),
             ],
           ),
         ),
