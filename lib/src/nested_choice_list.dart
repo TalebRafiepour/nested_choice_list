@@ -146,6 +146,9 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
         child: InkWell(
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
           onTap: () {
             if (FocusScope.of(context).hasFocus) {
               FocusScope.of(context).unfocus();
