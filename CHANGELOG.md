@@ -1,3 +1,7 @@
+## 0.1.0
+
+* add "OnSelectionChange" callback to get selected items in multi select mode
+
 ## 0.0.9
 
 * add "dense" property for styls

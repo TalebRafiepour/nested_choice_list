@@ -161,6 +161,9 @@ class MultiSelectionExample extends StatelessWidget {
         onTapItem: (item) {
           print(item);
         },
+        onSelectionChange: (items) {
+          debugPrint('onSelectionChange: ${items.toString()}');
+        },
       ),
     );
   }
