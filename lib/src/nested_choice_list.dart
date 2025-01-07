@@ -13,6 +13,7 @@ class NestedChoiceList extends StatefulWidget {
   const NestedChoiceList({
     required this.items,
     this.selectedItems = const [],
+    this.showSelectedItems = true,
     this.enableSelectAll = true,
     this.selectAllLabel = 'Select all',
     this.showNavigationPath = false,
@@ -28,6 +29,7 @@ class NestedChoiceList extends StatefulWidget {
     super.key,
   });
 
+  final bool showSelectedItems;
   final String selectAllLabel;
   final bool enableSelectAll;
   final bool showNavigationPath;
@@ -162,7 +164,9 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                   pathes: navigationPathes,
                   onTap: _onNavigationPathTapped,
                 ),
-              if (widget.isMultiSelect && selectedItems.isNotEmpty)
+              if (widget.isMultiSelect &&
+                  widget.showSelectedItems &&
+                  selectedItems.isNotEmpty)
                 SeletedItemChipList(
                   selectedEntities: selectedItems,
                   onDeleted: (item) {
