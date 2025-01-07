@@ -1,3 +1,7 @@
+## 0.0.9
+
+* add "dense" property for styls
+
 ## 0.0.8
 
 * optimise styles
