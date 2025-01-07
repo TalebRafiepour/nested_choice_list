@@ -126,9 +126,8 @@ class _NestedListViewState extends State<NestedListView> {
           ),
           if (widget.enableSearch)
             SearchField(
-              inputDecoration: widget.searchfieldStyle.inputDecoration,
+              searchfieldStyle: widget.searchfieldStyle,
               searchDebouncer: widget.searchDebouncer,
-              margin: widget.searchfieldStyle.margin,
               onSearch: (filter) {
                 itemsToShow
                   ..clear()

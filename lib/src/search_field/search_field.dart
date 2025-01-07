@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:nested_choice_list/src/nested_list_style/nested_list_searchfield_style.dart';
 import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
 
 class SearchField extends StatefulWidget {
   const SearchField({
-    required this.inputDecoration,
     this.onSearch,
     this.searchDebouncer,
-    this.margin = const EdgeInsets.symmetric(
-      horizontal: 6,
-    ),
+    this.searchfieldStyle = const NestedListSearchfieldStyle(),
     super.key,
   });
 
-  final InputDecoration inputDecoration;
-  final EdgeInsets margin;
+  final NestedListSearchfieldStyle searchfieldStyle;
   final SearchDebouncer? searchDebouncer;
   final Function(String)? onSearch;
 
@@ -45,12 +42,14 @@ class _SearchFieldState extends State<SearchField> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: widget.margin.copyWith(
-          bottom:
-              MediaQuery.of(context).viewInsets.bottom + widget.margin.bottom,
+        padding: widget.searchfieldStyle.margin.copyWith(
+          bottom: MediaQuery.of(context).viewInsets.bottom +
+              widget.searchfieldStyle.margin.bottom,
         ),
         child: TextField(
-          decoration: widget.inputDecoration,
+          decoration: widget.searchfieldStyle.inputDecoration,
+          textAlign: widget.searchfieldStyle.textAlign,
+          style: widget.searchfieldStyle.textStyle,
           onChanged: (value) {
             searchDebouncer.run(() {
               widget.onSearch?.call(value);

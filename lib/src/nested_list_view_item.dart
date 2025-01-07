@@ -34,6 +34,7 @@ class NestedListViewItem extends StatelessWidget {
                 onChanged: (isSelected) {
                   onToggleSelection?.call(item);
                 },
+                dense: itemStyle.dense,
                 secondary: leading,
                 shape: itemStyle.shape,
                 tileColor: itemStyle.bgColor,
@@ -49,6 +50,7 @@ class NestedListViewItem extends StatelessWidget {
                 enabled: !item.isDisabled,
                 tileColor: itemStyle.bgColor,
                 leading: leading,
+                dense: itemStyle.dense,
                 title: Text(
                   item.label,
                   style: itemStyle.labelStyle ??

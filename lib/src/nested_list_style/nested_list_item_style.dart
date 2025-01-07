@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class NestedListItemStyle {
   const NestedListItemStyle({
     this.bgColor = Colors.white,
+    this.dense = true,
     this.shape = const RoundedRectangleBorder(
       side: BorderSide(
         color: Color.fromARGB(255, 189, 189, 189),
@@ -26,6 +27,7 @@ class NestedListItemStyle {
   final EdgeInsets listPadding;
   final EdgeInsets margin;
   final Color bgColor;
+  final bool dense;
 
   NestedListItemStyle copyWith({
     ShapeBorder? shape,
@@ -36,6 +38,7 @@ class NestedListItemStyle {
     EdgeInsets? searchFieldMargin,
     InputDecoration? searchInputDecoration,
     Color? bgColor,
+    bool? dense,
   }) {
     return NestedListItemStyle(
       shape: shape ?? this.shape,
@@ -44,6 +47,7 @@ class NestedListItemStyle {
       listPadding: listPadding ?? this.listPadding,
       margin: margin ?? this.margin,
       bgColor: bgColor ?? this.bgColor,
+      dense: dense ?? this.dense,
     );
   }
 }
