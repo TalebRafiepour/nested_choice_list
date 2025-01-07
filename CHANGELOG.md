@@ -1,3 +1,11 @@
+## 0.0.8
+
+* optimise styles
+* configure lints
+* enable show / hide for selected items in multi selection mode
+* remove grey background when focusing on search field
+* fix search field
+
 ## 0.0.7
 
 * support "select all" capability for selecting all items of list in multi select mode
