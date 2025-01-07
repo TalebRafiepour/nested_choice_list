@@ -1,16 +1,17 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class NestedChoiceEntity<T extends Object> {
   const NestedChoiceEntity({
     required this.value,
     required this.label,
     this.isDisabled = false,
-    this.group,
     this.children = const [],
   });
 
   final T value;
   final String label;
   final bool isDisabled;
-  final String? group;
   final List<NestedChoiceEntity<T>> children;
 
   void add(NestedChoiceEntity<T> child) {
@@ -29,14 +30,12 @@ class NestedChoiceEntity<T extends Object> {
     T? value,
     String? label,
     bool? isDisabled,
-    String? group,
     List<NestedChoiceEntity<T>>? children,
   }) {
     return NestedChoiceEntity<T>(
       value: value ?? this.value,
       label: label ?? this.label,
       isDisabled: isDisabled ?? this.isDisabled,
-      group: group ?? this.group,
       children: children ?? this.children,
     );
   }
@@ -54,7 +53,6 @@ class NestedChoiceEntity<T extends Object> {
   int get hashCode => Object.hash(
         label,
         value,
-        group,
         isDisabled,
         children,
       );
@@ -65,7 +63,6 @@ class NestedChoiceEntity<T extends Object> {
     return (other is NestedChoiceEntity) &&
         label == other.label &&
         value == other.value &&
-        group == other.group &&
         children == other.children;
   }
 }

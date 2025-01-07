@@ -3,9 +3,9 @@ import 'package:nested_choice_list/src/nested_choice_entity.dart';
 
 class InheritedNestedListView extends InheritedWidget {
   const InheritedNestedListView({
-    super.key,
     required super.child,
     required this.selectedItems,
+    super.key,
   });
 
   final Set<NestedChoiceEntity> selectedItems;

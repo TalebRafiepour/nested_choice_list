@@ -13,10 +13,10 @@ typedef ItemLeadingBuilder = Widget? Function(
   int index,
 );
 
-typedef OnSelectAllCallback = void Function(
-  bool isSelected,
-  List<NestedChoiceEntity> items,
-);
+typedef OnSelectAllCallback = void Function({
+  required bool isSelected,
+  required List<NestedChoiceEntity> items,
+});
 
 class NestedListView extends StatefulWidget {
   const NestedListView({
@@ -89,8 +89,8 @@ class _NestedListViewState extends State<NestedListView> {
               onToggleSelection: (_) {
                 isSelectedAll = !isSelectedAll;
                 widget.onSelectAllCallback.call(
-                  isSelectedAll,
-                  widget.items,
+                  isSelected: isSelectedAll,
+                  items: widget.items,
                 );
               },
             ),
@@ -130,14 +130,15 @@ class _NestedListViewState extends State<NestedListView> {
               searchDebouncer: widget.searchDebouncer,
               margin: widget.searchfieldStyle.margin,
               onSearch: (filter) {
-                itemsToShow.clear();
-                itemsToShow.addAll(
-                  widget.items.where(
-                    (element) => element.label.toLowerCase().contains(
-                          filter.toLowerCase(),
-                        ),
-                  ),
-                );
+                itemsToShow
+                  ..clear()
+                  ..addAll(
+                    widget.items.where(
+                      (element) => element.label.toLowerCase().contains(
+                            filter.toLowerCase(),
+                          ),
+                    ),
+                  );
                 setState(() {});
               },
             ),

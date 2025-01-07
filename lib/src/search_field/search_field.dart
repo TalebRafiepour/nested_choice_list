@@ -7,7 +7,6 @@ class SearchField extends StatefulWidget {
     this.onSearch,
     this.searchDebouncer,
     this.margin = const EdgeInsets.symmetric(
-      vertical: 0,
       horizontal: 6,
     ),
     super.key,

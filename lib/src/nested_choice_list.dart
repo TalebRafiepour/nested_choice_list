@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
 import 'package:nested_choice_list/src/breadcrumbs_path/breadcrumbs_path.dart';
+import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_searchfield_style.dart';
@@ -55,10 +55,10 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
       Set.from(widget.selectedItems);
   final _nestedNavKey = GlobalKey<NavigatorState>();
 
-  void _onSelectAllCallback(
-    bool isSelected,
-    List<NestedChoiceEntity> items,
-  ) {
+  void _onSelectAllCallback({
+    required bool isSelected,
+    required List<NestedChoiceEntity> items,
+  }) {
     if (isSelected) {
       for (var i = 0; i < items.length; i++) {
         if (!items[i].hasChildren) {
@@ -97,7 +97,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
     setState(() {});
   }
 
-  void _onTapItem(item, BuildContext ctx) {
+  void _onTapItem(NestedChoiceEntity item, BuildContext ctx) {
     if (item.hasChildren) {
       navigationPathes.add(item.label);
       setState(() {});

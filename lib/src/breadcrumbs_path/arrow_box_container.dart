@@ -15,19 +15,22 @@ class ArrowBoxContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (_, constraint) {
-      return ClipPath(
-        clipper: const ArrowClipper(),
-        child: GestureDetector(
-          onTap: onTap,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: constraint.minHeight / 3),
-            alignment: Alignment.center,
-            color: color,
-            child: child,
+    return LayoutBuilder(
+      builder: (_, constraint) {
+        return ClipPath(
+          clipper: const ArrowClipper(),
+          child: GestureDetector(
+            onTap: onTap,
+            child: Container(
+              padding:
+                  EdgeInsets.symmetric(horizontal: constraint.minHeight / 3),
+              alignment: Alignment.center,
+              color: color,
+              child: child,
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
