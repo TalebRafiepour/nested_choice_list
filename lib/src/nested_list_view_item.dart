@@ -42,7 +42,7 @@ class NestedListViewItem extends StatelessWidget {
                 title: Text(
                   item.label,
                   style: itemStyle.labelStyle ??
-                      Theme.of(context).textTheme.titleMedium,
+                      Theme.of(context).textTheme.titleSmall,
                 ),
               )
             : ListTile(
@@ -54,7 +54,7 @@ class NestedListViewItem extends StatelessWidget {
                 title: Text(
                   item.label,
                   style: itemStyle.labelStyle ??
-                      Theme.of(context).textTheme.titleMedium,
+                      Theme.of(context).textTheme.titleSmall,
                 ),
                 trailing: item.hasChildren ? itemStyle.trailingIcon : null,
                 onTap: () {

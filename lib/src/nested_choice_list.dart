@@ -7,6 +7,8 @@ import 'package:nested_choice_list/src/nested_list_view.dart';
 import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
 import 'package:nested_choice_list/src/selected_item_chip_list/seleted_item_chip_list.dart';
 
+typedef OnSelectionChange = void Function(List<NestedChoiceEntity> items);
+
 class NestedChoiceList extends StatefulWidget {
   const NestedChoiceList({
     required this.items,
@@ -21,6 +23,7 @@ class NestedChoiceList extends StatefulWidget {
     this.style = const NestedListStyle(),
     this.onTapItem,
     this.itemLeadingBuilder,
+    this.onSelectionChange,
     super.key,
   });
 
@@ -36,6 +39,7 @@ class NestedChoiceList extends StatefulWidget {
   final NestedListStyle style;
   final Function(NestedChoiceEntity)? onTapItem;
   final ItemLeadingBuilder? itemLeadingBuilder;
+  final OnSelectionChange? onSelectionChange;
 
   @override
   State<NestedChoiceList> createState() => _NestedChoiceListState();
@@ -63,6 +67,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
       }
     }
     setState(() {});
+    widget.onSelectionChange?.call(selectedItems.toList());
   }
 
   void _onPopInvokedWithResult(_, result) {
@@ -80,13 +85,13 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
   }
 
   void _onToggleSelection(NestedChoiceEntity item) {
-    widget.onTapItem?.call(item);
     if (selectedItems.contains(item)) {
       selectedItems.remove(item);
     } else {
       selectedItems.add(item);
     }
     setState(() {});
+    widget.onSelectionChange?.call(selectedItems.toList());
   }
 
   void _onTapItem(NestedChoiceEntity item, BuildContext ctx) {
@@ -163,8 +168,8 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                   selectedEntities: selectedItems,
                   onDeleted: (item) {
                     selectedItems.remove(item);
-                    widget.onTapItem?.call(item);
                     setState(() {});
+                    widget.onSelectionChange?.call(selectedItems.toList());
                   },
                 ),
               Expanded(

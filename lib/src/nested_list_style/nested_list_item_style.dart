@@ -7,6 +7,7 @@ class NestedListItemStyle {
     this.shape = const RoundedRectangleBorder(
       side: BorderSide(
         color: Color.fromARGB(255, 189, 189, 189),
+        width: 0.7,
       ),
       borderRadius: BorderRadius.all(
         Radius.circular(8),
