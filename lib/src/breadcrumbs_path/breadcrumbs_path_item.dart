@@ -22,6 +22,8 @@ class BreadcrumbsPathItem extends StatelessWidget {
         onTap: onTap,
         color: navigationPathItemStyle.color,
         padding: navigationPathItemStyle.padding,
+        borderColor: navigationPathItemStyle.borderColor,
+        borderWidth: navigationPathItemStyle.borderWidth,
         child: Text(
           lable,
           textAlign: TextAlign.center,
