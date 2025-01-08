@@ -15,6 +15,7 @@ class SingleSelectionExample extends StatelessWidget {
       ),
       body: NestedChoiceList(
         items: items,
+        showNavigationPath: true,
         onTapItem: (item) {
           debugPrint(item.toString());
           Navigator.pop(context);

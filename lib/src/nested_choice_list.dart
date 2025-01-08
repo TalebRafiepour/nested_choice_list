@@ -162,6 +162,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
             children: [
               if (widget.showNavigationPath && navigationPathes.isNotEmpty)
                 BreadcrumbsPath(
+                  navigationPathItemStyle: widget.style.navigationPathItemStyle,
                   pathes: navigationPathes,
                   onTap: _onNavigationPathTapped,
                 ),

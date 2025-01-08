@@ -4,33 +4,45 @@ import 'package:nested_choice_list/src/breadcrumbs_path/arrow_clipper.dart';
 class ArrowBoxContainer extends StatelessWidget {
   const ArrowBoxContainer({
     required this.child,
+    this.padding = EdgeInsets.zero,
     this.onTap,
     this.color = const Color.fromARGB(255, 213, 208, 208),
+    this.minHeight = 24,
+    this.minWidth = 48,
     super.key,
   });
 
   final Widget child;
   final Color color;
+  final EdgeInsets padding;
   final VoidCallback? onTap;
+  final double minHeight;
+  final double minWidth;
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (_, constraint) {
-        return ClipPath(
-          clipper: const ArrowClipper(),
-          child: GestureDetector(
-            onTap: onTap,
-            child: Container(
-              padding:
-                  EdgeInsets.symmetric(horizontal: constraint.minHeight / 3),
-              alignment: Alignment.center,
-              color: color,
-              child: child,
-            ),
+    return ClipPath(
+      clipper: const ArrowClipper(),
+      child: GestureDetector(
+        onTap: onTap,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: minHeight,
+            minWidth: minWidth,
           ),
-        );
-      },
+          child: Container(
+            padding: EdgeInsets.only(
+              left: minHeight / 3 + padding.left,
+              top: padding.top,
+              right: minHeight / 3 + padding.right,
+              bottom: padding.bottom,
+            ),
+            alignment: Alignment.center,
+            color: color,
+            child: child,
+          ),
+        ),
+      ),
     );
   }
 }

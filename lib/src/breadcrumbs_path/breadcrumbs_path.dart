@@ -2,17 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:nested_choice_list/src/breadcrumbs_path/breadcrumbs_path_item.dart';
+import 'package:nested_choice_list/src/nested_list_style/navigation_path_item_style.dart';
 
 class BreadcrumbsPath extends StatelessWidget {
   const BreadcrumbsPath({
     required this.pathes,
+    this.navigationPathItemStyle = const NavigationPathItemStyle(),
     this.onTap,
     super.key,
   });
 
   final List<String> pathes;
+  final NavigationPathItemStyle navigationPathItemStyle;
   final Function(int index)? onTap;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +26,22 @@ class BreadcrumbsPath extends StatelessWidget {
         curve: Curves.ease,
       );
     });
-    return SizedBox(
-      width: double.infinity,
-      height: 30,
-      child: ListView.builder(
-        controller: scrollController,
-        scrollDirection: Axis.horizontal,
-        itemCount: pathes.length,
-        shrinkWrap: true,
-        itemBuilder: (_, index) {
-          return BreadcrumbsPathItem(
-            lable: pathes[index],
-            onTap: () {
-              onTap?.call(index);
-            },
-          );
-        },
+    return SingleChildScrollView(
+      controller: scrollController,
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: List.generate(
+          pathes.length,
+          (index) {
+            return BreadcrumbsPathItem(
+              navigationPathItemStyle: navigationPathItemStyle,
+              lable: pathes[index],
+              onTap: () {
+                onTap?.call(index);
+              },
+            );
+          },
+        ),
       ),
     );
   }
