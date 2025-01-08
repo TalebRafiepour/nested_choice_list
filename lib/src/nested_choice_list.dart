@@ -5,6 +5,7 @@ import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_style.dart';
 import 'package:nested_choice_list/src/nested_list_view.dart';
 import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
+import 'package:nested_choice_list/src/search_field/searchfield_position.dart';
 import 'package:nested_choice_list/src/selected_item_chip_list/seleted_item_chip_list.dart';
 
 typedef OnSelectionChange = void Function(List<NestedChoiceEntity> items);
@@ -13,6 +14,7 @@ class NestedChoiceList extends StatefulWidget {
   const NestedChoiceList({
     required this.items,
     this.selectedItems = const [],
+    this.searchfieldPosition = SearchfieldPosition.bottom,
     this.showSelectedItems = true,
     this.enableSelectAll = true,
     this.selectAllLabel = 'Select all',
@@ -32,6 +34,7 @@ class NestedChoiceList extends StatefulWidget {
   final bool enableSelectAll;
   final bool showNavigationPath;
   final bool isMultiSelect;
+  final SearchfieldPosition searchfieldPosition;
   final List<NestedChoiceEntity> selectedItems;
   final List<NestedChoiceEntity> items;
   final bool enableSearch;
@@ -105,6 +108,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
               selectedItems: selectedItems,
               child: NestedListView(
                 items: item.children,
+                searchfieldPosition: widget.searchfieldPosition,
                 searchDebouncer: widget.searchDebouncer,
                 enableSearch: widget.enableSearch,
                 enableSelectAll: widget.enableSelectAll,
@@ -181,6 +185,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                         selectedItems: selectedItems,
                         child: NestedListView(
                           items: widget.items,
+                          searchfieldPosition: widget.searchfieldPosition,
                           enableSearch: widget.enableSearch,
                           searchDebouncer: widget.searchDebouncer,
                           enableSelectAll: widget.enableSelectAll,

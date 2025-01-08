@@ -1,0 +1,4 @@
+enum SearchfieldPosition {
+  top,
+  bottom,
+}

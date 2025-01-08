@@ -40,22 +40,17 @@ class _SearchFieldState extends State<SearchField> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: widget.searchfieldStyle.margin.copyWith(
-          bottom: MediaQuery.of(context).viewInsets.bottom +
-              widget.searchfieldStyle.margin.bottom,
-        ),
-        child: TextField(
-          decoration: widget.searchfieldStyle.inputDecoration,
-          textAlign: widget.searchfieldStyle.textAlign,
-          style: widget.searchfieldStyle.textStyle,
-          onChanged: (value) {
-            searchDebouncer.run(() {
-              widget.onSearch?.call(value);
-            });
-          },
-        ),
+    return Padding(
+      padding: widget.searchfieldStyle.margin,
+      child: TextField(
+        decoration: widget.searchfieldStyle.inputDecoration,
+        textAlign: widget.searchfieldStyle.textAlign,
+        style: widget.searchfieldStyle.textStyle,
+        onChanged: (value) {
+          searchDebouncer.run(() {
+            widget.onSearch?.call(value);
+          });
+        },
       ),
     );
   }
