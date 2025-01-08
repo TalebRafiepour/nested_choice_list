@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class NestedListItemStyle {
   const NestedListItemStyle({
+    this.visualDensity = const VisualDensity(
+      vertical: -1,
+    ),
     this.bgColor = Colors.white,
     this.dense = true,
     this.shape = const RoundedRectangleBorder(
@@ -22,6 +25,7 @@ class NestedListItemStyle {
     this.margin = const EdgeInsets.all(4),
   });
 
+  final VisualDensity visualDensity;
   final ShapeBorder? shape;
   final Icon? trailingIcon;
   final TextStyle? labelStyle;

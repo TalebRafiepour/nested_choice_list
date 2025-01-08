@@ -39,6 +39,7 @@ class NestedListViewItem extends StatelessWidget {
                 shape: itemStyle.shape,
                 tileColor: itemStyle.bgColor,
                 enabled: !item.isDisabled,
+                visualDensity: itemStyle.visualDensity,
                 title: Text(
                   item.label,
                   style: itemStyle.labelStyle ??
@@ -51,6 +52,7 @@ class NestedListViewItem extends StatelessWidget {
                 tileColor: itemStyle.bgColor,
                 leading: leading,
                 dense: itemStyle.dense,
+                visualDensity: itemStyle.visualDensity,
                 title: Text(
                   item.label,
                   style: itemStyle.labelStyle ??
