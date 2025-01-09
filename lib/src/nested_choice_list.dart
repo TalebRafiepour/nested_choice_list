@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nested_choice_list/src/breadcrumbs_path/breadcrumbs_path.dart';
 import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
+import 'package:nested_choice_list/src/navigation_path/navigation_path.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_style.dart';
 import 'package:nested_choice_list/src/nested_list_view.dart';
@@ -9,6 +9,7 @@ import 'package:nested_choice_list/src/search_field/searchfield_position.dart';
 import 'package:nested_choice_list/src/selected_item_chip_list/seleted_item_chip_list.dart';
 
 typedef OnSelectionChange = void Function(List<NestedChoiceEntity> items);
+typedef NestedListItemTap = void Function(NestedChoiceEntity item);
 
 class NestedChoiceList extends StatefulWidget {
   const NestedChoiceList({
@@ -19,7 +20,7 @@ class NestedChoiceList extends StatefulWidget {
     this.enableSelectAll = true,
     this.selectAllLabel = 'Select all',
     this.showNavigationPath = false,
-    this.isMultiSelect = false,
+    this.enableMultiSelect = false,
     this.enableSearch = false,
     this.searchDebouncer,
     this.style = const NestedListStyle(),
@@ -33,14 +34,14 @@ class NestedChoiceList extends StatefulWidget {
   final String selectAllLabel;
   final bool enableSelectAll;
   final bool showNavigationPath;
-  final bool isMultiSelect;
+  final bool enableMultiSelect;
   final SearchfieldPosition searchfieldPosition;
   final List<NestedChoiceEntity> selectedItems;
   final List<NestedChoiceEntity> items;
   final bool enableSearch;
   final SearchDebouncer? searchDebouncer;
   final NestedListStyle style;
-  final Function(NestedChoiceEntity)? onTapItem;
+  final NestedListItemTap? onTapItem;
   final ItemLeadingBuilder? itemLeadingBuilder;
   final OnSelectionChange? onSelectionChange;
 
@@ -113,7 +114,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                 enableSearch: widget.enableSearch,
                 enableSelectAll: widget.enableSelectAll,
                 selectAllLabel: widget.selectAllLabel,
-                isMultiSelect: widget.isMultiSelect,
+                enableMultiSelect: widget.enableMultiSelect,
                 itemLeadingBuilder: widget.itemLeadingBuilder,
                 onTapItem: _onTapItem,
                 searchfieldStyle: widget.style.searchfieldStyle,
@@ -127,7 +128,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
           },
         ),
       );
-    } else if (!widget.isMultiSelect) {
+    } else if (!widget.enableMultiSelect) {
       widget.onTapItem?.call(item);
     }
   }
@@ -161,12 +162,12 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (widget.showNavigationPath && navigationPathes.isNotEmpty)
-                BreadcrumbsPath(
+                NavigationPath(
                   navigationPathItemStyle: widget.style.navigationPathItemStyle,
                   pathes: navigationPathes,
                   onTap: _onNavigationPathTapped,
                 ),
-              if (widget.isMultiSelect &&
+              if (widget.enableMultiSelect &&
                   widget.showSelectedItems &&
                   selectedItems.isNotEmpty)
                 SeletedItemChipList(
@@ -190,7 +191,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                           enableSearch: widget.enableSearch,
                           searchDebouncer: widget.searchDebouncer,
                           enableSelectAll: widget.enableSelectAll,
-                          isMultiSelect: widget.isMultiSelect,
+                          enableMultiSelect: widget.enableMultiSelect,
                           selectAllLabel: widget.selectAllLabel,
                           searchfieldStyle: widget.style.searchfieldStyle,
                           itemStyle: widget.style.itemStyle,

@@ -31,7 +31,7 @@ class NestedListView extends StatefulWidget {
     this.onPopInvokedWithResult,
     this.searchDebouncer,
     this.enableSearch = false,
-    this.isMultiSelect = false,
+    this.enableMultiSelect = false,
     this.enableSelectAll = true,
     this.onTapItem,
     this.onToggleSelection,
@@ -42,7 +42,7 @@ class NestedListView extends StatefulWidget {
   final bool enableSearch;
   final String selectAllLabel;
   final bool enableSelectAll;
-  final bool isMultiSelect;
+  final bool enableMultiSelect;
   final List<NestedChoiceEntity> items;
   final SearchfieldPosition searchfieldPosition;
   final NestedListSearchfieldStyle searchfieldStyle;
@@ -100,7 +100,7 @@ class _NestedListViewState extends State<NestedListView> {
                 onSearch: _onSearch,
               ),
             if (widget.enableSelectAll &&
-                widget.isMultiSelect &&
+                widget.enableMultiSelect &&
                 hasAnySelectableChild)
               NestedListViewItem(
                 isMultiSelect: true,
@@ -135,7 +135,7 @@ class _NestedListViewState extends State<NestedListView> {
                         return NestedListViewItem(
                           item: item,
                           itemStyle: widget.itemStyle,
-                          isMultiSelect: widget.isMultiSelect,
+                          isMultiSelect: widget.enableMultiSelect,
                           isChecked: selectedItems.contains(item),
                           onTapItem: widget.onTapItem,
                           onToggleSelection: widget.onToggleSelection,

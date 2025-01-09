@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/selected_item_chip_list/selected_item_chip.dart';
@@ -13,13 +15,15 @@ class SeletedItemChipList extends StatelessWidget {
   final Function(NestedChoiceEntity)? onDeleted;
 
   void scrollToEndOfList(ScrollController scrollController) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.linear,
-      );
-    });
+    scheduleMicrotask(
+      () {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.linear,
+        );
+      },
+    );
   }
 
   @override

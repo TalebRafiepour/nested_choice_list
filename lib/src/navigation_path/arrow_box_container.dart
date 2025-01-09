@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nested_choice_list/src/breadcrumbs_path/arrow_border_painter.dart';
-import 'package:nested_choice_list/src/breadcrumbs_path/arrow_clipper.dart';
+import 'package:nested_choice_list/src/navigation_path/arrow_border_painter.dart';
+import 'package:nested_choice_list/src/navigation_path/arrow_clipper.dart';
 
 class ArrowBoxContainer extends StatelessWidget {
   const ArrowBoxContainer({

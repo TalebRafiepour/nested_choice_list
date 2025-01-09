@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:nested_choice_list/src/breadcrumbs_path/breadcrumbs_path_item.dart';
+import 'package:nested_choice_list/src/navigation_path/navigation_path_item.dart';
 import 'package:nested_choice_list/src/nested_list_style/navigation_path_item_style.dart';
 
-class BreadcrumbsPath extends StatelessWidget {
-  const BreadcrumbsPath({
+class NavigationPath extends StatelessWidget {
+  const NavigationPath({
     required this.pathes,
     this.navigationPathItemStyle = const NavigationPathItemStyle(),
     this.onTap,
@@ -33,7 +33,7 @@ class BreadcrumbsPath extends StatelessWidget {
         children: List.generate(
           pathes.length,
           (index) {
-            return BreadcrumbsPathItem(
+            return NavigationPathItem(
               navigationPathItemStyle: navigationPathItemStyle,
               lable: pathes[index],
               onTap: () {
