@@ -1,3 +1,7 @@
+## 0.2.1
+
+* update LICENSE file
+
 ## 0.2.0
 * update examples and README.md file
 * add style for SelectedItemChip widget
