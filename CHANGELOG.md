@@ -1,3 +1,11 @@
+## 0.2.0
+* update examples and README.md file
+* add style for SelectedItemChip widget
+* support border for navigation path item
+* add style for navigation path widget
+* decrease vertical padding of items
+* support search field position to be on the top or bottom
+
 ## 0.1.0
 
 * add "OnSelectionChange" callback to get selected items in multi select mode

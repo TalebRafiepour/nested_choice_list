@@ -20,7 +20,7 @@ import 'package:nested_choice_list/nested_choice_list.dart';
 
 ## NestedChoiceList Demo showcase
 
-### first initialize your items
+### First initialize your items
 
 ```dart
 final items = const [
@@ -79,7 +79,7 @@ final items = const [
   ];
 ```
 
-### then pass your items to the widget and use it
+### Then pass your items to the widget and use it
 
 ```dart
 NestedChoiceList(
