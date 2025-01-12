@@ -1,3 +1,8 @@
+## 0.2.2
+
+* update README.md file
+* provide better demo for showing features
+
 ## 0.2.1
 
 * update LICENSE file

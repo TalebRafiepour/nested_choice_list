@@ -1,6 +1,6 @@
 name: nested_choice_list
 description: "A flutter package for handling nested list item selection without limitation for the depth of the nested list."
-version: 0.2.1
+version: 0.2.2
 homepage: https://github.com/TalebRafiepour/nested_choice_list
 repository: https://github.com/TalebRafiepour/nested_choice_list
 issue_tracker: https://github.com/TalebRafiepour/nested_choice_list/issues
