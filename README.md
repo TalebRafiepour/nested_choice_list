@@ -1,4 +1,37 @@
-A flutter package for handling nested list item selection without limitation for the depth of the nested list.
+## NestedChoiceList
+[![Pub Version](https://img.shields.io/pub/v/nested_choice_list.svg?label=pub&color=blue)](https://pub.dev/packages/nested_choice_list/versions)
+[![GitHub Stars](https://img.shields.io/github/stars/TalebRafiepour/nested_choice_list?color=yellow&label=Stars)](https://github.com/TalebRafiepour/nested_choice_list/stargazers)
+[![GitHub opened issues](https://img.shields.io/github/issues/TalebRafiepour/nested_choice_list?color=red)](https://github.com/TalebRafiepour/nested_choice_list/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/TalebRafiepour/nested_choice_list)](https://github.com/TalebRafiepour/nested_choice_list/issues?q=is%3Aissue+is%3Aclosed)
+![GitHub License](https://img.shields.io/github/license/TalebRafiepour/nested_choice_list)
+
+A powerful Flutter package designed to simplify the selection of items from deeply nested lists. With its robust features, you can create intuitive and flexible user interfaces that enhance the user experience without the constraints of traditional list handling.
+
+## Features
+
+* Create a list widget with a nesting depth ranging from 0 to infinite.
+* Support single selection and multiple selection modes.
+* Display the navigation path of selections through the nested list.
+* Enable search filtering across every page of the nested list.
+* Show the selected items at the top of the page.
+* Allow selecting all items in multi-selection mode.
+* Provide a callback for single selection mode: `onTapItem`.
+* Offer a callback for multi-selection mode: `onSelectionChange`.
+* Include customizable styles via `NestedListStyle`.
+
+## Showcase
+### Single selection mode
+|         default         | showNavigationPath=true |    enableSearch=true    |
+|-------------------------|-------------------------|-------------------------|
+| ![single-select](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/single-select.gif?raw=true) | ![single-select-showNavigationPath](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/single-select-with-navigation-path.gif?raw=true) | ![single-select-enableSearch](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/single-select-with-search.gif?raw=true) |
+
+------------------------------------------------
+
+### Multiple selection mode
+|         default         |   enableSelectAll=true  |  showSelectedItem=true  |
+|-------------------------|-------------------------|-------------------------|
+| ![multi-select](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-select.gif?raw=true) | ![multi-select-with-select-all](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-select-with-select-all.gif?raw=true) | ![multi-select-with-show-selected-items](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-select-show-selected-item.gif?raw=true) |
+
 
 ## Installation
 
@@ -38,7 +71,7 @@ final items = const [
             NestedChoiceEntity(value: 'value3', label: 'label3 level 3'),
             NestedChoiceEntity(
               value: 'value4',
-              label: 'label4',
+              label: 'label4 level 3',
               children: [
                 NestedChoiceEntity(value: 'value2', label: 'label2 level 4'),
                 NestedChoiceEntity(value: 'value3', label: 'label3 level 4'),

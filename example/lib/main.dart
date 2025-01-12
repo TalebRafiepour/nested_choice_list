@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'NestedChoiceList Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -37,6 +38,10 @@ class _HomePageState extends State<HomePage> {
   bool enableMultiSelect = false;
   bool enableSearch = false;
 
+  //
+  NestedChoiceEntity? selectedItem;
+  List<NestedChoiceEntity>? selectedItems;
+
   final items = const [
     NestedChoiceEntity(
       value: 'value1',
@@ -52,7 +57,7 @@ class _HomePageState extends State<HomePage> {
             NestedChoiceEntity(value: 'value3', label: 'label3 level 3'),
             NestedChoiceEntity(
               value: 'value4',
-              label: 'label4',
+              label: 'label4 level 3',
               children: [
                 NestedChoiceEntity(value: 'value2', label: 'label2 level 4'),
                 NestedChoiceEntity(value: 'value3', label: 'label3 level 4'),
@@ -98,83 +103,127 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('NestedChoiceList'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CheckboxListTile.adaptive(
-              title: const Text('ShowNavigationPath'),
-              value: showNavigationPath,
-              onChanged: (newValue) {
-                setState(() {
-                  showNavigationPath = newValue ?? false;
-                });
-              },
-            ),
-            const Divider(),
-            CheckboxListTile.adaptive(
-              title: const Text('EnableMultiSelect'),
-              value: enableMultiSelect,
-              onChanged: (newValue) {
-                setState(() {
-                  enableMultiSelect = newValue ?? false;
-                });
-              },
-            ),
-            const Divider(),
-            CheckboxListTile.adaptive(
-              title: const Text('EnableSelectAll'),
-              value: enableSelectAll,
-              onChanged: (newValue) {
-                setState(() {
-                  enableSelectAll = newValue ?? false;
-                });
-              },
-            ),
-            const Divider(),
-            CheckboxListTile.adaptive(
-              title: const Text('ShowSelectedItems'),
-              value: showSelectedItems,
-              onChanged: (newValue) {
-                setState(() {
-                  showSelectedItems = newValue ?? false;
-                });
-              },
-            ),
-            const Divider(),
-            CheckboxListTile.adaptive(
-              title: const Text('EnableSearch'),
-              value: enableSearch,
-              onChanged: (newValue) {
-                setState(() {
-                  enableSearch = newValue ?? false;
-                });
-              },
-            ),
-            const Divider(),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => DemoOfNestedChoiceList(
-                      items: items,
-                      showSelectedItems: showSelectedItems,
-                      enableSelectAll: enableSelectAll,
-                      showNavigationPath: showNavigationPath,
-                      enableMultiSelect: enableMultiSelect,
-                      enableSearch: enableSearch,
-                    ),
-                  ),
-                );
-              },
-              child: const Text(
-                'Show Demo',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CheckboxListTile.adaptive(
+                title: const Text('ShowNavigationPath'),
+                value: showNavigationPath,
+                onChanged: (newValue) {
+                  setState(() {
+                    showNavigationPath = newValue ?? false;
+                  });
+                },
               ),
-            ),
-          ],
+              const Divider(),
+              CheckboxListTile.adaptive(
+                title: const Text('EnableMultiSelect'),
+                value: enableMultiSelect,
+                onChanged: (newValue) {
+                  setState(() {
+                    enableMultiSelect = newValue ?? false;
+                  });
+                },
+              ),
+              const Divider(),
+              CheckboxListTile.adaptive(
+                title: const Text('EnableSelectAll'),
+                value: enableSelectAll,
+                onChanged: (newValue) {
+                  setState(() {
+                    enableSelectAll = newValue ?? false;
+                  });
+                },
+              ),
+              const Divider(),
+              CheckboxListTile.adaptive(
+                title: const Text('ShowSelectedItems'),
+                value: showSelectedItems,
+                onChanged: (newValue) {
+                  setState(() {
+                    showSelectedItems = newValue ?? false;
+                  });
+                },
+              ),
+              const Divider(),
+              CheckboxListTile.adaptive(
+                title: const Text('EnableSearch'),
+                value: enableSearch,
+                onChanged: (newValue) {
+                  setState(() {
+                    enableSearch = newValue ?? false;
+                  });
+                },
+              ),
+              const Divider(),
+              ElevatedButton(
+                onPressed: () async {
+                  final result = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => DemoOfNestedChoiceList(
+                        items: items,
+                        showSelectedItems: showSelectedItems,
+                        enableSelectAll: enableSelectAll,
+                        showNavigationPath: showNavigationPath,
+                        enableMultiSelect: enableMultiSelect,
+                        enableSearch: enableSearch,
+                      ),
+                    ),
+                  );
+                  if (result is NestedChoiceEntity) {
+                    setState(() {
+                      selectedItem = result;
+                      selectedItems = null;
+                    });
+                  } else if (result is List<NestedChoiceEntity>) {
+                    setState(() {
+                      selectedItem = null;
+                      selectedItems = result;
+                    });
+                  }
+                },
+                child: const Text(
+                  'Show Demo',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const Divider(),
+              const Text(
+                  '⇩ Result ⇩',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              const SizedBox(
+                height: 20,
+              ),
+              if (selectedItem != null)
+                Text(
+                  'onTapItem: ${selectedItem!.label}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orange,
+                  ),
+                ),
+              if (selectedItems != null)
+                Text(
+                  'onSelectionChange: $selectedItems',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orange,
+                  ),
+                )
+            ],
+          ),
         ),
       ),
     );
