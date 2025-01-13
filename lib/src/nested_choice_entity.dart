@@ -1,5 +1,19 @@
 import 'package:flutter/foundation.dart';
 
+/// A class representing a nested choice entity.
+///
+/// This class is used to define an entity that can be used 
+/// in a nested choice list.
+/// It is generic and can work with any type that extends `Object`.
+///
+/// Type Parameters:
+/// - `T`: The type of the entity, which must extend `Object`.
+///
+/// Example:
+/// ```dart
+/// NestedChoiceEntity<String> entity =
+/// NestedChoiceEntity<String>(value: 'value', lable: 'label');
+/// ```
 @immutable
 class NestedChoiceEntity<T extends Object> {
   const NestedChoiceEntity({
@@ -9,23 +23,70 @@ class NestedChoiceEntity<T extends Object> {
     this.children = const [],
   });
 
+  /// The value associated with this entity.
+  ///
+  /// This is a generic type [T] which allows the entity to hold any
+  /// type of value.
   final T value;
+
+  /// The label associated with this nested choice entity.
   final String label;
+
+  /// Indicates whether the choice is disabled.
+  ///
+  /// When set to `true`, the choice is not selectable or interactable.
   final bool isDisabled;
+
+  /// A list of child entities of type `NestedChoiceEntity<T>`.
+  ///
+  /// This list represents the nested structure of choices, where each
+  /// `NestedChoiceEntity` can have its own children, forming a tree-like
+  /// hierarchy.
   final List<NestedChoiceEntity<T>> children;
 
+  /// Adds a child [NestedChoiceEntity] to the list of children.
+  ///
+  /// The [child] parameter is the entity to be added to the children list.
+  ///
+  /// Example:
+  /// ```dart
+  /// var parent = NestedChoiceEntity<String>();
+  /// var child = NestedChoiceEntity<String>();
+  /// parent.add(child);
+  /// ```
   void add(NestedChoiceEntity<T> child) {
     children.add(child);
   }
 
+  /// Adds all the given [children] to the current list of children.
+  ///
+  /// This method takes an [Iterable] of [NestedChoiceEntity] objects and adds
+  /// them to the existing list of children.
+  ///
+  /// - Parameter children: An iterable collection of [NestedChoiceEntity]
+  ///   objects to be added to the current list of children.
   void addAll(Iterable<NestedChoiceEntity<T>> children) {
     this.children.addAll(
           children,
         );
   }
 
+  /// Checks if the current entity has any children.
+  ///
+  /// Returns `true` if the `children` list is not empty, otherwise `false`.
   bool get hasChildren => children.isNotEmpty;
 
+  /// Creates a copy of this `NestedChoiceEntity` with the given fields replaced
+  /// by new values.
+  ///
+  /// If a field is not provided, the current value of that field will be used.
+  ///
+  /// - `value`: The new value for the `value` field.
+  /// - `label`: The new value for the `label` field.
+  /// - `isDisabled`: The new value for the `isDisabled` field.
+  /// - `children`: The new value for the `children` field.
+  ///
+  /// Returns a new `NestedChoiceEntity` instance with the updated values.
   NestedChoiceEntity<T> copyWith({
     T? value,
     String? label,
@@ -49,6 +110,12 @@ class NestedChoiceEntity<T extends Object> {
     }
   }
 
+  /// Overrides the `hashCode` getter to provide a hash code for the
+  /// `NestedChoiceEntity` object based on its `label`, `value`,
+  /// `isDisabled`, and `children` properties.
+  ///
+  /// This implementation uses the `Object.hash` method to combine
+  /// the hash codes of these properties into a single hash code.
   @override
   int get hashCode => Object.hash(
         label,
@@ -57,6 +124,13 @@ class NestedChoiceEntity<T extends Object> {
         children,
       );
 
+  /// Compares this instance with another object.
+  ///
+  /// Returns `true` if the other object is identical to this instance, or if
+  /// the other object is a [NestedChoiceEntity] with the same [label], [value],
+  /// and [children].
+  ///
+  /// The comparison is performed using the `==` operator for each field.
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

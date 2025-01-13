@@ -1,8 +1,11 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
+/// A custom clipper that creates an arrow-shaped path.
+///
+/// The [ArrowClipper] class is used to clip a widget into an arrow shape.
 class ArrowClipper extends CustomClipper<Path> {
+  /// Creates an [ArrowClipper] instance.
   const ArrowClipper();
 
   @override

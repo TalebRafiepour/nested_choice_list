@@ -1,14 +1,24 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
+/// A custom painter that draws a border around an arrow-shaped path.
+///
+/// The [ArrowBorderPainter] class is used to paint a border around a widget
+/// that has been clipped into an arrow shape.
 class ArrowBorderPainter extends CustomPainter {
+  /// Creates an [ArrowBorderPainter] instance.
+  ///
+  /// The [borderColor] and [borderWidth] parameters allow customization of
+  /// the border's color and width.
   const ArrowBorderPainter({
     this.borderColor = Colors.white,
     this.borderWidth = 1,
   });
 
+  /// The color of the border.
   final Color borderColor;
+
+  /// The width of the border.
   final double borderWidth;
 
   @override

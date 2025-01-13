@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// A class that defines the style for a `SelectedItemChip`.
+/// 
+/// The [SelectedItemChipStyle] class allows customization of various aspects
+/// of the chip, including padding, margin, label style, delete icon, elevation,
+/// color, and material tap target size.
 class SelectedItemChipStyle {
+  /// Creates a [SelectedItemChipStyle] with the given parameters.
   const SelectedItemChipStyle({
     this.labelStyle,
     this.padding = const EdgeInsets.all(4),
@@ -15,14 +21,29 @@ class SelectedItemChipStyle {
     this.materialTapTargetSize = MaterialTapTargetSize.shrinkWrap,
   });
 
+  /// The style to be applied to the label text inside the chip.
   final TextStyle? labelStyle;
+
+  /// The padding inside the chip.
   final EdgeInsets padding;
+
+  /// The margin outside the chip.
   final EdgeInsets margin;
+
+  /// The icon to be used for the delete action.
   final Widget deleteIcon;
+
+  /// The elevation of the chip.
   final double elevation;
+
+  /// The color of the chip.
   final WidgetStateProperty<Color>? color;
+
+  /// The material tap target size of the chip.
   final MaterialTapTargetSize materialTapTargetSize;
 
+  /// Creates a copy of this [SelectedItemChipStyle] but with the given fields
+  /// replaced with the new values.
   SelectedItemChipStyle copyWith({
     TextStyle? labelStyle,
     EdgeInsets? padding,

@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.dart';
 
+/// A widget that displays an item in a nested list view.
+///
+/// The [NestedListViewItem] widget can display an item as either a [ListTile]
+/// or a [CheckboxListTile] depending on the [isMultiSelect] flag. It supports
+/// various customization options through the [itemStyle] parameter.
 class NestedListViewItem extends StatelessWidget {
+  /// Creates a [NestedListViewItem] widget.
+  ///
+  /// The [item] parameter must not be null.
   const NestedListViewItem({
     required this.item,
     this.itemStyle = const NestedListItemStyle(),
@@ -14,12 +22,25 @@ class NestedListViewItem extends StatelessWidget {
     super.key,
   });
 
+  /// The style to be applied to the list item.
   final NestedListItemStyle itemStyle;
+
+  /// Whether the item supports multi-selection.
   final bool isMultiSelect;
+
+  /// The item to be displayed.
   final NestedChoiceEntity item;
+
+  /// Whether the item is checked (for multi-selection).
   final bool isChecked;
+
+  /// Callback function to be called when the item is tapped.
   final Function(NestedChoiceEntity, BuildContext)? onTapItem;
+
+  /// Callback function to be called when the item's selection is toggled.
   final Function(NestedChoiceEntity)? onToggleSelection;
+
+  /// The widget to be displayed at the leading position of the list item.
   final Widget? leading;
 
   @override

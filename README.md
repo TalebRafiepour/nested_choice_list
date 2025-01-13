@@ -1,4 +1,4 @@
-## NestedChoiceList
+# NestedChoiceList
 [![Pub Version](https://img.shields.io/pub/v/nested_choice_list.svg?label=pub&color=blue)](https://pub.dev/packages/nested_choice_list/versions)
 [![GitHub Stars](https://img.shields.io/github/stars/TalebRafiepour/nested_choice_list?color=yellow&label=Stars)](https://github.com/TalebRafiepour/nested_choice_list/stargazers)
 [![GitHub opened issues](https://img.shields.io/github/issues/TalebRafiepour/nested_choice_list?color=red)](https://github.com/TalebRafiepour/nested_choice_list/issues)
@@ -51,9 +51,7 @@ To use NestedChoiceList in your Flutter app, first import the package:
 import 'package:nested_choice_list/nested_choice_list.dart';
 ```
 
-## NestedChoiceList Demo showcase
-
-### First initialize your items
+### Initialize your items
 
 ```dart
 final items = const [
