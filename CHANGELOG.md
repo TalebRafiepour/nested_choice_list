@@ -1,3 +1,7 @@
+## 0.3.2
+
+* update all files with documention to be more clear for contributers
+
 ## 0.2.2
 
 * update README.md file
