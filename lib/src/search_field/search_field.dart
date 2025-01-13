@@ -62,22 +62,25 @@ class _SearchFieldState extends State<SearchField> {
     return Padding(
       /// Applies the margin specified in the search field style.
       padding: widget.searchfieldStyle.margin,
-      child: TextField(
-        /// Applies the input decoration specified in the search field style.
-        decoration: widget.searchfieldStyle.inputDecoration,
-
-        /// Applies the text alignment specified in the search field style.
-        textAlign: widget.searchfieldStyle.textAlign,
-
-        /// Applies the text style specified in the search field style.
-        style: widget.searchfieldStyle.textStyle,
-
-        /// Handles changes to the search input and debounces the input changes.
-        onChanged: (value) {
-          searchDebouncer.run(() {
-            widget.onSearch?.call(value);
-          });
-        },
+      child: Material(
+        child: TextField(
+          /// Applies the input decoration specified in the search field style.
+          decoration: widget.searchfieldStyle.inputDecoration,
+        
+          /// Applies the text alignment specified in the search field style.
+          textAlign: widget.searchfieldStyle.textAlign,
+        
+          /// Applies the text style specified in the search field style.
+          style: widget.searchfieldStyle.textStyle,
+        
+          /// Handles changes to the search input and debounces 
+          /// the input changes.
+          onChanged: (value) {
+            searchDebouncer.run(() {
+              widget.onSearch?.call(value);
+            });
+          },
+        ),
       ),
     );
   }

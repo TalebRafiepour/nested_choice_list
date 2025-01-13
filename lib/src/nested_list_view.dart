@@ -48,7 +48,7 @@ class NestedListView extends StatefulWidget {
   /// The [items] and [onSelectAllCallback] parameters must not be null.
   const NestedListView({
     required this.items,
-    required this.onSelectAllCallback,
+    this.onSelectAllCallback,
     this.selectAllLabel = 'Select all',
     this.searchfieldPosition = SearchfieldPosition.bottom,
     this.searchfieldStyle = const NestedListSearchfieldStyle(),
@@ -108,7 +108,7 @@ class NestedListView extends StatefulWidget {
   final ItemLeadingBuilder? itemLeadingBuilder;
 
   /// Callback function to be called when the select-all item is toggled.
-  final OnSelectAllCallback onSelectAllCallback;
+  final OnSelectAllCallback? onSelectAllCallback;
 
   @override
   State<NestedListView> createState() => _NestedListViewState();
@@ -183,7 +183,7 @@ class _NestedListViewState extends State<NestedListView> {
                 ),
                 onToggleSelection: (_) {
                   isSelectedAll = !isSelectedAll;
-                  widget.onSelectAllCallback.call(
+                  widget.onSelectAllCallback?.call(
                     isSelected: isSelectedAll,
                     items: widget.items,
                   );

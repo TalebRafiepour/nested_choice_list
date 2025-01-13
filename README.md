@@ -21,14 +21,14 @@ A powerful Flutter package designed to simplify the selection of items from deep
 
 ## Showcase
 ### Single selection mode
-|         default         | showNavigationPath=true |    enableSearch=true    |
+| default single selection| showNavigationPath=true |    enableSearch=true    |
 |-------------------------|-------------------------|-------------------------|
 | ![single-select](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/single-select.gif?raw=true) | ![single-select-showNavigationPath](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/single-select-with-navigation-path.gif?raw=true) | ![single-select-enableSearch](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/single-select-with-search.gif?raw=true) |
 
 ------------------------------------------------
 
 ### Multiple selection mode
-|         default         |   enableSelectAll=true  |  showSelectedItem=true  |
+| default multi selection |   enableSelectAll=true  |  showSelectedItem=true  |
 |-------------------------|-------------------------|-------------------------|
 | ![multi-select](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-select.gif?raw=true) | ![multi-select-with-select-all](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-select-with-select-all.gif?raw=true) | ![multi-select-with-show-selected-items](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-select-show-selected-item.gif?raw=true) |
 
