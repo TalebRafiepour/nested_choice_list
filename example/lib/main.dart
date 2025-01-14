@@ -194,13 +194,13 @@ class _HomePageState extends State<HomePage> {
               ),
               const Divider(),
               const Text(
-                  '⇩ Result ⇩',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                '⇩ Result ⇩',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
+              ),
               const SizedBox(
                 height: 20,
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// A class that defines the style for a `SelectedItemChip`.
-/// 
+///
 /// The [SelectedItemChipStyle] class allows customization of various aspects
 /// of the chip, including padding, margin, label style, delete icon, elevation,
 /// color, and material tap target size.

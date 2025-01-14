@@ -11,9 +11,9 @@ import 'dart:ui';
 class SearchDebouncer {
   SearchDebouncer({required this.duration});
 
-  /// The duration for which the debouncer will wait before 
+  /// The duration for which the debouncer will wait before
   /// executing the search.
-  /// This helps in reducing the number of search operations by waiting for the 
+  /// This helps in reducing the number of search operations by waiting for the
   /// user to stop typing for the specified duration.
   final Duration duration;
 

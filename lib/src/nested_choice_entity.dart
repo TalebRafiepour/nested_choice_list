@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 /// A class representing a nested choice entity.
 ///
-/// This class is used to define an entity that can be used 
+/// This class is used to define an entity that can be used
 /// in a nested choice list.
 /// It is generic and can work with any type that extends `Object`.
 ///
