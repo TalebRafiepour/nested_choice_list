@@ -1,3 +1,8 @@
+## 0.3.3
+
+* write unit test for NestedListView widget
+* format code
+
 ## 0.3.2
 
 * update all files with documention to be more clear for contributers

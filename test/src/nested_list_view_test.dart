@@ -112,7 +112,6 @@ void main() {
             itemLeadingBuilder: (context, item, index) {
               return const Icon(Icons.star);
             },
-            onSelectAllCallback: ({required isSelected, required items}) {},
           ),
         ),
       );
