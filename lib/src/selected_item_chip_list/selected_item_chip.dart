@@ -40,6 +40,7 @@ class SelectedItemChip extends StatelessWidget {
         materialTapTargetSize: selecteItemChipStyle.materialTapTargetSize,
         deleteIcon: selecteItemChipStyle.deleteIcon,
         onDeleted: onDeleted,
+        labelStyle: selecteItemChipStyle.labelStyle,
         label: Text(
           title,
           style: selecteItemChipStyle.labelStyle ??

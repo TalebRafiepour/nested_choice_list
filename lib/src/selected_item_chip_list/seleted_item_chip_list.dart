@@ -46,20 +46,22 @@ class SeletedItemChipList extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
     scrollToEndOfList(scrollController);
-    return SingleChildScrollView(
-      controller: scrollController,
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: selectedEntities
-            .map(
-              (e) => SelectedItemChip(
-                title: e.label,
-                onDeleted: () {
-                  onDeleted?.call(e);
-                },
-              ),
-            )
-            .toList(),
+    return Material(
+      child: SingleChildScrollView(
+        controller: scrollController,
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: selectedEntities
+              .map(
+                (e) => SelectedItemChip(
+                  title: e.label,
+                  onDeleted: () {
+                    onDeleted?.call(e);
+                  },
+                ),
+              )
+              .toList(),
+        ),
       ),
     );
   }
