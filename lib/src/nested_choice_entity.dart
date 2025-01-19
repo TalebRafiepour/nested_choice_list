@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 /// A class representing a nested choice entity.
@@ -159,11 +161,7 @@ class NestedChoiceEntity<T extends Object> {
 
   @override
   String toString() {
-    if (hasChildren) {
-      return '{$label : [${children.map((e) => e.toString()).join(', ')}],}';
-    } else {
-      return '{$label}';
-    }
+    return jsonEncode(toJson());
   }
 
   /// Overrides the `hashCode` getter to provide a hash code for the

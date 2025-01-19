@@ -51,7 +51,7 @@ To use NestedChoiceList in your Flutter app, first import the package:
 import 'package:nested_choice_list/nested_choice_list.dart';
 ```
 
-### Initialize your items
+### Initialize your items using NestedChoiceEntity class
 
 ```dart
 final items = const [
@@ -108,6 +108,116 @@ final items = const [
     ),
     NestedChoiceEntity(value: 'value4', label: 'label4 level1'),
   ];
+```
+
+### Or Initialize your items using Json map
+
+```
+final jsonMap = const [
+    {
+      'value': 'value1',
+      'label': 'label1 level1',
+      'isDisabled': false,
+      'children': [
+        {
+          'value': 'value2',
+          'label': 'label2 level 2',
+        },
+        {
+          'value': 'value3',
+          'label': 'label3 level 2',
+        },
+        {
+          'value': 'value4',
+          'label': 'label4 level 2',
+          'children': [
+            {
+              'value': 'value2',
+              'label': 'label2 level 3',
+            },
+            {
+              'value': 'value3',
+              'label': 'label3 level 3',
+            },
+            {
+              'value': 'value4',
+              'label': 'label4 level 3',
+              'children': [
+                {
+                  'value': 'value2',
+                  'label': 'label2 level 4',
+                },
+                {
+                  'value': 'value3',
+                  'label': 'label3 level 4',
+                },
+                {
+                  'value': 'value4',
+                  'label': 'label4 level 4',
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      'value': 'value2',
+      'label': 'label2 level1',
+      'children': [
+        {
+          'value': 'value2',
+          'label': 'label2 level 2',
+        },
+        {
+          'value': 'value3',
+          'label': 'label3 level 2',
+        },
+        {
+          'value': 'value4',
+          'label': 'label4 level 2',
+          'children': [
+            {
+              'value': 'value2',
+              'label': 'label2 level 3',
+            },
+            {
+              'value': 'value3',
+              'label': 'label3 level 3',
+            },
+            {
+              'value': 'value4',
+              'label': 'label4 level 3',
+            }
+          ]
+        }
+      ]
+    },
+    {
+      'value': 'value3',
+      'label': 'label3 level1',
+      'children': [
+        {
+          'value': 'value2',
+          'label': 'label2 level 2',
+        },
+        {
+          'value': 'value3',
+          'label': 'label3 level 2',
+        },
+        {
+          'value': 'value4',
+          'label': 'label4 level 2',
+        }
+      ]
+    },
+    {
+      'value': 'value4',
+      'label': 'label4 level1',
+    }
+  ];
+
+final items = jsonMap.map((e) => NestedChoiceEntity.fromJson(e)).toList();
 ```
 
 ### Then pass your items to the widget and use it
