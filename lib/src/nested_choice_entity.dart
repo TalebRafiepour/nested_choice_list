@@ -12,7 +12,7 @@ import 'package:flutter/foundation.dart';
 /// Example:
 /// ```dart
 /// NestedChoiceEntity<String> entity =
-/// NestedChoiceEntity<String>(value: 'value', lable: 'label');
+/// NestedChoiceEntity<String>(value: 'value', label: 'label');
 /// ```
 @immutable
 class NestedChoiceEntity<T extends Object> {
@@ -50,12 +50,18 @@ class NestedChoiceEntity<T extends Object> {
   ///
   /// Example:
   /// ```dart
-  /// var parent = NestedChoiceEntity<String>();
-  /// var child = NestedChoiceEntity<String>();
-  /// parent.add(child);
+  /// const parent =
+  ///      NestedChoiceEntity<String>(value: 'parent', label: 'Parent');
+  /// const child =
+  ///        NestedChoiceEntity<String>(value: 'child', label: 'Child');
+  ///
+  /// final updatedParent = parent.add(child);
   /// ```
-  void add(NestedChoiceEntity<T> child) {
-    children.add(child);
+  NestedChoiceEntity<T> add(NestedChoiceEntity<T> child) {
+    //becuase of immutability, we need to create a new instance of the entity
+    return copyWith(
+      children: [...children, child],
+    );
   }
 
   /// Adds all the given [children] to the current list of children.
@@ -65,10 +71,11 @@ class NestedChoiceEntity<T extends Object> {
   ///
   /// - Parameter children: An iterable collection of [NestedChoiceEntity]
   ///   objects to be added to the current list of children.
-  void addAll(Iterable<NestedChoiceEntity<T>> children) {
-    this.children.addAll(
-          children,
-        );
+  NestedChoiceEntity<T> addAll(Iterable<NestedChoiceEntity<T>> children) {
+    //becuase of immutability, we need to create a new instance of the entity
+    return copyWith(
+      children: [...this.children, ...children],
+    );
   }
 
   /// Checks if the current entity has any children.
