@@ -23,6 +23,36 @@ class NestedChoiceEntity<T extends Object> {
     this.children = const [],
   });
 
+  /// Creates a new instance of [NestedChoiceEntity] from a JSON map.
+  ///
+  /// The [json] parameter is a map containing the key-value pairs that
+  /// represent the properties of the [NestedChoiceEntity].
+  ///
+  /// The `value` field is extracted from the JSON map and cast to type [T].
+  /// The `label` field is extracted as a [String].
+  /// The `isDisabled` field is extracted as a [bool], defaulting to `false`
+  /// if not present.
+  /// The `children` field is extracted as a list of dynamic objects, which
+  /// are then mapped to a list of [NestedChoiceEntity] instances. If the
+  /// `children` field is not present, an empty list is used.
+  ///
+  /// Returns a new instance of [NestedChoiceEntity] populated with the
+  /// values from the JSON map.
+  factory NestedChoiceEntity.fromJson(Map<String, dynamic> json) {
+    return NestedChoiceEntity<T>(
+      value: json['value'] as T,
+      label: json['label'] as String,
+      isDisabled: json['isDisabled'] as bool? ?? false,
+      children: (json['children'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    NestedChoiceEntity<T>.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          [],
+    );
+  }
+
   /// The value associated with this entity.
   ///
   /// This is a generic type [T] which allows the entity to hold any
@@ -106,6 +136,25 @@ class NestedChoiceEntity<T extends Object> {
       isDisabled: isDisabled ?? this.isDisabled,
       children: children ?? this.children,
     );
+  }
+
+  /// Converts the `NestedChoiceEntity` instance to a JSON map.
+  ///
+  /// The returned map contains the following keys:
+  /// - `value`: The value of the entity.
+  /// - `label`: The label of the entity.
+  /// - `isDisabled`: A boolean indicating if the entity is disabled.
+  /// - `children`: A list of child entities, each converted to a JSON map.
+  ///
+  /// Returns a `Map<String, dynamic>` representing the JSON structure
+  /// of the entity.
+  Map<String, dynamic> toJson() {
+    return {
+      'value': value,
+      'label': label,
+      'isDisabled': isDisabled,
+      'children': children.map((e) => e.toJson()).toList(),
+    };
   }
 
   @override

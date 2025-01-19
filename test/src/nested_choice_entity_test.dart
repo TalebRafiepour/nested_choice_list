@@ -77,4 +77,50 @@ void main() {
       expect(entity1 == entity2, isFalse);
     });
   });
+
+  test('fromJson creates an instance from JSON', () {
+    final json = {
+      'value': '1',
+      'label': 'Item 1',
+      'isDisabled': false,
+      'children': [
+        {
+          'value': '2',
+          'label': 'Child 1',
+          'isDisabled': false,
+          'children': [],
+        },
+      ],
+    };
+    final entity = NestedChoiceEntity<String>.fromJson(json);
+    expect(entity.value, '1');
+    expect(entity.label, 'Item 1');
+    expect(entity.isDisabled, false);
+    expect(entity.children.length, 1);
+    expect(entity.children.first.value, '2');
+    expect(entity.children.first.label, 'Child 1');
+  });
+
+  test('toJson converts an instance to JSON', () {
+    const entity = NestedChoiceEntity(
+      value: '1',
+      label: 'Item 1',
+      children: [
+        NestedChoiceEntity(value: '2', label: 'Child 1'),
+      ],
+    );
+    final json = entity.toJson();
+    expect(json['value'], '1');
+    expect(json['label'], 'Item 1');
+    expect(json['isDisabled'], false);
+    expect((json['children'] as List<Map<String, dynamic>>).length, 1);
+    expect(
+      (json['children'] as List<Map<String, dynamic>>)[0]['value'],
+      '2',
+    );
+    expect(
+      (json['children'] as List<Map<String, dynamic>>)[0]['label'],
+      'Child 1',
+    );
+  });
 }
