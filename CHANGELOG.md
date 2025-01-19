@@ -1,75 +1,81 @@
+## 0.4.0
+
+* Develop unit tests for models and classes.
+* Create widget tests for widgets.
+* Resolve the bug in the `add` function of the `NestedChoiceEntity`.
+
 ## 0.3.3
 
-* write unit test for NestedListView widget
-* format code
+* Write unit test for `NestedListView` widget.
+* Format code.
 
 ## 0.3.2
 
-* update all files with documention to be more clear for contributers
+* Update all files with documention to be more clear for contributers.
 
 ## 0.2.2
 
-* update README.md file
-* provide better demo for showing features
+* Update `README.md` file.
+* Provide better demo for showing features.
 
 ## 0.2.1
 
-* update LICENSE file
+* Update `LICENSE` file.
 
 ## 0.2.0
-* update examples and README.md file
-* add style for SelectedItemChip widget
-* support border for navigation path item
-* add style for navigation path widget
-* decrease vertical padding of items
-* support search field position to be on the top or bottom
+* Update examples and README.md file.
+* Add style for SelectedItemChip widget.
+* Support border for navigation path item.
+* Add style for navigation path widget.
+* Decrease vertical padding of items.
+* Support search field position to be on the top or bottom.
 
 ## 0.1.0
 
-* add "OnSelectionChange" callback to get selected items in multi select mode
+* Add `OnSelectionChange` callback to get selected items in multi select mode.
 
 ## 0.0.9
 
-* add "dense" property for styls
+* Add `dense` property for styls.
 
 ## 0.0.8
 
-* optimise styles
-* configure lints
-* enable show / hide for selected items in multi selection mode
-* remove grey background when focusing on search field
-* fix search field
+* Optimise styles.
+* Configure lints.
+* Enable show / hide for selected items in multi selection mode.
+* Remove grey background when focusing on search field.
+* Fix search field.
 
 ## 0.0.7
 
-* support "select all" capability for selecting all items of list in multi select mode
-* support leading widget for item of list
-* remove default inner padding of widget
-* remove ripple effect of on tap in base widget
+* Support `select all` capability for selecting all items of list in multi select mode.
+* Support leading widget for item of list.
+* Remove default inner padding of widget.
+* Remove ripple effect of on tap in base widget.
 
 ## 0.0.6
 
-* handle navigation by back button press and swipe
+* Handle navigation by back button press and swipe.
 
 ## 0.0.5
 
-* add new feature > showing navigation path which shows hierarchy of nested list 
-* remove Scaffold widget for improving performance
-* add new feature > showing selected items on top of list when it is in multi select mode
+* Add new feature > showing navigation path which shows hierarchy of nested list .
+* Remove Scaffold widget for improving performance.
+* Add new feature > showing selected items on top of list when it is in multi select mode.
 
 ## 0.0.4
 
-* update CHANGELOG.me file
-* update examples
+* Update `CHANGELOG.md`file.
+* Update examples.
 
 ## 0.0.3
 
-* update CHANGELOG.me file
+* Update `CHANGELOG.md` file.
 
 ## 0.0.2
 
-* enable multiple selection
+* Enable multiple selection.
 
 ## 0.0.1
 
-* initilize nested choice list with sinlge item selection
+* Initilize nested choice list with sinlge item selection.
