@@ -4,25 +4,31 @@ import 'package:flutter/foundation.dart';
 
 /// A class representing a nested choice entity.
 ///
-/// This class is used to define an entity that can be used
-/// in a nested choice list.
-/// It is generic and can work with any type that extends `Object`.
+/// This class is used to represent an entity with a value, label, and optional
+/// children entities. It can also be marked as disabled.
 ///
-/// Type Parameters:
-/// - `T`: The type of the entity, which must extend `Object`.
+/// The [NestedChoiceEntity] class is immutable, meaning its properties cannot
+/// be changed after it is created.
+///
+/// Properties:
+/// - [label]: The label of the entity.
+/// - [isDisabled]: A boolean indicating whether the entity is disabled.
+///   Defaults to `false`.
+/// - [children]: A list of child entities. Defaults to an empty list.
+/// - [value]: The value of the entity.
 ///
 /// Example:
 /// ```dart
-/// NestedChoiceEntity<String> entity =
-/// NestedChoiceEntity<String>(value: 'value', label: 'label');
+/// NestedChoiceEntity entity =
+/// NestedChoiceEntity(value: 'value', label: 'label');
 /// ```
 @immutable
-class NestedChoiceEntity<T extends Object> {
+class NestedChoiceEntity {
   const NestedChoiceEntity({
-    required this.value,
     required this.label,
     this.isDisabled = false,
     this.children = const [],
+    this.value,
   });
 
   /// Creates a new instance of [NestedChoiceEntity] from a JSON map.
@@ -30,7 +36,8 @@ class NestedChoiceEntity<T extends Object> {
   /// The [json] parameter is a map containing the key-value pairs that
   /// represent the properties of the [NestedChoiceEntity].
   ///
-  /// The `value` field is extracted from the JSON map and cast to type [T].
+  /// The `value` field is extracted from the JSON map and can
+  /// be any type or null.
   /// The `label` field is extracted as a [String].
   /// The `isDisabled` field is extracted as a [bool], defaulting to `false`
   /// if not present.
@@ -41,14 +48,13 @@ class NestedChoiceEntity<T extends Object> {
   /// Returns a new instance of [NestedChoiceEntity] populated with the
   /// values from the JSON map.
   factory NestedChoiceEntity.fromJson(Map<String, dynamic> json) {
-    return NestedChoiceEntity<T>(
-      value: json['value'] as T,
+    return NestedChoiceEntity(
+      value: json['value'],
       label: json['label'] as String,
       isDisabled: json['isDisabled'] as bool? ?? false,
       children: (json['children'] as List<dynamic>?)
               ?.map(
-                (e) =>
-                    NestedChoiceEntity<T>.fromJson(e as Map<String, dynamic>),
+                (e) => NestedChoiceEntity.fromJson(e as Map<String, dynamic>),
               )
               .toList() ??
           [],
@@ -57,9 +63,8 @@ class NestedChoiceEntity<T extends Object> {
 
   /// The value associated with this entity.
   ///
-  /// This is a generic type [T] which allows the entity to hold any
-  /// type of value.
-  final T value;
+  /// This can be any object, or null.
+  final Object? value;
 
   /// The label associated with this nested choice entity.
   final String label;
@@ -69,12 +74,11 @@ class NestedChoiceEntity<T extends Object> {
   /// When set to `true`, the choice is not selectable or interactable.
   final bool isDisabled;
 
-  /// A list of child entities of type `NestedChoiceEntity<T>`.
+  /// A list of child `NestedChoiceEntity` objects.
   ///
-  /// This list represents the nested structure of choices, where each
-  /// `NestedChoiceEntity` can have its own children, forming a tree-like
-  /// hierarchy.
-  final List<NestedChoiceEntity<T>> children;
+  /// This list contains the nested choices that are associated with
+  /// the current entity.
+  final List<NestedChoiceEntity> children;
 
   /// Adds a child [NestedChoiceEntity] to the list of children.
   ///
@@ -83,13 +87,13 @@ class NestedChoiceEntity<T extends Object> {
   /// Example:
   /// ```dart
   /// const parent =
-  ///      NestedChoiceEntity<String>(value: 'parent', label: 'Parent');
+  ///      NestedChoiceEntity(value: 'parent', label: 'Parent');
   /// const child =
-  ///        NestedChoiceEntity<String>(value: 'child', label: 'Child');
+  ///        NestedChoiceEntity(value: 'child', label: 'Child');
   ///
   /// final updatedParent = parent.add(child);
   /// ```
-  NestedChoiceEntity<T> add(NestedChoiceEntity<T> child) {
+  NestedChoiceEntity add(NestedChoiceEntity child) {
     //becuase of immutability, we need to create a new instance of the entity
     return copyWith(
       children: [...children, child],
@@ -103,7 +107,7 @@ class NestedChoiceEntity<T extends Object> {
   ///
   /// - Parameter children: An iterable collection of [NestedChoiceEntity]
   ///   objects to be added to the current list of children.
-  NestedChoiceEntity<T> addAll(Iterable<NestedChoiceEntity<T>> children) {
+  NestedChoiceEntity addAll(Iterable<NestedChoiceEntity> children) {
     //becuase of immutability, we need to create a new instance of the entity
     return copyWith(
       children: [...this.children, ...children],
@@ -126,13 +130,13 @@ class NestedChoiceEntity<T extends Object> {
   /// - `children`: The new value for the `children` field.
   ///
   /// Returns a new `NestedChoiceEntity` instance with the updated values.
-  NestedChoiceEntity<T> copyWith({
-    T? value,
+  NestedChoiceEntity copyWith({
+    Object? value,
     String? label,
     bool? isDisabled,
-    List<NestedChoiceEntity<T>>? children,
+    List<NestedChoiceEntity>? children,
   }) {
-    return NestedChoiceEntity<T>(
+    return NestedChoiceEntity(
       value: value ?? this.value,
       label: label ?? this.label,
       isDisabled: isDisabled ?? this.isDisabled,

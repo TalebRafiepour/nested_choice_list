@@ -12,8 +12,8 @@ void main() {
     });
 
     test('add method adds a child entity', () {
-      const parent = NestedChoiceEntity<String>(value: '1', label: 'Parent');
-      const child = NestedChoiceEntity<String>(value: '2', label: 'Child');
+      const parent = NestedChoiceEntity(value: '1', label: 'Parent');
+      const child = NestedChoiceEntity(value: '2', label: 'Child');
       // because the add method returns a new instance of the entity
       final updatedParent = parent.add(child);
       expect(updatedParent.children, contains(child));
@@ -87,7 +87,7 @@ void main() {
         },
       ],
     };
-    final entity = NestedChoiceEntity<String>.fromJson(json);
+    final entity = NestedChoiceEntity.fromJson(json);
     expect(entity.value, '1');
     expect(entity.label, 'Item 1');
     expect(entity.isDisabled, false);
