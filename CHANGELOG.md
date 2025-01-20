@@ -1,3 +1,10 @@
+## 0.5.0
+
+* Implemented `fromJson` and `toJson` methods for `NestedChoiceEntity`.
+* Enhanced the `toString` method of `NestedChoiceEntity` for improved readability.
+* Introduced GitHub Actions for code analysis and testing.
+* Developed templates for submitting `Bug` reports and `Feature` requests.
+
 ## 0.4.0
 
 * Develop unit tests for models and classes.
