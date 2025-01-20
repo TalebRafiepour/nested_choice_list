@@ -112,7 +112,7 @@ final items = const [
 
 ### Or Initialize your items using Json map
 
-```
+```dart
 final jsonMap = const [
     {
       'value': 'value1',
