@@ -142,6 +142,33 @@ void main() {
       expect(find.text('Item 1.1'), findsOneWidget);
     });
 
+    testWidgets('onNavigationChange callback is triggered', (tester) async {
+      int navigationPageIndex = 0;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: NestedChoiceList(
+            items: const [
+              NestedChoiceEntity(
+                value: '1',
+                label: 'Item 1',
+                children: [
+                  NestedChoiceEntity(value: '1.1', label: 'Item 1.1'),
+                ],
+              ),
+            ],
+            onNavigationChange: (pageIndex) {
+              navigationPageIndex = pageIndex;
+            },
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Item 1'));
+      await tester.pumpAndSettle();
+
+      expect(navigationPageIndex, 1);
+    });
+
     testWidgets('selected items chip list is displayed correctly',
         (tester) async {
       await tester.pumpWidget(

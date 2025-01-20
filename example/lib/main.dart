@@ -275,6 +275,12 @@ class DemoOfNestedChoiceList extends StatelessWidget {
           debugPrint('onSelectionChange -> $items');
           selectedItems = items;
         },
+
+        /// Callback function triggered when the navigation changes.
+        /// Useful for handling UI updates based on the current page index.
+        onNavigationChange: (pageIndex) {
+          debugPrint('onNavigationChange -> pageIndex: $pageIndex');
+        },
       ),
       bottomNavigationBar: enableMultiSelect
           ? SafeArea(

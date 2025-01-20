@@ -8,6 +8,13 @@ import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
 import 'package:nested_choice_list/src/search_field/searchfield_position.dart';
 import 'package:nested_choice_list/src/selected_item_chip_list/seleted_item_chip_list.dart';
 
+/// A typedef for a callback function that is triggered when the
+/// navigation changes.
+///
+/// The function takes an integer parameter [pageIndex] which represents the
+/// index of the page that is being navigated to.
+typedef OnNavigationChange = void Function(int pageIndex);
+
 /// A typedef for a callback function that is triggered when the selection
 /// changes. This callback triggered when you are in multi
 /// selection mode (enableMultiSelect = true).
@@ -81,6 +88,7 @@ class NestedChoiceList extends StatefulWidget {
     this.onTapItem,
     this.itemLeadingBuilder,
     this.onSelectionChange,
+    this.onNavigationChange,
     super.key,
   });
 
@@ -126,6 +134,9 @@ class NestedChoiceList extends StatefulWidget {
   /// The callback function to handle selection change events.
   final OnSelectionChange? onSelectionChange;
 
+  /// Callback function triggered on navigation changes.
+  final OnNavigationChange? onNavigationChange;
+
   @override
   State<NestedChoiceList> createState() => _NestedChoiceListState();
 }
@@ -170,6 +181,8 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
   void _onPopInvokedWithResult(_, result) {
     navigationPathes.removeLast();
     setState(() {});
+    //
+    widget.onNavigationChange?.call(navigationPathes.length);
   }
 
   /// Callback function for tapping on a navigation path.
@@ -236,6 +249,9 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
           },
         ),
       );
+      //
+      widget.onNavigationChange?.call(navigationPathes.length);
+      //
     } else if (!widget.enableMultiSelect) {
       widget.onTapItem?.call(item);
     }
@@ -258,6 +274,13 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
     return PopScope(
       canPop: navigationPathes.isEmpty,
       onPopInvokedWithResult: (didPop, result) {
+        /// If the widget did pop, return immediately without handling
+        /// inner navigation.
+        /// This ensures that when the whole widget is popped, inner
+        /// navigation is not processed.
+        if (didPop) {
+          return;
+        }
         final nestedNavCanPop = _nestedNavKey.currentState?.canPop() ?? false;
         if (nestedNavCanPop) {
           _nestedNavKey.currentState?.maybePop();
