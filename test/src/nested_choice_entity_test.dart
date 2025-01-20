@@ -46,17 +46,12 @@ void main() {
       expect(copiedEntity.value, '1');
     });
 
-    test('toString method returns correct string representation', () {
+    test('toString method returns correct JSON string representation', () {
       const entity = NestedChoiceEntity(value: '1', label: 'Item 1');
-      expect(entity.toString(), '{Item 1}');
-    });
-
-    test('toString method returns correct string representation with children',
-        () {
-      const parent = NestedChoiceEntity(value: '1', label: 'Parent');
-      const child = NestedChoiceEntity(value: '2', label: 'Child');
-      final updatedParent = parent.add(child);
-      expect(updatedParent.toString(), '{Parent : [{Child}],}');
+      expect(
+        entity.toString(),
+        '{"value":"1","label":"Item 1","isDisabled":false,"children":[]}',
+      );
     });
 
     test('hashCode returns correct hash code', () {
