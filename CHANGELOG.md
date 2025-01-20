@@ -1,3 +1,9 @@
+## 0.6.0
+
+* Removed the generic type from `NestedChoiceEntity`.
+* Made the `value` property optional with the type `Object` in the `NestedChoiceEntity`.
+* Added a callback function named `onNavigationChange` to handle navigation changes.
+
 ## 0.5.0
 
 * Implemented `fromJson` and `toJson` methods for `NestedChoiceEntity`.
