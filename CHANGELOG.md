@@ -1,3 +1,9 @@
+## 1.0.0
+
+* Updated package to be compatible with Flutter version `3.27.2`.
+* Enhanced `README.md` with improved screenshots.
+* Marked this version as the first stable release.
+
 ## 0.6.0
 
 * Removed the generic type from `NestedChoiceEntity`.
