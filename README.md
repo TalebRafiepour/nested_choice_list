@@ -225,12 +225,19 @@ final items = jsonMap.map((e) => NestedChoiceEntity.fromJson(e)).toList();
 
 ```dart
 NestedChoiceList(
+        /// A list of items to be displayed in the nested choice list.
         items: items,
+        /// A flag to determine whether to display the selected items.
         showSelectedItems: showSelectedItems,
+        /// Enables or disables the "Select All" option in the list.
         enableSelectAll: enableSelectAll,
+        /// A flag to determine whether to show the navigation path.
         showNavigationPath: showNavigationPath,
+        /// Enables or disables multi-select functionality.
         enableMultiSelect: enableMultiSelect,
+        /// Enables or disables the search functionality in the list.
         enableSearch: enableSearch,
+        /// Applies a constant style to the nested list.
         style: const NestedListStyle(),
         // this callback triggers when we are in
         // single select mode (enableMultiSelect = false)
