@@ -259,6 +259,16 @@ NestedChoiceList(
       )
 ```
 
+## Support the Package
+
+If you find `NestedChoiceList` useful, please consider supporting it by:
+
+* Liking the package on [pub.dev](https://pub.dev/packages/nested_choice_list).
+* Starring the repository on [GitHub](https://github.com/TalebRafiepour/nested_choice_list).
+* Reporting any issues or bugs you encounter [here](https://github.com/TalebRafiepour/nested_choice_list/issues).
+
+Your support helps improve the package and ensures its continued development.
+
 ## License
 
 NestedChoiceList is released under the `BSD-3-Clause` License.
