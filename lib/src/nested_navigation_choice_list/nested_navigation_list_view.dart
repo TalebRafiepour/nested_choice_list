@@ -1,52 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
+import 'package:nested_choice_list/src/nested_choice_list.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_searchfield_style.dart';
-import 'package:nested_choice_list/src/nested_list_view_item.dart';
+import 'package:nested_choice_list/src/nested_navigation_choice_list/inherited_nested_navigation_list_view.dart';
+import 'package:nested_choice_list/src/nested_navigation_choice_list/nested_navigation_list_view_item.dart';
 import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
 import 'package:nested_choice_list/src/search_field/search_field.dart';
 import 'package:nested_choice_list/src/search_field/searchfield_position.dart';
 
-/// A typedef for a function that builds a leading widget for an item in
-/// a nested list view.
-///
-/// The function takes the following parameters:
-/// - `context`: The build context in which the widget is built.
-/// - `item`: The `NestedChoiceEntity` item for which the leading widget is
-/// being built.
-/// - `index`: The index of the item in the list.
-///
-/// Returns a `Widget?` that represents the leading widget for the given item.
-typedef ItemLeadingBuilder = Widget? Function(
-  BuildContext context,
-  NestedChoiceEntity item,
-  int index,
-);
-
-/// A callback function that is triggered when the "select all" action
-/// is performed.
-///
-/// The [isSelected] parameter indicates whether all items are selected or not.
-/// The [items] parameter provides the list of [NestedChoiceEntity] items that
-/// are affected by the selection.
-typedef OnSelectAllCallback = void Function({
-  required bool isSelected,
-  required List<NestedChoiceEntity> items,
-});
-
 /// A widget that displays a nested list view with optional search and
 /// multi-select functionality.
 ///
-/// The [NestedListView] widget supports displaying a list of items with
-/// optional search functionality, multi-selection, and select-all
+/// The [NestedNavigationListView] widget supports displaying a list of items
+/// with optional search functionality, multi-selection, and select-all
 /// functionality. It also allows customization of item styles and search
 /// field styles.
-class NestedListView extends StatefulWidget {
-  /// Creates a [NestedListView] widget.
+class NestedNavigationListView extends StatefulWidget {
+  /// Creates a [NestedNavigationListView] widget.
   ///
   /// The [items] and [onSelectAllCallback] parameters must not be null.
-  const NestedListView({
+  const NestedNavigationListView({
     required this.items,
     this.onSelectAllCallback,
     this.selectAllLabel = 'Select all',
@@ -111,10 +85,11 @@ class NestedListView extends StatefulWidget {
   final OnSelectAllCallback? onSelectAllCallback;
 
   @override
-  State<NestedListView> createState() => _NestedListViewState();
+  State<NestedNavigationListView> createState() =>
+      _NestedNavigationListViewState();
 }
 
-class _NestedListViewState extends State<NestedListView> {
+class _NestedNavigationListViewState extends State<NestedNavigationListView> {
   /// A list of `NestedChoiceEntity` objects that are initialized
   /// from the `widget.items`.
   /// This list is used to store the items that will be displayed in
@@ -157,7 +132,7 @@ class _NestedListViewState extends State<NestedListView> {
   @override
   Widget build(BuildContext context) {
     final selectedItems =
-        InheritedNestedListView.of(context)?.selectedItems ?? {};
+        InheritedNestedNavigationListView.of(context)?.selectedItems ?? {};
     return PopScope(
       onPopInvokedWithResult: widget.onPopInvokedWithResult,
       child: SafeArea(
@@ -173,7 +148,7 @@ class _NestedListViewState extends State<NestedListView> {
             if (widget.enableSelectAll &&
                 widget.enableMultiSelect &&
                 hasAnySelectableChild)
-              NestedListViewItem(
+              NestedNavigationListViewItem(
                 isMultiSelect: true,
                 isChecked: isSelectedAll,
                 itemStyle: widget.selectAllItemStyle,
@@ -203,7 +178,7 @@ class _NestedListViewState extends State<NestedListView> {
                       padding: widget.itemStyle.listPadding,
                       itemBuilder: (_, index) {
                         final item = itemsToShow[index];
-                        return NestedListViewItem(
+                        return NestedNavigationListViewItem(
                           item: item,
                           itemStyle: widget.itemStyle,
                           isMultiSelect: widget.enableMultiSelect,

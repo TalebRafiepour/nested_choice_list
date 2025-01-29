@@ -4,14 +4,14 @@ import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.
 
 /// A widget that displays an item in a nested list view.
 ///
-/// The [NestedListViewItem] widget can display an item as either a [ListTile]
-/// or a [CheckboxListTile] depending on the [isMultiSelect] flag. It supports
-/// various customization options through the [itemStyle] parameter.
-class NestedListViewItem extends StatelessWidget {
-  /// Creates a [NestedListViewItem] widget.
+/// The [NestedNavigationListViewItem] widget can display an item as either
+/// a [ListTile] or a [CheckboxListTile] depending on the [isMultiSelect] flag.
+/// It supports various customization options through the [itemStyle] parameter.
+class NestedNavigationListViewItem extends StatelessWidget {
+  /// Creates a [NestedNavigationListViewItem] widget.
   ///
   /// The [item] parameter must not be null.
-  const NestedListViewItem({
+  const NestedNavigationListViewItem({
     required this.item,
     this.itemStyle = const NestedListItemStyle(),
     this.isMultiSelect = false,

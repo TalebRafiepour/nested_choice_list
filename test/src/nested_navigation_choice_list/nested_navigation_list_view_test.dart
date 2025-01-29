@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
-import 'package:nested_choice_list/src/nested_choice_list.dart';
+import 'package:nested_choice_list/src/nested_navigation_choice_list/nested_navigation_list_view.dart';
 import 'package:nested_choice_list/src/search_field/searchfield_position.dart';
 
 void main() {
-  group('NestedChoiceList Tests', () {
+  group('NestedNavigationListView Tests', () {
     testWidgets('renders correctly with default parameters', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: NestedChoiceList(
+          home: NestedNavigationListView(
             items: [NestedChoiceEntity(value: '1', label: 'Item 1')],
           ),
         ),
@@ -21,7 +21,7 @@ void main() {
     testWidgets('search functionality filters items correctly', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: NestedChoiceList(
+          home: NestedNavigationListView(
             items: [
               NestedChoiceEntity(value: '1', label: 'Item 1'),
               NestedChoiceEntity(value: '2', label: 'Item 2'),
@@ -35,6 +35,8 @@ void main() {
       await tester.enterText(find.byType(TextField), 'Item 1');
       await tester.pumpAndSettle();
 
+      // finds two items with the text 'Item 1' because the search query
+      // is 'Item 1'
       expect(find.text('Item 1'), findsNWidgets(2));
       expect(find.text('Item 2'), findsNothing);
     });
@@ -43,14 +45,14 @@ void main() {
       bool isSelectedAll = false;
       await tester.pumpWidget(
         MaterialApp(
-          home: NestedChoiceList(
+          home: NestedNavigationListView(
             items: const [
               NestedChoiceEntity(value: '1', label: 'Item 1'),
               NestedChoiceEntity(value: '2', label: 'Item 2'),
             ],
             enableMultiSelect: true,
-            onSelectionChange: (items) {
-              isSelectedAll = items.length == 2;
+            onSelectAllCallback: ({required isSelected, required items}) {
+              isSelectedAll = isSelected;
             },
           ),
         ),
@@ -66,9 +68,9 @@ void main() {
       NestedChoiceEntity? tappedItem;
       await tester.pumpWidget(
         MaterialApp(
-          home: NestedChoiceList(
+          home: NestedNavigationListView(
             items: const [NestedChoiceEntity(value: '1', label: 'Item 1')],
-            onTapItem: (item) {
+            onTapItem: (item, context) {
               tappedItem = item;
             },
           ),
@@ -82,15 +84,16 @@ void main() {
     });
 
     testWidgets('item toggle selection callback is triggered', (tester) async {
-      List<NestedChoiceEntity> selectedItems = [];
+      NestedChoiceEntity? toggledItem;
       await tester.pumpWidget(
         MaterialApp(
-          home: NestedChoiceList(
+          home: NestedNavigationListView(
             items: const [NestedChoiceEntity(value: '1', label: 'Item 1')],
             enableMultiSelect: true,
-            onSelectionChange: (items) {
-              selectedItems = items;
+            onToggleSelection: (item) {
+              toggledItem = item;
             },
+            onSelectAllCallback: ({required isSelected, required items}) {},
           ),
         ),
       );
@@ -98,14 +101,13 @@ void main() {
       await tester.tap(find.text('Item 1'));
       await tester.pump();
 
-      expect(selectedItems.length, 1);
-      expect(selectedItems.first.label, 'Item 1');
+      expect(toggledItem?.label, 'Item 1');
     });
 
     testWidgets('leading widget builder works correctly', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: NestedChoiceList(
+          home: NestedNavigationListView(
             items: const [NestedChoiceEntity(value: '1', label: 'Item 1')],
             itemLeadingBuilder: (context, item, index) {
               return const Icon(Icons.star);
@@ -115,77 +117,6 @@ void main() {
       );
 
       expect(find.byIcon(Icons.star), findsOneWidget);
-    });
-
-    testWidgets('navigation path is displayed correctly', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: NestedChoiceList(
-            items: [
-              NestedChoiceEntity(
-                value: '1',
-                label: 'Item 1',
-                children: [
-                  NestedChoiceEntity(value: '1.1', label: 'Item 1.1'),
-                ],
-              ),
-            ],
-            showNavigationPath: true,
-          ),
-        ),
-      );
-
-      await tester.tap(find.text('Item 1'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('Item 1'), findsOneWidget);
-      expect(find.text('Item 1.1'), findsOneWidget);
-    });
-
-    testWidgets('onNavigationChange callback is triggered', (tester) async {
-      int navigationPageIndex = 0;
-      await tester.pumpWidget(
-        MaterialApp(
-          home: NestedChoiceList(
-            items: const [
-              NestedChoiceEntity(
-                value: '1',
-                label: 'Item 1',
-                children: [
-                  NestedChoiceEntity(value: '1.1', label: 'Item 1.1'),
-                ],
-              ),
-            ],
-            onNavigationChange: (pageIndex) {
-              navigationPageIndex = pageIndex;
-            },
-          ),
-        ),
-      );
-
-      await tester.tap(find.text('Item 1'));
-      await tester.pumpAndSettle();
-
-      expect(navigationPageIndex, 1);
-    });
-
-    testWidgets('selected items chip list is displayed correctly',
-        (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: NestedChoiceList(
-            items: [
-              NestedChoiceEntity(value: '1', label: 'Item 1'),
-              NestedChoiceEntity(value: '2', label: 'Item 2'),
-            ],
-            enableMultiSelect: true,
-            selectedItems: [NestedChoiceEntity(value: '1', label: 'Item 1')],
-          ),
-        ),
-      );
-
-      expect(find.text('Item 1'), findsNWidgets(2));
-      expect(find.text('Item 2'), findsOneWidget);
     });
   });
 }
