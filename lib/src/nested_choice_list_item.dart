@@ -5,8 +5,9 @@ import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.
 
 /// A widget that displays an item in a nested list view.
 ///
-/// The [NestedChoiceListItem] widget can display an item as either
-/// a [ListTile] or a [CheckboxListTile] depending on the [isMultiSelect] flag.
+/// The [NestedChoiceListItem] widget can display an item as either a [ListTile]
+/// ,[ExpansionTile], or [CheckboxListTile] depending on the [enableMultiSelect]
+/// and [isExpandable] flags.
 /// It supports various customization options through the [itemStyle] parameter.
 class NestedChoiceListItem extends StatelessWidget {
   /// Creates a [NestedChoiceListItem] widget.
@@ -14,26 +15,32 @@ class NestedChoiceListItem extends StatelessWidget {
   /// The [item] parameter must not be null.
   const NestedChoiceListItem({
     required this.item,
+    this.isExpandable = false,
     this.itemStyle = const NestedListItemStyle(),
-    this.isMultiSelect = false,
-    this.isChecked = false,
+    this.enableMultiSelect = false,
+    this.isChecked,
     this.onTapItem,
     this.onToggleSelection,
     this.itemLeadingBuilder,
     super.key,
   });
 
+  /// Whether the item support expandable mode.
+  final bool isExpandable;
+
   /// The style to be applied to the list item.
   final NestedListItemStyle itemStyle;
 
   /// Whether the item supports multi-selection.
-  final bool isMultiSelect;
+  final bool enableMultiSelect;
 
   /// The item to be displayed.
   final NestedChoiceEntity item;
 
-  /// Whether the item is checked (for multi-selection).
-  final bool isChecked;
+  /// A callback function that takes a [NestedChoiceEntity] and returns a
+  /// boolean value.
+  /// This function is used to determine if a specific choice entity is checked.
+  final bool Function(NestedChoiceEntity)? isChecked;
 
   /// Callback function to be called when the item is tapped.
   final Function(NestedChoiceEntity, BuildContext)? onTapItem;
@@ -53,41 +60,92 @@ class NestedChoiceListItem extends StatelessWidget {
       padding: itemStyle.margin,
       child: Material(
         type: MaterialType.transparency,
-        child: isMultiSelect && !item.hasChildren
-            ? CheckboxListTile(
-                value: isChecked,
-                onChanged: (isSelected) {
-                  onToggleSelection?.call(item);
-                },
-                dense: itemStyle.dense,
-                secondary: itemLeadingBuilder?.call(context, item),
-                shape: itemStyle.shape,
-                tileColor: itemStyle.bgColor,
-                enabled: !item.isDisabled,
-                visualDensity: itemStyle.visualDensity,
-                title: Text(
-                  item.label,
-                  style: itemStyle.labelStyle ??
-                      Theme.of(context).textTheme.titleSmall,
-                ),
-              )
-            : ListTile(
-                shape: itemStyle.shape,
-                enabled: !item.isDisabled,
-                tileColor: itemStyle.bgColor,
-                leading: itemLeadingBuilder?.call(context, item),
-                dense: itemStyle.dense,
-                visualDensity: itemStyle.visualDensity,
-                title: Text(
-                  item.label,
-                  style: itemStyle.labelStyle ??
-                      Theme.of(context).textTheme.titleSmall,
-                ),
-                trailing: item.hasChildren ? itemStyle.trailingIcon : null,
-                onTap: () {
-                  onTapItem?.call(item, context);
-                },
-              ),
+        child: Builder(
+          builder: (_) {
+            if (item.hasChildren) {
+              if (isExpandable) {
+                return _buildExpandableTile(context);
+              } else {
+                return _buildListTile(context);
+              }
+            } else {
+              if (enableMultiSelect) {
+                return _buildCheckboxListTile(context);
+              } else {
+                return _buildListTile(context);
+              }
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExpandableTile(BuildContext context) {
+    return ExpansionTile(
+      shape: itemStyle.shape,
+      collapsedShape: itemStyle.shape,
+      enabled: !item.isDisabled,
+      backgroundColor: itemStyle.bgColor,
+      leading: itemLeadingBuilder?.call(context, item),
+      dense: itemStyle.dense,
+      visualDensity: itemStyle.visualDensity,
+      title: Text(
+        item.label,
+        style: itemStyle.labelStyle ?? Theme.of(context).textTheme.titleSmall,
+      ),
+      children: item.children.map((childItem) {
+        return Padding(
+          padding: const EdgeInsetsDirectional.only(start: 24),
+          child: NestedChoiceListItem(
+            item: childItem,
+            isExpandable: isExpandable,
+            itemStyle: itemStyle,
+            itemLeadingBuilder: itemLeadingBuilder,
+            isChecked: isChecked,
+            enableMultiSelect: enableMultiSelect,
+            onTapItem: onTapItem,
+            onToggleSelection: onToggleSelection,
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildListTile(BuildContext context) {
+    return ListTile(
+      shape: itemStyle.shape,
+      enabled: !item.isDisabled,
+      tileColor: itemStyle.bgColor,
+      leading: itemLeadingBuilder?.call(context, item),
+      dense: itemStyle.dense,
+      visualDensity: itemStyle.visualDensity,
+      title: Text(
+        item.label,
+        style: itemStyle.labelStyle ?? Theme.of(context).textTheme.titleSmall,
+      ),
+      trailing: item.hasChildren ? itemStyle.trailingIcon : null,
+      onTap: () {
+        onTapItem?.call(item, context);
+      },
+    );
+  }
+
+  Widget _buildCheckboxListTile(BuildContext context) {
+    return CheckboxListTile(
+      value: isChecked?.call(item),
+      onChanged: (isSelected) {
+        onToggleSelection?.call(item);
+      },
+      dense: itemStyle.dense,
+      secondary: itemLeadingBuilder?.call(context, item),
+      shape: itemStyle.shape,
+      tileColor: itemStyle.bgColor,
+      enabled: !item.isDisabled,
+      visualDensity: itemStyle.visualDensity,
+      title: Text(
+        item.label,
+        style: itemStyle.labelStyle ?? Theme.of(context).textTheme.titleSmall,
       ),
     );
   }

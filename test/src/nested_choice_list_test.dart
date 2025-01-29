@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nested_choice_list/src/nested_choice_entity.dart';
-import 'package:nested_choice_list/src/nested_navigation_choice_list/nested_navigation_choice_list.dart';
-import 'package:nested_choice_list/src/search_field/searchfield_position.dart';
+import 'package:nested_choice_list/nested_choice_list.dart';
 
 void main() {
-  group('NestedNavigationChoiceList Tests', () {
+  group('NestedChoiceList Tests', () {
     testWidgets('renders correctly with default parameters', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: NestedNavigationChoiceList(
+          home: NestedChoiceList(
             items: [NestedChoiceEntity(value: '1', label: 'Item 1')],
           ),
         ),
@@ -21,7 +19,7 @@ void main() {
     testWidgets('search functionality filters items correctly', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: NestedNavigationChoiceList(
+          home: NestedChoiceList(
             items: [
               NestedChoiceEntity(value: '1', label: 'Item 1'),
               NestedChoiceEntity(value: '2', label: 'Item 2'),
@@ -43,7 +41,7 @@ void main() {
       bool isSelectedAll = false;
       await tester.pumpWidget(
         MaterialApp(
-          home: NestedNavigationChoiceList(
+          home: NestedChoiceList(
             items: const [
               NestedChoiceEntity(value: '1', label: 'Item 1'),
               NestedChoiceEntity(value: '2', label: 'Item 2'),
@@ -66,7 +64,7 @@ void main() {
       NestedChoiceEntity? tappedItem;
       await tester.pumpWidget(
         MaterialApp(
-          home: NestedNavigationChoiceList(
+          home: NestedChoiceList(
             items: const [NestedChoiceEntity(value: '1', label: 'Item 1')],
             onTapItem: (item) {
               tappedItem = item;
@@ -85,7 +83,7 @@ void main() {
       List<NestedChoiceEntity> selectedItems = [];
       await tester.pumpWidget(
         MaterialApp(
-          home: NestedNavigationChoiceList(
+          home: NestedChoiceList(
             items: const [NestedChoiceEntity(value: '1', label: 'Item 1')],
             enableMultiSelect: true,
             onSelectionChange: (items) {
@@ -105,7 +103,7 @@ void main() {
     testWidgets('leading widget builder works correctly', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: NestedNavigationChoiceList(
+          home: NestedChoiceList(
             items: const [NestedChoiceEntity(value: '1', label: 'Item 1')],
             itemLeadingBuilder: (context, item) {
               return const Icon(Icons.star);
@@ -120,7 +118,7 @@ void main() {
     testWidgets('navigation path is displayed correctly', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: NestedNavigationChoiceList(
+          home: NestedChoiceList(
             items: [
               NestedChoiceEntity(
                 value: '1',
@@ -146,7 +144,7 @@ void main() {
       int navigationPageIndex = 0;
       await tester.pumpWidget(
         MaterialApp(
-          home: NestedNavigationChoiceList(
+          home: NestedChoiceList(
             items: const [
               NestedChoiceEntity(
                 value: '1',
@@ -173,7 +171,7 @@ void main() {
         (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: NestedNavigationChoiceList(
+          home: NestedChoiceList(
             items: [
               NestedChoiceEntity(value: '1', label: 'Item 1'),
               NestedChoiceEntity(value: '2', label: 'Item 2'),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:nested_choice_list/src/inherited_nested_choice_list_view.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_choice_list.dart';
 import 'package:nested_choice_list/src/nested_choice_list_item.dart';
+import 'package:nested_choice_list/src/nested_choice_list_type.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_searchfield_style.dart';
-import 'package:nested_choice_list/src/nested_navigation_choice_list/inherited_nested_navigation_list_view.dart';
 import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
 import 'package:nested_choice_list/src/search_field/search_field.dart';
 import 'package:nested_choice_list/src/search_field/searchfield_position.dart';
@@ -12,16 +13,17 @@ import 'package:nested_choice_list/src/search_field/searchfield_position.dart';
 /// A widget that displays a nested list view with optional search and
 /// multi-select functionality.
 ///
-/// The [NestedNavigationListView] widget supports displaying a list of items
+/// The [NestedChoiceListView] widget supports displaying a list of items
 /// with optional search functionality, multi-selection, and select-all
 /// functionality. It also allows customization of item styles and search
 /// field styles.
-class NestedNavigationListView extends StatefulWidget {
-  /// Creates a [NestedNavigationListView] widget.
+class NestedChoiceListView extends StatefulWidget {
+  /// Creates a [NestedChoiceListView] widget.
   ///
   /// The [items] and [onSelectAllCallback] parameters must not be null.
-  const NestedNavigationListView({
+  const NestedChoiceListView({
     required this.items,
+    this.type = NestedChoiceListType.navigation,
     this.onSelectAllCallback,
     this.selectAllLabel = 'Select all',
     this.searchfieldPosition = SearchfieldPosition.bottom,
@@ -38,6 +40,9 @@ class NestedNavigationListView extends StatefulWidget {
     this.itemLeadingBuilder,
     super.key,
   });
+
+  /// The type of the nested choice list.
+  final NestedChoiceListType type;
 
   /// Whether to enable the search functionality.
   final bool enableSearch;
@@ -85,11 +90,10 @@ class NestedNavigationListView extends StatefulWidget {
   final OnSelectAllCallback? onSelectAllCallback;
 
   @override
-  State<NestedNavigationListView> createState() =>
-      _NestedNavigationListViewState();
+  State<NestedChoiceListView> createState() => _NestedChoiceListViewState();
 }
 
-class _NestedNavigationListViewState extends State<NestedNavigationListView> {
+class _NestedChoiceListViewState extends State<NestedChoiceListView> {
   /// A list of `NestedChoiceEntity` objects that are initialized
   /// from the `widget.items`.
   /// This list is used to store the items that will be displayed in
@@ -132,7 +136,7 @@ class _NestedNavigationListViewState extends State<NestedNavigationListView> {
   @override
   Widget build(BuildContext context) {
     final selectedItems =
-        InheritedNestedNavigationListView.of(context)?.selectedItems ?? {};
+        InheritedNestedChoiceListView.of(context)?.selectedItems ?? {};
     return PopScope(
       onPopInvokedWithResult: widget.onPopInvokedWithResult,
       child: SafeArea(
@@ -149,11 +153,10 @@ class _NestedNavigationListViewState extends State<NestedNavigationListView> {
                 widget.enableMultiSelect &&
                 hasAnySelectableChild)
               NestedChoiceListItem(
-                isMultiSelect: true,
-                isChecked: isSelectedAll,
+                enableMultiSelect: true,
+                isChecked: (_) => isSelectedAll,
                 itemStyle: widget.selectAllItemStyle,
                 item: NestedChoiceEntity(
-                  value: 'value',
                   label: widget.selectAllLabel,
                 ),
                 onToggleSelection: (_) {
@@ -180,9 +183,11 @@ class _NestedNavigationListViewState extends State<NestedNavigationListView> {
                         final item = itemsToShow[index];
                         return NestedChoiceListItem(
                           item: item,
+                          isExpandable:
+                              widget.type == NestedChoiceListType.expandable,
                           itemStyle: widget.itemStyle,
-                          isMultiSelect: widget.enableMultiSelect,
-                          isChecked: selectedItems.contains(item),
+                          enableMultiSelect: widget.enableMultiSelect,
+                          isChecked: selectedItems.contains,
                           onTapItem: widget.onTapItem,
                           onToggleSelection: widget.onToggleSelection,
                           itemLeadingBuilder: widget.itemLeadingBuilder,

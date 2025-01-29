@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   bool showNavigationPath = false;
   bool enableMultiSelect = false;
   bool enableSearch = false;
+  NestedChoiceListType choiceListType = NestedChoiceListType.navigation;
 
   //
   NestedChoiceEntity? selectedItem;
@@ -161,6 +162,25 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               const Divider(),
+              DropdownButton(
+                value: choiceListType,
+                items: NestedChoiceListType.values
+                    .map(
+                      (type) => DropdownMenuItem<NestedChoiceListType>(
+                        value: type,
+                        child: Text(
+                          type.toString(),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (newType) {
+                  setState(() {
+                    choiceListType = newType ?? NestedChoiceListType.navigation;
+                  });
+                },
+              ),
+              const Divider(),
               ElevatedButton(
                 onPressed: () async {
                   final result = await Navigator.of(context).push(
@@ -172,6 +192,7 @@ class _HomePageState extends State<HomePage> {
                         showNavigationPath: showNavigationPath,
                         enableMultiSelect: enableMultiSelect,
                         enableSearch: enableSearch,
+                        choiceListType: choiceListType,
                       ),
                     ),
                   );
@@ -239,6 +260,7 @@ class DemoOfNestedChoiceList extends StatelessWidget {
     required this.showNavigationPath,
     required this.enableMultiSelect,
     required this.enableSearch,
+    required this.choiceListType,
   });
 
   final List<NestedChoiceEntity> items;
@@ -247,6 +269,7 @@ class DemoOfNestedChoiceList extends StatelessWidget {
   final bool showNavigationPath;
   final bool enableMultiSelect;
   final bool enableSearch;
+  final NestedChoiceListType choiceListType;
 
   @override
   Widget build(BuildContext context) {
@@ -257,6 +280,7 @@ class DemoOfNestedChoiceList extends StatelessWidget {
       ),
       body: NestedChoiceList(
         items: items,
+        type: choiceListType,
         showSelectedItems: showSelectedItems,
         enableSelectAll: enableSelectAll,
         showNavigationPath: showNavigationPath,
