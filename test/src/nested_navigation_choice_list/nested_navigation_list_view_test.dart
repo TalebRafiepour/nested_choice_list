@@ -109,7 +109,7 @@ void main() {
         MaterialApp(
           home: NestedNavigationListView(
             items: const [NestedChoiceEntity(value: '1', label: 'Item 1')],
-            itemLeadingBuilder: (context, item, index) {
+            itemLeadingBuilder: (context, item) {
               return const Icon(Icons.star);
             },
           ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 import 'package:nested_choice_list/src/nested_choice_list.dart';
+import 'package:nested_choice_list/src/nested_choice_list_item.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_searchfield_style.dart';
 import 'package:nested_choice_list/src/nested_navigation_choice_list/inherited_nested_navigation_list_view.dart';
-import 'package:nested_choice_list/src/nested_navigation_choice_list/nested_navigation_list_view_item.dart';
 import 'package:nested_choice_list/src/search_field/search_debouncer.dart';
 import 'package:nested_choice_list/src/search_field/search_field.dart';
 import 'package:nested_choice_list/src/search_field/searchfield_position.dart';
@@ -148,7 +148,7 @@ class _NestedNavigationListViewState extends State<NestedNavigationListView> {
             if (widget.enableSelectAll &&
                 widget.enableMultiSelect &&
                 hasAnySelectableChild)
-              NestedNavigationListViewItem(
+              NestedChoiceListItem(
                 isMultiSelect: true,
                 isChecked: isSelectedAll,
                 itemStyle: widget.selectAllItemStyle,
@@ -178,18 +178,14 @@ class _NestedNavigationListViewState extends State<NestedNavigationListView> {
                       padding: widget.itemStyle.listPadding,
                       itemBuilder: (_, index) {
                         final item = itemsToShow[index];
-                        return NestedNavigationListViewItem(
+                        return NestedChoiceListItem(
                           item: item,
                           itemStyle: widget.itemStyle,
                           isMultiSelect: widget.enableMultiSelect,
                           isChecked: selectedItems.contains(item),
                           onTapItem: widget.onTapItem,
                           onToggleSelection: widget.onToggleSelection,
-                          leading: widget.itemLeadingBuilder?.call(
-                            context,
-                            item,
-                            index,
-                          ),
+                          itemLeadingBuilder: widget.itemLeadingBuilder,
                         );
                       },
                     ),

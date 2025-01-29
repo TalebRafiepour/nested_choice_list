@@ -14,13 +14,11 @@ import 'package:nested_choice_list/src/search_field/searchfield_position.dart';
 /// - `context`: The build context in which the widget is built.
 /// - `item`: The `NestedChoiceEntity` item for which the leading widget is
 /// being built.
-/// - `index`: The index of the item in the list.
 ///
 /// Returns a `Widget?` that represents the leading widget for the given item.
 typedef ItemLeadingBuilder = Widget? Function(
   BuildContext context,
   NestedChoiceEntity item,
-  int index,
 );
 
 /// A callback function that is triggered when the "select all" action

@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
+import 'package:nested_choice_list/src/nested_choice_list.dart';
 import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.dart';
 
 /// A widget that displays an item in a nested list view.
 ///
-/// The [NestedNavigationListViewItem] widget can display an item as either
+/// The [NestedChoiceListItem] widget can display an item as either
 /// a [ListTile] or a [CheckboxListTile] depending on the [isMultiSelect] flag.
 /// It supports various customization options through the [itemStyle] parameter.
-class NestedNavigationListViewItem extends StatelessWidget {
-  /// Creates a [NestedNavigationListViewItem] widget.
+class NestedChoiceListItem extends StatelessWidget {
+  /// Creates a [NestedChoiceListItem] widget.
   ///
   /// The [item] parameter must not be null.
-  const NestedNavigationListViewItem({
+  const NestedChoiceListItem({
     required this.item,
     this.itemStyle = const NestedListItemStyle(),
     this.isMultiSelect = false,
     this.isChecked = false,
     this.onTapItem,
     this.onToggleSelection,
-    this.leading,
+    this.itemLeadingBuilder,
     super.key,
   });
 
@@ -40,8 +41,11 @@ class NestedNavigationListViewItem extends StatelessWidget {
   /// Callback function to be called when the item's selection is toggled.
   final Function(NestedChoiceEntity)? onToggleSelection;
 
-  /// The widget to be displayed at the leading position of the list item.
-  final Widget? leading;
+  /// A builder function to create a leading widget for the item.
+  ///
+  /// This can be used to add a custom leading widget, such as an icon or image,
+  /// to the item in the nested choice list.
+  final ItemLeadingBuilder? itemLeadingBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +60,7 @@ class NestedNavigationListViewItem extends StatelessWidget {
                   onToggleSelection?.call(item);
                 },
                 dense: itemStyle.dense,
-                secondary: leading,
+                secondary: itemLeadingBuilder?.call(context, item),
                 shape: itemStyle.shape,
                 tileColor: itemStyle.bgColor,
                 enabled: !item.isDisabled,
@@ -71,7 +75,7 @@ class NestedNavigationListViewItem extends StatelessWidget {
                 shape: itemStyle.shape,
                 enabled: !item.isDisabled,
                 tileColor: itemStyle.bgColor,
-                leading: leading,
+                leading: itemLeadingBuilder?.call(context, item),
                 dense: itemStyle.dense,
                 visualDensity: itemStyle.visualDensity,
                 title: Text(
