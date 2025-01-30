@@ -68,7 +68,7 @@ class NestedChoiceListItem extends StatelessWidget {
           builder: (_) {
             if (item.hasChildren) {
               if (isExpandable) {
-                return ExpandableTile(
+                return _ExpandableTile(
                   item: item,
                   isExpandable: isExpandable,
                   itemStyle: itemStyle,
@@ -80,7 +80,7 @@ class NestedChoiceListItem extends StatelessWidget {
                   onExpansionChanged: onExpansionChanged,
                 );
               } else {
-                return ListTileWidget(
+                return _ListTileWidget(
                   item: item,
                   itemStyle: itemStyle,
                   itemLeadingBuilder: itemLeadingBuilder,
@@ -89,7 +89,7 @@ class NestedChoiceListItem extends StatelessWidget {
               }
             } else {
               if (enableMultiSelect) {
-                return CheckboxListTileWidget(
+                return _CheckboxListTileWidget(
                   item: item,
                   itemStyle: itemStyle,
                   isChecked: isChecked,
@@ -97,7 +97,7 @@ class NestedChoiceListItem extends StatelessWidget {
                   itemLeadingBuilder: itemLeadingBuilder,
                 );
               } else {
-                return ListTileWidget(
+                return _ListTileWidget(
                   item: item,
                   itemStyle: itemStyle,
                   itemLeadingBuilder: itemLeadingBuilder,
@@ -112,14 +112,13 @@ class NestedChoiceListItem extends StatelessWidget {
   }
 }
 
-class CheckboxListTileWidget extends StatelessWidget {
-  const CheckboxListTileWidget({
+final class _CheckboxListTileWidget extends StatelessWidget {
+  const _CheckboxListTileWidget({
     required this.item,
     required this.itemStyle,
-    required this.isChecked,
-    required this.onToggleSelection,
-    required this.itemLeadingBuilder,
-    super.key,
+    this.isChecked,
+    this.onToggleSelection,
+    this.itemLeadingBuilder,
   });
 
   final NestedChoiceEntity item;
@@ -171,13 +170,12 @@ class CheckboxListTileWidget extends StatelessWidget {
 /// See also:
 ///
 ///  * [ListTile], which is a similar widget provided by the Flutter framework.
-class ListTileWidget extends StatelessWidget {
-  const ListTileWidget({
+final class _ListTileWidget extends StatelessWidget {
+  const _ListTileWidget({
     required this.item,
     required this.itemStyle,
     required this.itemLeadingBuilder,
     required this.onTapItem,
-    super.key,
   });
 
   final NestedChoiceEntity item;
@@ -213,8 +211,8 @@ class ListTileWidget extends StatelessWidget {
 ///
 /// Typically used in lists where each item can be expanded to reveal
 /// more details or options.
-class ExpandableTile extends StatelessWidget {
-  const ExpandableTile({
+final class _ExpandableTile extends StatelessWidget {
+  const _ExpandableTile({
     required this.item,
     required this.isExpandable,
     required this.itemStyle,
@@ -224,7 +222,6 @@ class ExpandableTile extends StatelessWidget {
     required this.onTapItem,
     required this.onToggleSelection,
     required this.onExpansionChanged,
-    super.key,
   });
 
   final NestedChoiceEntity item;
@@ -254,7 +251,8 @@ class ExpandableTile extends StatelessWidget {
         item.label,
         style: itemStyle.labelStyle ?? Theme.of(context).textTheme.titleSmall,
       ),
-      children: item.children.map((childItem) {
+      children: List.generate(item.children.length, (index) {
+        final childItem = item.children[index];
         return Padding(
           padding: const EdgeInsetsDirectional.only(start: 24),
           child: NestedChoiceListItem(
@@ -269,7 +267,7 @@ class ExpandableTile extends StatelessWidget {
             onExpansionChanged: onExpansionChanged,
           ),
         );
-      }).toList(),
+      }),
     );
   }
 }
