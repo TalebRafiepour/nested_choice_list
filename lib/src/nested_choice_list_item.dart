@@ -22,8 +22,12 @@ class NestedChoiceListItem extends StatelessWidget {
     this.onTapItem,
     this.onToggleSelection,
     this.itemLeadingBuilder,
+    this.onExpansionChanged,
     super.key,
   });
+
+  /// Callback function that is triggered when the expansion state changes.
+  final OnExpansionChanged? onExpansionChanged;
 
   /// Whether the item support expandable mode.
   final bool isExpandable;
@@ -73,6 +77,7 @@ class NestedChoiceListItem extends StatelessWidget {
                   enableMultiSelect: enableMultiSelect,
                   onTapItem: onTapItem,
                   onToggleSelection: onToggleSelection,
+                  onExpansionChanged: onExpansionChanged,
                 );
               } else {
                 return ListTileWidget(
@@ -218,6 +223,7 @@ class ExpandableTile extends StatelessWidget {
     required this.enableMultiSelect,
     required this.onTapItem,
     required this.onToggleSelection,
+    required this.onExpansionChanged,
     super.key,
   });
 
@@ -229,6 +235,7 @@ class ExpandableTile extends StatelessWidget {
   final bool enableMultiSelect;
   final Function(NestedChoiceEntity, BuildContext)? onTapItem;
   final Function(NestedChoiceEntity)? onToggleSelection;
+  final OnExpansionChanged? onExpansionChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -240,6 +247,9 @@ class ExpandableTile extends StatelessWidget {
       leading: itemLeadingBuilder?.call(context, item),
       dense: itemStyle.dense,
       visualDensity: itemStyle.visualDensity,
+      onExpansionChanged: (value) {
+        onExpansionChanged?.call(isExpanded: value, item: item);
+      },
       title: Text(
         item.label,
         style: itemStyle.labelStyle ?? Theme.of(context).textTheme.titleSmall,
@@ -256,6 +266,7 @@ class ExpandableTile extends StatelessWidget {
             enableMultiSelect: enableMultiSelect,
             onTapItem: onTapItem,
             onToggleSelection: onToggleSelection,
+            onExpansionChanged: onExpansionChanged,
           ),
         );
       }).toList(),

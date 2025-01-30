@@ -4,6 +4,17 @@ import 'package:nested_choice_list/src/inherited_nested_choice_list_view.dart';
 import 'package:nested_choice_list/src/nested_choice_list_view.dart';
 import 'package:nested_choice_list/src/selected_item_chip_list/seleted_item_chip_list.dart';
 
+/// A typedef for a callback function that is triggered when the expansion state
+/// changed in `expandable` mode of [NestedChoiceList] widget.
+///
+/// The callback provides the following named parameters:
+/// - `isExpanded`: A boolean indicating whether the item is expanded or not.
+/// - `item`: The `NestedChoiceEntity` that has changed its expansion state.
+typedef OnExpansionChanged = void Function({
+  required bool isExpanded,
+  required NestedChoiceEntity item,
+});
+
 /// A typedef for a function that builds a leading widget for an item in
 /// a nested list view.
 ///
@@ -111,6 +122,7 @@ class NestedChoiceList extends StatefulWidget {
     this.itemLeadingBuilder,
     this.onSelectionChange,
     this.onNavigationChange,
+    this.onExpansionChanged,
     super.key,
   });
 
@@ -130,8 +142,12 @@ class NestedChoiceList extends StatefulWidget {
     this.itemLeadingBuilder,
     this.onSelectionChange,
     this.onNavigationChange,
+    this.onExpansionChanged,
     super.key,
   }) : type = NestedChoiceListType.expandable;
+
+  /// Callback function that is triggered when the expansion state changes.
+  final OnExpansionChanged? onExpansionChanged;
 
   /// The type of the nested choice list.
   final NestedChoiceListType type;
@@ -195,6 +211,35 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
 
   /// The key for the nested navigator.
   final _nestedNavKey = GlobalKey<NavigatorState>();
+
+  /// Handles the expansion state change of a nested choice item.
+  ///
+  /// This method updates the `navigationPathes` list based on the expansion
+  /// state of the provided `item`. If the item is expanded, its label is added
+  /// to the list. If the item is collapsed, its label is removed from the list.
+  /// The method then triggers a state update and calls the optional
+  /// `onExpansionChanged` callback provided by the widget.
+  ///
+  /// Parameters:
+  /// - `isExpanded`: A boolean indicating whether the item is expanded or
+  /// collapsed.
+  /// - `item`: The `NestedChoiceEntity` item whose expansion state has changed.
+  void _onExpansionChanged({
+    required bool isExpanded,
+    required NestedChoiceEntity item,
+  }) {
+    if (isExpanded) {
+      navigationPathes.add(item.label);
+    } else {
+      navigationPathes.remove(item.label);
+    }
+    setState(() {});
+    //
+    widget.onExpansionChanged?.call(
+      isExpanded: isExpanded,
+      item: item,
+    );
+  }
 
   /// Callback function for the "Select all" option.
   ///
@@ -269,29 +314,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
       setState(() {});
       Navigator.of(ctx).push(
         MaterialPageRoute(
-          builder: (context) {
-            return InheritedNestedChoiceListView(
-              selectedItems: selectedItems,
-              child: NestedChoiceListView(
-                items: item.children,
-                type: widget.type,
-                searchfieldPosition: widget.searchfieldPosition,
-                searchDebouncer: widget.searchDebouncer,
-                enableSearch: widget.enableSearch,
-                enableSelectAll: widget.enableSelectAll,
-                selectAllLabel: widget.selectAllLabel,
-                enableMultiSelect: widget.enableMultiSelect,
-                itemLeadingBuilder: widget.itemLeadingBuilder,
-                onTapItem: _onTapItem,
-                searchfieldStyle: widget.style.searchfieldStyle,
-                itemStyle: widget.style.itemStyle,
-                selectAllItemStyle: widget.style.selectAllItemStyle,
-                onToggleSelection: _onToggleSelection,
-                onPopInvokedWithResult: _onPopInvokedWithResult,
-                onSelectAllCallback: _onSelectAllCallback,
-              ),
-            );
-          },
+          builder: (_) => _buildNestedChoiceListView(item.children),
         ),
       );
       //
@@ -317,13 +340,14 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
     ///   - `didPop`: A boolean indicating if the pop action was successful.
     ///   - `result`: The result of the pop action.
     return PopScope(
-      canPop: navigationPathes.isEmpty,
+      canPop: navigationPathes.isEmpty ||
+          widget.type == NestedChoiceListType.expandable,
       onPopInvokedWithResult: (didPop, result) {
         /// If the widget did pop, return immediately without handling
         /// inner navigation.
         /// This ensures that when the whole widget is popped, inner
         /// navigation is not processed.
-        if (didPop) {
+        if (didPop || widget.type == NestedChoiceListType.expandable) {
           return;
         }
         final nestedNavCanPop = _nestedNavKey.currentState?.canPop() ?? false;
@@ -412,27 +436,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                   key: _nestedNavKey,
                   onGenerateRoute: (settings) {
                     return MaterialPageRoute(
-                      builder: (_) => InheritedNestedChoiceListView(
-                        selectedItems: selectedItems,
-                        child: NestedChoiceListView(
-                          items: widget.items,
-                          type: widget.type,
-                          searchfieldPosition: widget.searchfieldPosition,
-                          enableSearch: widget.enableSearch,
-                          searchDebouncer: widget.searchDebouncer,
-                          enableSelectAll: widget.enableSelectAll,
-                          enableMultiSelect: widget.enableMultiSelect,
-                          selectAllLabel: widget.selectAllLabel,
-                          searchfieldStyle: widget.style.searchfieldStyle,
-                          itemStyle: widget.style.itemStyle,
-                          selectAllItemStyle: widget.style.selectAllItemStyle,
-                          onToggleSelection: _onToggleSelection,
-                          onTapItem: _onTapItem,
-                          onPopInvokedWithResult: _onPopInvokedWithResult,
-                          itemLeadingBuilder: widget.itemLeadingBuilder,
-                          onSelectAllCallback: _onSelectAllCallback,
-                        ),
-                      ),
+                      builder: (_) => _buildNestedChoiceListView(widget.items),
                     );
                   },
                 ),
@@ -440,6 +444,31 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildNestedChoiceListView(List<NestedChoiceEntity> items) {
+    return InheritedNestedChoiceListView(
+      selectedItems: selectedItems,
+      child: NestedChoiceListView(
+        items: items,
+        type: widget.type,
+        searchfieldPosition: widget.searchfieldPosition,
+        enableSearch: widget.enableSearch,
+        searchDebouncer: widget.searchDebouncer,
+        enableSelectAll: widget.enableSelectAll,
+        enableMultiSelect: widget.enableMultiSelect,
+        selectAllLabel: widget.selectAllLabel,
+        searchfieldStyle: widget.style.searchfieldStyle,
+        itemStyle: widget.style.itemStyle,
+        selectAllItemStyle: widget.style.selectAllItemStyle,
+        onToggleSelection: _onToggleSelection,
+        onTapItem: _onTapItem,
+        onPopInvokedWithResult: _onPopInvokedWithResult,
+        itemLeadingBuilder: widget.itemLeadingBuilder,
+        onSelectAllCallback: _onSelectAllCallback,
+        onExpansionChanged: _onExpansionChanged,
       ),
     );
   }

@@ -38,8 +38,12 @@ class NestedChoiceListView extends StatefulWidget {
     this.onTapItem,
     this.onToggleSelection,
     this.itemLeadingBuilder,
+    this.onExpansionChanged,
     super.key,
   });
+
+  /// Callback function that is triggered when the expansion state changes.
+  final OnExpansionChanged? onExpansionChanged;
 
   /// The type of the nested choice list.
   final NestedChoiceListType type;
@@ -191,6 +195,7 @@ class _NestedChoiceListViewState extends State<NestedChoiceListView> {
                           onTapItem: widget.onTapItem,
                           onToggleSelection: widget.onToggleSelection,
                           itemLeadingBuilder: widget.itemLeadingBuilder,
+                          onExpansionChanged: widget.onExpansionChanged,
                         );
                       },
                     ),
