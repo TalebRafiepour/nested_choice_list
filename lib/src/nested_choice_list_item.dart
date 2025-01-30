@@ -64,15 +64,40 @@ class NestedChoiceListItem extends StatelessWidget {
           builder: (_) {
             if (item.hasChildren) {
               if (isExpandable) {
-                return _buildExpandableTile(context);
+                return ExpandableTile(
+                  item: item,
+                  isExpandable: isExpandable,
+                  itemStyle: itemStyle,
+                  itemLeadingBuilder: itemLeadingBuilder,
+                  isChecked: isChecked,
+                  enableMultiSelect: enableMultiSelect,
+                  onTapItem: onTapItem,
+                  onToggleSelection: onToggleSelection,
+                );
               } else {
-                return _buildListTile(context);
+                return ListTileWidget(
+                  item: item,
+                  itemStyle: itemStyle,
+                  itemLeadingBuilder: itemLeadingBuilder,
+                  onTapItem: onTapItem,
+                );
               }
             } else {
               if (enableMultiSelect) {
-                return _buildCheckboxListTile(context);
+                return CheckboxListTileWidget(
+                  item: item,
+                  itemStyle: itemStyle,
+                  isChecked: isChecked,
+                  onToggleSelection: onToggleSelection,
+                  itemLeadingBuilder: itemLeadingBuilder,
+                );
               } else {
-                return _buildListTile(context);
+                return ListTileWidget(
+                  item: item,
+                  itemStyle: itemStyle,
+                  itemLeadingBuilder: itemLeadingBuilder,
+                  onTapItem: onTapItem,
+                );
               }
             }
           },
@@ -80,8 +105,133 @@ class NestedChoiceListItem extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildExpandableTile(BuildContext context) {
+class CheckboxListTileWidget extends StatelessWidget {
+  const CheckboxListTileWidget({
+    required this.item,
+    required this.itemStyle,
+    required this.isChecked,
+    required this.onToggleSelection,
+    required this.itemLeadingBuilder,
+    super.key,
+  });
+
+  final NestedChoiceEntity item;
+  final NestedListItemStyle itemStyle;
+  final bool Function(NestedChoiceEntity)? isChecked;
+  final Function(NestedChoiceEntity)? onToggleSelection;
+  final ItemLeadingBuilder? itemLeadingBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    return CheckboxListTile(
+      value: isChecked?.call(item),
+      onChanged: (isSelected) {
+        onToggleSelection?.call(item);
+      },
+      dense: itemStyle.dense,
+      secondary: itemLeadingBuilder?.call(context, item),
+      shape: itemStyle.shape,
+      tileColor: itemStyle.bgColor,
+      enabled: !item.isDisabled,
+      visualDensity: itemStyle.visualDensity,
+      title: Text(
+        item.label,
+        style: itemStyle.labelStyle ?? Theme.of(context).textTheme.titleSmall,
+      ),
+    );
+  }
+}
+
+/// A stateless widget that represents a list tile item in a nested choice list.
+///
+/// This widget can be used to display a single item in a list with additional
+/// customization options.
+///
+/// Example usage:
+///
+/// ```dart
+/// ListTileWidget(
+///   title: Text('Item 1'),
+///   subtitle: Text('Subtitle 1'),
+///   leading: Icon(Icons.label),
+///   trailing: Icon(Icons.arrow_forward),
+///   onTap: () {
+///     // Handle tap event
+///   },
+/// );
+/// ```
+///
+/// See also:
+///
+///  * [ListTile], which is a similar widget provided by the Flutter framework.
+class ListTileWidget extends StatelessWidget {
+  const ListTileWidget({
+    required this.item,
+    required this.itemStyle,
+    required this.itemLeadingBuilder,
+    required this.onTapItem,
+    super.key,
+  });
+
+  final NestedChoiceEntity item;
+  final NestedListItemStyle itemStyle;
+  final ItemLeadingBuilder? itemLeadingBuilder;
+  final Function(NestedChoiceEntity, BuildContext)? onTapItem;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      shape: itemStyle.shape,
+      enabled: !item.isDisabled,
+      tileColor: itemStyle.bgColor,
+      leading: itemLeadingBuilder?.call(context, item),
+      dense: itemStyle.dense,
+      visualDensity: itemStyle.visualDensity,
+      title: Text(
+        item.label,
+        style: itemStyle.labelStyle ?? Theme.of(context).textTheme.titleSmall,
+      ),
+      trailing: item.hasChildren ? itemStyle.trailingIcon : null,
+      onTap: () {
+        onTapItem?.call(item, context);
+      },
+    );
+  }
+}
+
+/// A stateless widget that represents an expandable tile.
+///
+/// This widget can be used to create a tile that expands and collapses
+/// to show or hide additional content.
+///
+/// Typically used in lists where each item can be expanded to reveal
+/// more details or options.
+class ExpandableTile extends StatelessWidget {
+  const ExpandableTile({
+    required this.item,
+    required this.isExpandable,
+    required this.itemStyle,
+    required this.itemLeadingBuilder,
+    required this.isChecked,
+    required this.enableMultiSelect,
+    required this.onTapItem,
+    required this.onToggleSelection,
+    super.key,
+  });
+
+  final NestedChoiceEntity item;
+  final bool isExpandable;
+  final NestedListItemStyle itemStyle;
+  final ItemLeadingBuilder? itemLeadingBuilder;
+  final bool Function(NestedChoiceEntity)? isChecked;
+  final bool enableMultiSelect;
+  final Function(NestedChoiceEntity, BuildContext)? onTapItem;
+  final Function(NestedChoiceEntity)? onToggleSelection;
+
+  @override
+  Widget build(BuildContext context) {
     return ExpansionTile(
       shape: itemStyle.shape,
       collapsedShape: itemStyle.shape,
@@ -109,44 +259,6 @@ class NestedChoiceListItem extends StatelessWidget {
           ),
         );
       }).toList(),
-    );
-  }
-
-  Widget _buildListTile(BuildContext context) {
-    return ListTile(
-      shape: itemStyle.shape,
-      enabled: !item.isDisabled,
-      tileColor: itemStyle.bgColor,
-      leading: itemLeadingBuilder?.call(context, item),
-      dense: itemStyle.dense,
-      visualDensity: itemStyle.visualDensity,
-      title: Text(
-        item.label,
-        style: itemStyle.labelStyle ?? Theme.of(context).textTheme.titleSmall,
-      ),
-      trailing: item.hasChildren ? itemStyle.trailingIcon : null,
-      onTap: () {
-        onTapItem?.call(item, context);
-      },
-    );
-  }
-
-  Widget _buildCheckboxListTile(BuildContext context) {
-    return CheckboxListTile(
-      value: isChecked?.call(item),
-      onChanged: (isSelected) {
-        onToggleSelection?.call(item);
-      },
-      dense: itemStyle.dense,
-      secondary: itemLeadingBuilder?.call(context, item),
-      shape: itemStyle.shape,
-      tileColor: itemStyle.bgColor,
-      enabled: !item.isDisabled,
-      visualDensity: itemStyle.visualDensity,
-      title: Text(
-        item.label,
-        style: itemStyle.labelStyle ?? Theme.of(context).textTheme.titleSmall,
-      ),
     );
   }
 }
