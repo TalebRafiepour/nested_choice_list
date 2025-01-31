@@ -1,3 +1,13 @@
+## 1.1.1
+
+* Added support for new expandable functionality.
+* Enhanced search filtering logic.
+* Improved multi-selection functionality.
+* Updated unit and widget tests.
+* Refactored code for better readability.
+* Updated example code.
+* Updated `README.md` file.
+
 ## 1.0.1
 
 * Updated `README.md` file.
