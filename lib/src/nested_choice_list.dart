@@ -461,7 +461,6 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
         enableMultiSelect: widget.enableMultiSelect,
         searchfieldStyle: widget.style.searchfieldStyle,
         itemStyle: widget.style.itemStyle,
-        selectAllItemStyle: widget.style.selectAllItemStyle,
         onToggleSelection: _onToggleSelection,
         onTapItem: _onTapItem,
         onPopInvokedWithResult: _onPopInvokedWithResult,

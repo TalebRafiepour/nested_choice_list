@@ -9,6 +9,15 @@ import 'package:nested_choice_list/src/nested_list_style/nested_list_item_style.
 /// The callback function takes two named parameters:
 /// - `item`: The `NestedChoiceEntity` item whose selection state has changed.
 /// - `isChecked`: A boolean indicating the new selection state of the item.
+///
+/// Example usage:
+/// ```dart
+/// void onToggleSelection({
+/// required NestedChoiceEntity item,
+/// required bool isChecked}) {
+///   print('Item: ${item.name}, isChecked: $isChecked');
+/// }
+/// ```
 typedef OnToggleSelection = void Function({
   required NestedChoiceEntity item,
   required bool isChecked,
@@ -17,13 +26,27 @@ typedef OnToggleSelection = void Function({
 /// A widget that displays an item in a nested list view.
 ///
 /// The [NestedChoiceListItem] widget can display an item as either a [ListTile]
-/// ,[ExpansionTile], or [CheckboxListTile] depending on the [enableMultiSelect]
-/// and [isExpandable] flags.
-/// It supports various customization options through the [itemStyle] parameter.
+/// ,[ExpansionTile], or [CheckboxListTile] depending on the configuration.
+///
+/// This widget is typically used within a [NestedChoiceList] to represent
+/// individual items that can be expanded or selected.
+///
+/// Example usage:
+/// ```dart
+/// NestedChoiceListItem(
+///   item: myNestedChoiceEntity,
+///   onToggleSelection: onToggleSelection,
+///   style: NestedListItemStyle(),
+/// )
+/// ```
+///
+/// See also:
+/// - [NestedChoiceEntity], which represents the data model for the item.
+/// - [NestedChoiceList], which is the parent widget that contains the list of
+///  items.
+/// - [NestedListItemStyle], which defines the styling for the list item.
+
 class NestedChoiceListItem extends StatelessWidget {
-  /// Creates a [NestedChoiceListItem] widget.
-  ///
-  /// The [item] parameter must not be null.
   const NestedChoiceListItem({
     required this.item,
     this.isExpandable = false,

@@ -28,7 +28,6 @@ class NestedChoiceListView extends StatefulWidget {
     this.searchfieldPosition = SearchfieldPosition.bottom,
     this.searchfieldStyle = const NestedListSearchfieldStyle(),
     this.itemStyle = const NestedListItemStyle(),
-    this.selectAllItemStyle = const NestedListItemStyle(),
     this.onPopInvokedWithResult,
     this.searchDebouncer,
     this.enableSearch = false,
@@ -66,9 +65,6 @@ class NestedChoiceListView extends StatefulWidget {
 
   /// The style to be applied to the list items.
   final NestedListItemStyle itemStyle;
-
-  /// The style to be applied to the select-all item.
-  final NestedListItemStyle selectAllItemStyle;
 
   /// Callback function to be called when an item is tapped.
   final Function(NestedChoiceEntity, BuildContext)? onTapItem;

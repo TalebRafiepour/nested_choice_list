@@ -41,29 +41,6 @@ void main() {
       expect(find.text('Item 2'), findsNothing);
     });
 
-    testWidgets('select-all functionality works as expected', (tester) async {
-      bool isSelectedAll = false;
-      await tester.pumpWidget(
-        MaterialApp(
-          home: NestedChoiceListView(
-            items: const [
-              NestedChoiceEntity(value: '1', label: 'Item 1'),
-              NestedChoiceEntity(value: '2', label: 'Item 2'),
-            ],
-            enableMultiSelect: true,
-            onSelectAllCallback: ({required isSelected, required items}) {
-              isSelectedAll = isSelected;
-            },
-          ),
-        ),
-      );
-
-      await tester.tap(find.text('Select all'));
-      await tester.pump();
-
-      expect(isSelectedAll, isTrue);
-    });
-
     testWidgets('item tap callback is triggered', (tester) async {
       NestedChoiceEntity? tappedItem;
       await tester.pumpWidget(
