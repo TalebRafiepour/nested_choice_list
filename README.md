@@ -19,6 +19,7 @@ A powerful Flutter package designed to simplify the selection of items from deep
 * Offer a callback for multi-selection mode: `onSelectionChange`.
 * Include a callback function for handling page changes with `onNavigationChange`.
 * Include customizable styles via `NestedListStyle`.
+* Supports both expandable and navigation modes for displaying items, which can be set using `NestedChoiceListType`.
 
 ## Showcase
 ### Single selection mode
@@ -29,9 +30,13 @@ A powerful Flutter package designed to simplify the selection of items from deep
 ------------------------------------------------
 
 ### Multiple selection mode
-| enableSelectAll=true | showSelectedItem=true |
+|enableMultiSelect=true| showSelectedItem=true |
 |----------------------|-----------------------|
-| ![multi-select-with-select-all](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-select-with-select-all.gif?raw=true) | ![multi-select-with-show-selected-items](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-select-show-selected-item.gif?raw=true) |
+| ![multi-select-with-select-all](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-selection-with-select-all.gif?raw=true) | ![multi-select-with-show-selected-items](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-select-show-selected-item.gif?raw=true) |
+
+|expandable mode|
+|---------------|
+| ![expandable-mode](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/expandable-mode.gif?raw=true) |
 
 
 ## Installation
