@@ -188,19 +188,23 @@ class NestedChoiceList extends StatefulWidget {
   final OnNavigationChange? onNavigationChange;
 
   @override
-  State<NestedChoiceList> createState() => _NestedChoiceListState();
+  State<NestedChoiceList> createState() => NestedChoiceListState();
 }
 
-class _NestedChoiceListState extends State<NestedChoiceList> {
+@visibleForTesting
+class NestedChoiceListState extends State<NestedChoiceList> {
   /// The list of navigation paths.
+  @visibleForTesting
   final navigationPathes = <String>[];
 
   /// The set of selected items.
+  @visibleForTesting
   late final Set<NestedChoiceEntity> selectedItems =
       Set.from(widget.selectedItems);
 
   /// The key for the nested navigator.
-  final _nestedNavKey = GlobalKey<NavigatorState>();
+  @visibleForTesting
+  final nestedNavKey = GlobalKey<NavigatorState>();
 
   /// Handles the expansion state change of a nested choice item.
   ///
@@ -214,7 +218,8 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
   /// - `isExpanded`: A boolean indicating whether the item is expanded or
   /// collapsed.
   /// - `item`: The `NestedChoiceEntity` item whose expansion state has changed.
-  void _onExpansionChanged({
+  @visibleForTesting
+  void onExpansionChanged({
     required bool isExpanded,
     required NestedChoiceEntity item,
   }) {
@@ -235,7 +240,8 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
   ///
   /// [isSelected] indicates whether the items are selected.
   /// [items] is the list of items to be selected or deselected.
-  void _onSelectAllCallback({
+  @visibleForTesting
+  void onSelectAllCallback({
     required bool isSelected,
     required List<NestedChoiceEntity> items,
   }) {
@@ -255,9 +261,8 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
   }
 
   /// Callback function invoked when a pop action is performed.
-  ///
-  /// [result] is the result of the pop action.
-  void _onPopInvokedWithResult(_, result) {
+  @visibleForTesting
+  void onPopInvokedWithResult() {
     navigationPathes.removeLast();
     setState(() {});
     //
@@ -267,19 +272,26 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
   /// Callback function for tapping on a navigation path.
   ///
   /// [index] is the index of the tapped navigation path.
-  Future<void> _onNavigationPathTapped(index) async {
+  @visibleForTesting
+  Future<void> onNavigationPathTapped(int index) async {
     if (index == navigationPathes.length - 1) return;
     final totalPathLength = navigationPathes.length;
     final popCount = totalPathLength - index - 1;
     for (var i = 0; i < popCount; i++) {
-      await _nestedNavKey.currentState?.maybePop();
+      final poped = await nestedNavKey.currentState?.maybePop();
+      if (poped == false) {
+        // remove pathes here because onPopInvokedWithResult will ignored
+        navigationPathes.removeLast();
+        setState(() {});
+      }
     }
   }
 
   /// Toggles the selection of an item.
   ///
   /// [item] is the item to be toggled.
-  void _onToggleSelection({
+  @visibleForTesting
+  void onToggleSelection({
     required NestedChoiceEntity item,
     required bool isChecked,
   }) {
@@ -303,13 +315,14 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
   /// Handles the tap event on an item.
   /// If the item has children, it navigates to a new nested list view.
   /// If the item does not have children and multi-selection is disabled,
-  /// it triggers the [_onTapItem] callback.
+  /// it triggers the [onTapItem] callback.
   /// If the item does not have children and multi-selection is enabled,
-  /// it triggers the [_onToggleSelection] callback.
+  /// it triggers the [onToggleSelection] callback.
   ///
   /// [item] is the tapped item.
   /// [ctx] is the build context.
-  void _onTapItem(NestedChoiceEntity item, BuildContext ctx) {
+  @visibleForTesting
+  void onTapItem(NestedChoiceEntity item, BuildContext ctx) {
     if (item.hasChildren) {
       navigationPathes.add(item.label);
       setState(() {});
@@ -351,9 +364,9 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
         if (didPop || widget.type == NestedChoiceListType.expandable) {
           return;
         }
-        final nestedNavCanPop = _nestedNavKey.currentState?.canPop() ?? false;
+        final nestedNavCanPop = nestedNavKey.currentState?.canPop() ?? false;
         if (nestedNavCanPop) {
-          _nestedNavKey.currentState?.maybePop();
+          nestedNavKey.currentState?.maybePop();
         } else if (navigationPathes.isEmpty) {
           Navigator.maybePop(context);
         }
@@ -397,7 +410,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                 NavigationPath(
                   navigationPathItemStyle: widget.style.navigationPathItemStyle,
                   pathes: navigationPathes,
-                  onTap: _onNavigationPathTapped,
+                  onTap: onNavigationPathTapped,
                 ),
 
               /// Displays a list of selected items as chips if multi-select is
@@ -434,7 +447,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
                 /// inner navigation of the `NestedChoiceList` widget
                 /// independent of whole application navigation.
                 child: Navigator(
-                  key: _nestedNavKey,
+                  key: nestedNavKey,
                   onGenerateRoute: (settings) {
                     return MaterialPageRoute(
                       builder: (_) => _buildNestedChoiceListView(widget.items),
@@ -461,12 +474,12 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
         enableMultiSelect: widget.enableMultiSelect,
         searchfieldStyle: widget.style.searchfieldStyle,
         itemStyle: widget.style.itemStyle,
-        onToggleSelection: _onToggleSelection,
-        onTapItem: _onTapItem,
-        onPopInvokedWithResult: _onPopInvokedWithResult,
+        onToggleSelection: onToggleSelection,
+        onTapItem: onTapItem,
+        onPopInvokedWithResult: (_, __) => onPopInvokedWithResult(),
         itemLeadingBuilder: widget.itemLeadingBuilder,
-        onSelectAllCallback: _onSelectAllCallback,
-        onExpansionChanged: _onExpansionChanged,
+        onSelectAllCallback: onSelectAllCallback,
+        onExpansionChanged: onExpansionChanged,
       ),
     );
   }

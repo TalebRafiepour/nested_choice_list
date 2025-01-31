@@ -120,22 +120,22 @@ void main() {
   });
 
   test('leafChildren getter returns only entities without children', () {
-      const parent = NestedChoiceEntity(
-        value: '1',
-        label: 'Parent',
-        children: [
-          NestedChoiceEntity(value: '2', label: 'Child 1'),
-          NestedChoiceEntity(
-            value: '3',
-            label: 'Child 2',
-            children: [
-              NestedChoiceEntity(value: '4', label: 'Grandchild 1'),
-            ],
-          ),
-        ],
-      );
-      final leafChildren = parent.leafChildren;
-      expect(leafChildren.length, 1);
-      expect(leafChildren.first.value, '2');
-    });
+    const parent = NestedChoiceEntity(
+      value: '1',
+      label: 'Parent',
+      children: [
+        NestedChoiceEntity(value: '2', label: 'Child 1'),
+        NestedChoiceEntity(
+          value: '3',
+          label: 'Child 2',
+          children: [
+            NestedChoiceEntity(value: '4', label: 'Grandchild 1'),
+          ],
+        ),
+      ],
+    );
+    final leafChildren = parent.leafChildren;
+    expect(leafChildren.length, 1);
+    expect(leafChildren.first.value, '2');
+  });
 }
