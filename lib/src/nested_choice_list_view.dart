@@ -98,12 +98,44 @@ class _NestedChoiceListViewState extends State<NestedChoiceListView> {
       ..clear()
       ..addAll(
         widget.items.where(
-          (element) => element.label.toLowerCase().contains(
-                filter.toLowerCase(),
-              ),
+          (element) => _filterItem(
+            element,
+            filter,
+          ),
         ),
       );
     setState(() {});
+  }
+
+  /// Filters a `NestedChoiceEntity` item based on the provided filter string.
+  ///
+  /// This method checks if the item's label contains the filter
+  /// string (case-insensitive).
+  /// If the item has children, it recursively checks if any of the children
+  /// match the filter.
+  ///
+  /// Returns `true` if the item's label or any of its children's labels
+  /// contain the filter string.
+  ///
+  /// - Parameters:
+  ///   - item: The `NestedChoiceEntity` item to be filtered.
+  ///   - filter: The filter string to match against the item's label.
+  ///
+  /// - Returns: A boolean indicating whether the item or any of its children
+  /// match the filter.
+  bool _filterItem(NestedChoiceEntity item, String filter) {
+    if (item.label.toLowerCase().contains(filter.toLowerCase())) {
+      return true;
+    }
+    if (item.children.isNotEmpty) {
+      final filterdChildren = item.children
+          .where(
+            (child) => _filterItem(child, filter),
+          )
+          .toList();
+      return filterdChildren.isNotEmpty;
+    }
+    return false;
   }
 
   /// Checks if a given `NestedChoiceEntity` item is selected.
