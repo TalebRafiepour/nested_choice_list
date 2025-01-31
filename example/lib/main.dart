@@ -33,10 +33,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool showSelectedItems = true;
-  bool enableSelectAll = true;
   bool showNavigationPath = false;
   bool enableMultiSelect = false;
   bool enableSearch = false;
+  NestedChoiceListType choiceListType = NestedChoiceListType.navigation;
 
   //
   NestedChoiceEntity? selectedItem;
@@ -47,21 +47,21 @@ class _HomePageState extends State<HomePage> {
       value: 'value1',
       label: 'label1 level1',
       children: [
-        NestedChoiceEntity(value: 'value2', label: 'label2 level 2'),
-        NestedChoiceEntity(value: 'value3', label: 'label3 level 2'),
+        NestedChoiceEntity(value: 'value2', label: 'label1 level 2'),
+        NestedChoiceEntity(value: 'value3', label: 'label1 level 2'),
         NestedChoiceEntity(
           value: 'value4',
-          label: 'label4 level 2',
+          label: 'label1.2 level 2',
           children: [
-            NestedChoiceEntity(value: 'value2', label: 'label2 level 3'),
-            NestedChoiceEntity(value: 'value3', label: 'label3 level 3'),
+            NestedChoiceEntity(value: 'value2', label: 'label1.2 level 3'),
+            NestedChoiceEntity(value: 'value3', label: 'label1.2 level 3'),
             NestedChoiceEntity(
               value: 'value4',
-              label: 'label4 level 3',
+              label: 'label1.3 level 3',
               children: [
-                NestedChoiceEntity(value: 'value2', label: 'label2 level 4'),
-                NestedChoiceEntity(value: 'value3', label: 'label3 level 4'),
-                NestedChoiceEntity(value: 'value4', label: 'label4 level 4'),
+                NestedChoiceEntity(value: 'value2', label: 'label1.3 level 4'),
+                NestedChoiceEntity(value: 'value3', label: 'label1.3 level 4'),
+                NestedChoiceEntity(value: 'value4', label: 'label1.3 level 4'),
               ],
             ),
           ],
@@ -73,14 +73,14 @@ class _HomePageState extends State<HomePage> {
       label: 'label2 level1',
       children: [
         NestedChoiceEntity(value: 'value2', label: 'label2 level 2'),
-        NestedChoiceEntity(value: 'value3', label: 'label3 level 2'),
+        NestedChoiceEntity(value: 'value3', label: 'label2 level 2'),
         NestedChoiceEntity(
           value: 'value4',
-          label: 'label4 level 2',
+          label: 'label2.1 level 2',
           children: [
-            NestedChoiceEntity(value: 'value2', label: 'label2 level 3'),
-            NestedChoiceEntity(value: 'value3', label: 'label3 level 3'),
-            NestedChoiceEntity(value: 'value4', label: 'label4 level 3'),
+            NestedChoiceEntity(value: 'value2', label: 'label2.1 level 3'),
+            NestedChoiceEntity(value: 'value3', label: 'label2.1 level 3'),
+            NestedChoiceEntity(value: 'value4', label: 'label2.1 level 3'),
           ],
         ),
       ],
@@ -89,9 +89,9 @@ class _HomePageState extends State<HomePage> {
       value: 'value3',
       label: 'label3 level1',
       children: [
-        NestedChoiceEntity(value: 'value2', label: 'label2 level 2'),
+        NestedChoiceEntity(value: 'value2', label: 'label3 level 2'),
         NestedChoiceEntity(value: 'value3', label: 'label3 level 2'),
-        NestedChoiceEntity(value: 'value4', label: 'label4 level 2'),
+        NestedChoiceEntity(value: 'value4', label: 'label3 level 2'),
       ],
     ),
     NestedChoiceEntity(value: 'value4', label: 'label4 level1'),
@@ -132,16 +132,6 @@ class _HomePageState extends State<HomePage> {
               ),
               const Divider(),
               CheckboxListTile.adaptive(
-                title: const Text('EnableSelectAll'),
-                value: enableSelectAll,
-                onChanged: (newValue) {
-                  setState(() {
-                    enableSelectAll = newValue ?? false;
-                  });
-                },
-              ),
-              const Divider(),
-              CheckboxListTile.adaptive(
                 title: const Text('ShowSelectedItems'),
                 value: showSelectedItems,
                 onChanged: (newValue) {
@@ -161,6 +151,25 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               const Divider(),
+              DropdownButton(
+                value: choiceListType,
+                items: NestedChoiceListType.values
+                    .map(
+                      (type) => DropdownMenuItem<NestedChoiceListType>(
+                        value: type,
+                        child: Text(
+                          type.toString(),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (newType) {
+                  setState(() {
+                    choiceListType = newType ?? NestedChoiceListType.navigation;
+                  });
+                },
+              ),
+              const Divider(),
               ElevatedButton(
                 onPressed: () async {
                   final result = await Navigator.of(context).push(
@@ -168,10 +177,10 @@ class _HomePageState extends State<HomePage> {
                       builder: (_) => DemoOfNestedChoiceList(
                         items: items,
                         showSelectedItems: showSelectedItems,
-                        enableSelectAll: enableSelectAll,
                         showNavigationPath: showNavigationPath,
                         enableMultiSelect: enableMultiSelect,
                         enableSearch: enableSearch,
+                        choiceListType: choiceListType,
                       ),
                     ),
                   );
@@ -235,18 +244,18 @@ class DemoOfNestedChoiceList extends StatelessWidget {
     required this.items,
     super.key,
     required this.showSelectedItems,
-    required this.enableSelectAll,
     required this.showNavigationPath,
     required this.enableMultiSelect,
     required this.enableSearch,
+    required this.choiceListType,
   });
 
   final List<NestedChoiceEntity> items;
   final bool showSelectedItems;
-  final bool enableSelectAll;
   final bool showNavigationPath;
   final bool enableMultiSelect;
   final bool enableSearch;
+  final NestedChoiceListType choiceListType;
 
   @override
   Widget build(BuildContext context) {
@@ -257,8 +266,8 @@ class DemoOfNestedChoiceList extends StatelessWidget {
       ),
       body: NestedChoiceList(
         items: items,
+        type: choiceListType,
         showSelectedItems: showSelectedItems,
-        enableSelectAll: enableSelectAll,
         showNavigationPath: showNavigationPath,
         enableMultiSelect: enableMultiSelect,
         enableSearch: enableSearch,

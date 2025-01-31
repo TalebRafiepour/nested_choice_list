@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nested_choice_list/src/inherited_nested_list_view.dart';
+import 'package:nested_choice_list/src/inherited_nested_choice_list_view.dart';
 import 'package:nested_choice_list/src/nested_choice_entity.dart';
 
 void main() {
-  group('InheritedNestedListView Tests', () {
+  group('InheritedNestedChoiceListView Tests', () {
     testWidgets('provides selected items correctly', (tester) async {
       final selectedItems = {
         const NestedChoiceEntity(value: '1', label: 'Item 1'),
@@ -12,11 +12,12 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: InheritedNestedListView(
+          home: InheritedNestedChoiceListView(
             selectedItems: selectedItems,
             child: Builder(
               builder: (context) {
-                final inheritedWidget = InheritedNestedListView.of(context);
+                final inheritedWidget =
+                    InheritedNestedChoiceListView.of(context);
                 expect(inheritedWidget?.selectedItems, selectedItems);
                 return Container();
               },
@@ -37,11 +38,12 @@ void main() {
       final testWidget = StatefulBuilder(
         builder: (context, setState) {
           return MaterialApp(
-            home: InheritedNestedListView(
+            home: InheritedNestedChoiceListView(
               selectedItems: selectedItems1,
               child: Builder(
                 builder: (context) {
-                  final inheritedWidget = InheritedNestedListView.of(context);
+                  final inheritedWidget =
+                      InheritedNestedChoiceListView.of(context);
                   return Column(
                     children: [
                       Text(inheritedWidget?.selectedItems.first.label ?? ''),
@@ -73,7 +75,7 @@ void main() {
       expect(find.text('Item 2'), findsOneWidget);
     });
 
-    testWidgets('retrieves nearest InheritedNestedListView widget',
+    testWidgets('retrieves nearest InheritedNestedChoiceListView widget',
         (tester) async {
       final selectedItems = {
         const NestedChoiceEntity(value: '1', label: 'Item 1'),
@@ -81,11 +83,12 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: InheritedNestedListView(
+          home: InheritedNestedChoiceListView(
             selectedItems: selectedItems,
             child: Builder(
               builder: (context) {
-                final inheritedWidget = InheritedNestedListView.of(context);
+                final inheritedWidget =
+                    InheritedNestedChoiceListView.of(context);
                 expect(inheritedWidget, isNotNull);
                 return Container();
               },

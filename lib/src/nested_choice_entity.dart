@@ -119,6 +119,18 @@ class NestedChoiceEntity {
   /// Returns `true` if the `children` list is not empty, otherwise `false`.
   bool get hasChildren => children.isNotEmpty;
 
+  /// Returns a list of `NestedChoiceEntity` objects that do not have children.
+  ///
+  /// This getter filters the `children` list and includes only those entities
+  /// that do not have any children (`hasChildren` is `false`).
+  ///
+  /// Example:
+  /// ```dart
+  /// List<NestedChoiceEntity> leafNodes = parentEntity.leafChildren;
+  /// ```
+  List<NestedChoiceEntity> get leafChildren =>
+      children.where((e) => !e.hasChildren).toList();
+
   /// Creates a copy of this `NestedChoiceEntity` with the given fields replaced
   /// by new values.
   ///

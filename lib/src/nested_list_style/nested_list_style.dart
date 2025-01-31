@@ -13,7 +13,6 @@ class NestedListStyle {
     this.searchfieldStyle = const NestedListSearchfieldStyle(),
     this.itemStyle = const NestedListItemStyle(),
     this.navigationPathItemStyle = const NavigationPathItemStyle(),
-    this.selectAllItemStyle = const NestedListItemStyle(),
     this.selectedItemChipStyle = const SelectedItemChipStyle(),
     this.bgColor = Colors.white,
   });
@@ -52,24 +51,6 @@ class NestedListStyle {
   ///    customization options.
   final NavigationPathItemStyle navigationPathItemStyle;
 
-  /// The style to be applied to the "Select All" item in the nested list.
-  ///
-  /// This property defines the visual appearance of the "Select All" item,
-  /// including its text style, background color, and other UI elements.
-  ///
-  /// Example usage:
-  ///
-  /// ```dart
-  /// NestedListItemStyle(
-  ///   textStyle: TextStyle(color: Colors.blue),
-  ///   backgroundColor: Colors.grey[200],
-  /// )
-  /// ```
-  ///
-  /// This allows customization of the "Select All" item to match the overall
-  /// theme and design of the application.
-  final NestedListItemStyle selectAllItemStyle;
-
   /// The style to be applied to the selected item chip.
   ///
   /// This includes properties such as color, shape, and text style
@@ -106,7 +87,6 @@ class NestedListStyle {
           selectedItemChipStyle ?? this.selectedItemChipStyle,
       navigationPathItemStyle:
           navigationPathItemStyle ?? this.navigationPathItemStyle,
-      selectAllItemStyle: selectAllItemStyle ?? this.selectAllItemStyle,
       bgColor: bgColor ?? this.bgColor,
     );
   }
