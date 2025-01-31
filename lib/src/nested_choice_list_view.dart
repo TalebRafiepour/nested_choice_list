@@ -25,7 +25,6 @@ class NestedChoiceListView extends StatefulWidget {
     required this.items,
     this.type = NestedChoiceListType.navigation,
     this.onSelectAllCallback,
-    this.selectAllLabel = 'Select all',
     this.searchfieldPosition = SearchfieldPosition.bottom,
     this.searchfieldStyle = const NestedListSearchfieldStyle(),
     this.itemStyle = const NestedListItemStyle(),
@@ -34,7 +33,6 @@ class NestedChoiceListView extends StatefulWidget {
     this.searchDebouncer,
     this.enableSearch = false,
     this.enableMultiSelect = false,
-    this.enableSelectAll = true,
     this.onTapItem,
     this.onToggleSelection,
     this.itemLeadingBuilder,
@@ -50,12 +48,6 @@ class NestedChoiceListView extends StatefulWidget {
 
   /// Whether to enable the search functionality.
   final bool enableSearch;
-
-  /// The label for the select-all item.
-  final String selectAllLabel;
-
-  /// Whether to enable the select-all functionality.
-  final bool enableSelectAll;
 
   /// Whether to enable multi-selection.
   final bool enableMultiSelect;
@@ -82,7 +74,7 @@ class NestedChoiceListView extends StatefulWidget {
   final Function(NestedChoiceEntity, BuildContext)? onTapItem;
 
   /// Callback function to be called when an item's selection is toggled.
-  final Function(NestedChoiceEntity)? onToggleSelection;
+  final OnToggleSelection? onToggleSelection;
 
   /// Callback function to be called when the pop scope is invoked with result.
   final PopInvokedWithResultCallback? onPopInvokedWithResult;
@@ -104,19 +96,6 @@ class _NestedChoiceListViewState extends State<NestedChoiceListView> {
   /// the nested list view.
   late final itemsToShow = List<NestedChoiceEntity>.from(widget.items);
 
-  /// A boolean flag indicating whether all items are selected.
-  ///
-  /// When `true`, it means all items in the list are selected.
-  /// When `false`, it means not all items are selected.
-  late bool isSelectedAll = false;
-
-  /// Indicates whether any child in the nested list is selectable.
-  ///
-  /// This property is used to determine if there are any selectable
-  /// items within the nested list view. It is initialized as a late
-  /// final variable, meaning it must be set before it is accessed.
-  late final bool hasAnySelectableChild;
-
   /// Filters the items based on the search query.
   void _onSearch(String filter) {
     itemsToShow
@@ -131,9 +110,31 @@ class _NestedChoiceListViewState extends State<NestedChoiceListView> {
     setState(() {});
   }
 
+  /// Checks if a given `NestedChoiceEntity` item is selected.
+  ///
+  /// If the item has children, it returns true if all children are in the
+  /// `selectedItems` set. Otherwise, it returns true if the item itself is
+  /// in the `selectedItems` set.
+  ///
+  /// - Parameters:
+  ///   - item: The `NestedChoiceEntity` item to check.
+  ///   - selectedItems: A set of selected `NestedChoiceEntity` items.
+  ///
+  /// - Returns: A boolean indicating whether the item (and its children,if any)
+  ///   are selected.
+  bool _isChecked(
+    NestedChoiceEntity item,
+    Set<NestedChoiceEntity> selectedItems,
+  ) {
+    if (item.hasChildren) {
+      return item.leafChildren.every((e) => selectedItems.contains(e));
+    } else {
+      return selectedItems.contains(item);
+    }
+  }
+
   @override
   void initState() {
-    hasAnySelectableChild = widget.items.any((e) => !e.hasChildren);
     super.initState();
   }
 
@@ -152,24 +153,6 @@ class _NestedChoiceListViewState extends State<NestedChoiceListView> {
                 searchfieldStyle: widget.searchfieldStyle,
                 searchDebouncer: widget.searchDebouncer,
                 onSearch: _onSearch,
-              ),
-            if (widget.enableSelectAll &&
-                widget.enableMultiSelect &&
-                hasAnySelectableChild)
-              NestedChoiceListItem(
-                enableMultiSelect: true,
-                isChecked: (_) => isSelectedAll,
-                itemStyle: widget.selectAllItemStyle,
-                item: NestedChoiceEntity(
-                  label: widget.selectAllLabel,
-                ),
-                onToggleSelection: (_) {
-                  isSelectedAll = !isSelectedAll;
-                  widget.onSelectAllCallback?.call(
-                    isSelected: isSelectedAll,
-                    items: widget.items,
-                  );
-                },
               ),
             Expanded(
               child: itemsToShow.isEmpty
@@ -191,7 +174,9 @@ class _NestedChoiceListViewState extends State<NestedChoiceListView> {
                               widget.type == NestedChoiceListType.expandable,
                           itemStyle: widget.itemStyle,
                           enableMultiSelect: widget.enableMultiSelect,
-                          isChecked: selectedItems.contains,
+                          isChecked: (currentItem) {
+                            return _isChecked(currentItem, selectedItems);
+                          },
                           onTapItem: widget.onTapItem,
                           onToggleSelection: widget.onToggleSelection,
                           itemLeadingBuilder: widget.itemLeadingBuilder,

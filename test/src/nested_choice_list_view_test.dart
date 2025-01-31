@@ -90,7 +90,7 @@ void main() {
           home: NestedChoiceListView(
             items: const [NestedChoiceEntity(value: '1', label: 'Item 1')],
             enableMultiSelect: true,
-            onToggleSelection: (item) {
+            onToggleSelection: ({required item, required isChecked}) {
               toggledItem = item;
             },
             onSelectAllCallback: ({required isSelected, required items}) {},

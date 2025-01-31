@@ -23,8 +23,8 @@ typedef OnExpansionChanged = void Function({
 /// - `item`: The `NestedChoiceEntity` item for which the leading widget is
 /// being built.
 ///
-/// Returns a `Widget?` that represents the leading widget for the given item.
-typedef ItemLeadingBuilder = Widget? Function(
+/// Returns a `Widget` that represents the leading widget for the given item.
+typedef ItemLeadingBuilder = Widget Function(
   BuildContext context,
   NestedChoiceEntity item,
 );
@@ -111,8 +111,6 @@ class NestedChoiceList extends StatefulWidget {
     this.selectedItems = const [],
     this.searchfieldPosition = SearchfieldPosition.bottom,
     this.showSelectedItems = true,
-    this.enableSelectAll = true,
-    this.selectAllLabel = 'Select all',
     this.showNavigationPath = false,
     this.enableMultiSelect = false,
     this.enableSearch = false,
@@ -131,8 +129,6 @@ class NestedChoiceList extends StatefulWidget {
     this.selectedItems = const [],
     this.searchfieldPosition = SearchfieldPosition.bottom,
     this.showSelectedItems = true,
-    this.enableSelectAll = true,
-    this.selectAllLabel = 'Select all',
     this.showNavigationPath = false,
     this.enableMultiSelect = false,
     this.enableSearch = false,
@@ -154,12 +150,6 @@ class NestedChoiceList extends StatefulWidget {
 
   /// Whether to show the selected items.
   final bool showSelectedItems;
-
-  /// The label for the "Select all" option.
-  final String selectAllLabel;
-
-  /// Whether to enable the "Select all" option.
-  final bool enableSelectAll;
 
   /// Whether to show the navigation path.
   final bool showNavigationPath;
@@ -289,11 +279,22 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
   /// Toggles the selection of an item.
   ///
   /// [item] is the item to be toggled.
-  void _onToggleSelection(NestedChoiceEntity item) {
-    if (selectedItems.contains(item)) {
-      selectedItems.remove(item);
+  void _onToggleSelection({
+    required NestedChoiceEntity item,
+    required bool isChecked,
+  }) {
+    if (isChecked) {
+      if (item.hasChildren) {
+        selectedItems.addAll(item.leafChildren);
+      } else {
+        selectedItems.add(item);
+      }
     } else {
-      selectedItems.add(item);
+      if (item.hasChildren) {
+        selectedItems.removeAll(item.leafChildren);
+      } else {
+        selectedItems.remove(item);
+      }
     }
     setState(() {});
     widget.onSelectionChange?.call(selectedItems.toList());
@@ -457,9 +458,7 @@ class _NestedChoiceListState extends State<NestedChoiceList> {
         searchfieldPosition: widget.searchfieldPosition,
         enableSearch: widget.enableSearch,
         searchDebouncer: widget.searchDebouncer,
-        enableSelectAll: widget.enableSelectAll,
         enableMultiSelect: widget.enableMultiSelect,
-        selectAllLabel: widget.selectAllLabel,
         searchfieldStyle: widget.style.searchfieldStyle,
         itemStyle: widget.style.itemStyle,
         selectAllItemStyle: widget.style.selectAllItemStyle,
