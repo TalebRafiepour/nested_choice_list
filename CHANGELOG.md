@@ -1,3 +1,13 @@
+## 1.2.0 - Enhanced Styling and Customization
+
+This release focuses on providing greater flexibility and customization options for the package.
+
+*   **Styling Improvements:** Removed default shapes and borders from list items, allowing for more customized styling.
+*   **Contribution Guidelines:** Moved `CONTRIBUTING.md` to the project root for easier access.
+*   **Improved Documentation:** Added a new demo GIF to `README.md` to visually showcase the package's features.
+*   **SEO Enhancement:** Added topics to improve search engine optimization.
+*   **New Style: `NestedListCheckboxStyle`:** Introduced a new style, `NestedListCheckboxStyle`, to provide enhanced customization options for checkboxes within nested lists.
+
 ## 1.1.1
 
 * Added support for new expandable functionality.
