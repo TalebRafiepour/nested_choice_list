@@ -5,6 +5,14 @@ homepage: https://github.com/TalebRafiepour/nested_choice_list
 repository: https://github.com/TalebRafiepour/nested_choice_list
 issue_tracker: https://github.com/TalebRafiepour/nested_choice_list/issues
 
+topics: 
+  - list
+  - innertlist
+  - expandablelist
+  - sublist
+  - checkboxlist
+
+
 environment:
   sdk: ^3.5.4
   flutter: ">=1.17.0"
