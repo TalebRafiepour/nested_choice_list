@@ -7,6 +7,8 @@
 
 A powerful Flutter package designed to simplify the selection of items from deeply nested lists. With its robust features, you can create intuitive and flexible user interfaces that enhance the user experience without the constraints of traditional list handling.
 
+![nested-choice-list-demo](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/sample-1-expandable-multiselect.gif?raw=true)
+
 ## Features
 
 * Create a list widget with a nesting depth ranging from 0 to infinite.

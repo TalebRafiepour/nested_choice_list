@@ -1,5 +1,61 @@
+import 'package:examples/example_one.dart';
 import 'package:flutter/material.dart';
 import 'package:nested_choice_list/nested_choice_list.dart';
+
+const items = [
+  NestedChoiceEntity(
+    value: 'value1',
+    label: 'label1 level1',
+    children: [
+      NestedChoiceEntity(value: 'value2', label: 'label1 level 2'),
+      NestedChoiceEntity(value: 'value3', label: 'label1 level 2'),
+      NestedChoiceEntity(
+        value: 'value4',
+        label: 'label1.2 level 2',
+        children: [
+          NestedChoiceEntity(value: 'value2', label: 'label1.2 level 3'),
+          NestedChoiceEntity(value: 'value3', label: 'label1.2 level 3'),
+          NestedChoiceEntity(
+            value: 'value4',
+            label: 'label1.3 level 3',
+            children: [
+              NestedChoiceEntity(value: 'value2', label: 'label1.3 level 4'),
+              NestedChoiceEntity(value: 'value3', label: 'label1.3 level 4'),
+              NestedChoiceEntity(value: 'value4', label: 'label1.3 level 4'),
+            ],
+          ),
+        ],
+      ),
+    ],
+  ),
+  NestedChoiceEntity(
+    value: 'value2',
+    label: 'label2 level1',
+    children: [
+      NestedChoiceEntity(value: 'value2', label: 'label2 level 2'),
+      NestedChoiceEntity(value: 'value3', label: 'label2 level 2'),
+      NestedChoiceEntity(
+        value: 'value4',
+        label: 'label2.1 level 2',
+        children: [
+          NestedChoiceEntity(value: 'value2', label: 'label2.1 level 3'),
+          NestedChoiceEntity(value: 'value3', label: 'label2.1 level 3'),
+          NestedChoiceEntity(value: 'value4', label: 'label2.1 level 3'),
+        ],
+      ),
+    ],
+  ),
+  NestedChoiceEntity(
+    value: 'value3',
+    label: 'label3 level1',
+    children: [
+      NestedChoiceEntity(value: 'value2', label: 'label3 level 2'),
+      NestedChoiceEntity(value: 'value3', label: 'label3 level 2'),
+      NestedChoiceEntity(value: 'value4', label: 'label3 level 2'),
+    ],
+  ),
+  NestedChoiceEntity(value: 'value4', label: 'label4 level1'),
+];
 
 void main() {
   runApp(const MyApp());
@@ -32,71 +88,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool showSelectedItems = true;
-  bool showNavigationPath = false;
-  bool enableMultiSelect = false;
-  bool enableSearch = false;
-  NestedChoiceListType choiceListType = NestedChoiceListType.navigation;
-
-  //
-  NestedChoiceEntity? selectedItem;
-  List<NestedChoiceEntity>? selectedItems;
-
-  final items = const [
-    NestedChoiceEntity(
-      value: 'value1',
-      label: 'label1 level1',
-      children: [
-        NestedChoiceEntity(value: 'value2', label: 'label1 level 2'),
-        NestedChoiceEntity(value: 'value3', label: 'label1 level 2'),
-        NestedChoiceEntity(
-          value: 'value4',
-          label: 'label1.2 level 2',
-          children: [
-            NestedChoiceEntity(value: 'value2', label: 'label1.2 level 3'),
-            NestedChoiceEntity(value: 'value3', label: 'label1.2 level 3'),
-            NestedChoiceEntity(
-              value: 'value4',
-              label: 'label1.3 level 3',
-              children: [
-                NestedChoiceEntity(value: 'value2', label: 'label1.3 level 4'),
-                NestedChoiceEntity(value: 'value3', label: 'label1.3 level 4'),
-                NestedChoiceEntity(value: 'value4', label: 'label1.3 level 4'),
-              ],
-            ),
-          ],
-        ),
-      ],
-    ),
-    NestedChoiceEntity(
-      value: 'value2',
-      label: 'label2 level1',
-      children: [
-        NestedChoiceEntity(value: 'value2', label: 'label2 level 2'),
-        NestedChoiceEntity(value: 'value3', label: 'label2 level 2'),
-        NestedChoiceEntity(
-          value: 'value4',
-          label: 'label2.1 level 2',
-          children: [
-            NestedChoiceEntity(value: 'value2', label: 'label2.1 level 3'),
-            NestedChoiceEntity(value: 'value3', label: 'label2.1 level 3'),
-            NestedChoiceEntity(value: 'value4', label: 'label2.1 level 3'),
-          ],
-        ),
-      ],
-    ),
-    NestedChoiceEntity(
-      value: 'value3',
-      label: 'label3 level1',
-      children: [
-        NestedChoiceEntity(value: 'value2', label: 'label3 level 2'),
-        NestedChoiceEntity(value: 'value3', label: 'label3 level 2'),
-        NestedChoiceEntity(value: 'value4', label: 'label3 level 2'),
-      ],
-    ),
-    NestedChoiceEntity(value: 'value4', label: 'label4 level1'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,209 +97,28 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CheckboxListTile.adaptive(
-                title: const Text('ShowNavigationPath'),
-                value: showNavigationPath,
-                onChanged: (newValue) {
-                  setState(() {
-                    showNavigationPath = newValue ?? false;
-                  });
-                },
-              ),
-              const Divider(),
-              CheckboxListTile.adaptive(
-                title: const Text('EnableMultiSelect'),
-                value: enableMultiSelect,
-                onChanged: (newValue) {
-                  setState(() {
-                    enableMultiSelect = newValue ?? false;
-                  });
-                },
-              ),
-              const Divider(),
-              CheckboxListTile.adaptive(
-                title: const Text('ShowSelectedItems'),
-                value: showSelectedItems,
-                onChanged: (newValue) {
-                  setState(() {
-                    showSelectedItems = newValue ?? false;
-                  });
-                },
-              ),
-              const Divider(),
-              CheckboxListTile.adaptive(
-                title: const Text('EnableSearch'),
-                value: enableSearch,
-                onChanged: (newValue) {
-                  setState(() {
-                    enableSearch = newValue ?? false;
-                  });
-                },
-              ),
-              const Divider(),
-              DropdownButton(
-                value: choiceListType,
-                items: NestedChoiceListType.values
-                    .map(
-                      (type) => DropdownMenuItem<NestedChoiceListType>(
-                        value: type,
-                        child: Text(
-                          type.toString(),
-                        ),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              spacing: 28,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ExampleOne(),
                       ),
-                    )
-                    .toList(),
-                onChanged: (newType) {
-                  setState(() {
-                    choiceListType = newType ?? NestedChoiceListType.navigation;
-                  });
-                },
-              ),
-              const Divider(),
-              ElevatedButton(
-                onPressed: () async {
-                  final result = await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => DemoOfNestedChoiceList(
-                        items: items,
-                        showSelectedItems: showSelectedItems,
-                        showNavigationPath: showNavigationPath,
-                        enableMultiSelect: enableMultiSelect,
-                        enableSearch: enableSearch,
-                        choiceListType: choiceListType,
-                      ),
-                    ),
-                  );
-                  if (result is NestedChoiceEntity) {
-                    setState(() {
-                      selectedItem = result;
-                      selectedItems = null;
-                    });
-                  } else if (result is List<NestedChoiceEntity>) {
-                    setState(() {
-                      selectedItem = null;
-                      selectedItems = result;
-                    });
-                  }
-                },
-                child: const Text(
-                  'Show Demo',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    );
+                  },
+                  child: const Text('Example One'),
                 ),
-              ),
-              const Divider(),
-              const Text(
-                '⇩ Result ⇩',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              if (selectedItem != null)
-                Text(
-                  'onTapItem: ${selectedItem!.label}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.orange,
-                  ),
-                ),
-              if (selectedItems != null)
-                Text(
-                  'onSelectionChange: $selectedItems',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.orange,
-                  ),
-                )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class DemoOfNestedChoiceList extends StatelessWidget {
-  const DemoOfNestedChoiceList({
-    required this.items,
-    super.key,
-    required this.showSelectedItems,
-    required this.showNavigationPath,
-    required this.enableMultiSelect,
-    required this.enableSearch,
-    required this.choiceListType,
-  });
-
-  final List<NestedChoiceEntity> items;
-  final bool showSelectedItems;
-  final bool showNavigationPath;
-  final bool enableMultiSelect;
-  final bool enableSearch;
-  final NestedChoiceListType choiceListType;
-
-  @override
-  Widget build(BuildContext context) {
-    List<NestedChoiceEntity> selectedItems = [];
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Demo'),
-      ),
-      body: NestedChoiceList(
-        items: items,
-        type: choiceListType,
-        showSelectedItems: showSelectedItems,
-        showNavigationPath: showNavigationPath,
-        enableMultiSelect: enableMultiSelect,
-        enableSearch: enableSearch,
-        style: NestedListStyle(
-          itemStyle: NestedListItemStyle(
-            checkboxStyle: NestedListCheckboxStyle(
-              checkColor: Colors.red,
-              fillColor: WidgetStateProperty.all<Color>(Colors.white),
-              activeColor: Colors.white,
+              ],
             ),
           ),
         ),
-        // this callback triggers when we are in
-        // single select mode (enableMultiSelect = false)
-        onTapItem: (item) {
-          debugPrint('onTapItem -> $item');
-          Navigator.of(context).pop(item);
-        },
-        // this callback triggers when we are in
-        // multi select mode (enableMultiSelect = true)
-        onSelectionChange: (items) {
-          debugPrint('onSelectionChange -> $items');
-          selectedItems = items;
-        },
-
-        /// Callback function triggered when the navigation changes.
-        /// Useful for handling UI updates based on the current page index.
-        onNavigationChange: (pageIndex) {
-          debugPrint('onNavigationChange -> pageIndex: $pageIndex');
-        },
       ),
-      bottomNavigationBar: enableMultiSelect
-          ? SafeArea(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(selectedItems);
-                },
-                child: const Text('Confirm selected items'),
-              ),
-            )
-          : null,
     );
   }
 }
