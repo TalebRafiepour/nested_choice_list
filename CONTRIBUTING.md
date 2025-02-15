@@ -25,4 +25,4 @@ make sure there isn't duplicated effort.
 ## License
 
 By contributing your code to the this repository, you agree to license your contribution under the
-specified [license](../LICENSE).
+specified [license](/LICENSE).
