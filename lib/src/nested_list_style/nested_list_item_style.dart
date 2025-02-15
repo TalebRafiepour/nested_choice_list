@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nested_choice_list/src/nested_list_style/nested_list_checkbox_style.dart';
 
 /// A class that defines the style for an item in a nested list.
 ///
@@ -6,17 +7,8 @@ import 'package:flutter/material.dart';
 /// within a nested list, such as their background color, text style, padding,
 /// and other visual properties.
 class NestedListItemStyle {
-  /// Creates a new instance of [NestedListItemStyle].
-  ///
-  /// This constructor initializes the style properties for a nested list item.
-  ///
-  /// Example usage:
-  /// ```dart
-  /// final style = NestedListItemStyle(
-  ///   // specify style properties here
-  /// );
-  /// ```
   const NestedListItemStyle({
+    this.checkboxStyle = const NestedListCheckboxStyle(),
     this.visualDensity = const VisualDensity(
       vertical: -1,
     ),
@@ -39,6 +31,9 @@ class NestedListItemStyle {
     this.listPadding = EdgeInsets.zero,
     this.margin = const EdgeInsets.all(4),
   });
+
+  /// The style of the checkbox in the list item.
+  final NestedListCheckboxStyle checkboxStyle;
 
   /// Defines how compact the visual representation of the nested list item is.
   ///
@@ -112,6 +107,7 @@ class NestedListItemStyle {
   ///
   /// The parameters are:
   ///
+  /// * [checkboxStyle]: The style of the checkbox in the list item.
   /// * [shape]: The shape border of the list item.
   /// * [trailingIcon]:The icon displayed at the trailing edge of the list item.
   /// * [labelStyle]: The text style of the label.
@@ -125,6 +121,7 @@ class NestedListItemStyle {
   /// If any of the parameters are not provided, the corresponding property
   /// from the current instance will be used.
   NestedListItemStyle copyWith({
+    NestedListCheckboxStyle? checkboxStyle,
     ShapeBorder? shape,
     Icon? trailingIcon,
     TextStyle? labelStyle,
@@ -136,6 +133,7 @@ class NestedListItemStyle {
     bool? dense,
   }) {
     return NestedListItemStyle(
+      checkboxStyle: checkboxStyle ?? this.checkboxStyle,
       shape: shape ?? this.shape,
       trailingIcon: trailingIcon ?? this.trailingIcon,
       labelStyle: labelStyle ?? this.labelStyle,

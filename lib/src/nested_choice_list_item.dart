@@ -176,7 +176,23 @@ final class _ListTileWidget extends StatelessWidget {
               children: [
                 if (enableMultiSelect)
                   Checkbox.adaptive(
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    isError: itemStyle.checkboxStyle.isError,
+                    autofocus: itemStyle.checkboxStyle.autofocus,
+                    focusNode: itemStyle.checkboxStyle.focusNode,
+                    shape: itemStyle.checkboxStyle.shape,
+                    side: itemStyle.checkboxStyle.side,
+                    semanticLabel: itemStyle.checkboxStyle.semanticLabel,
+                    visualDensity: itemStyle.checkboxStyle.visualDensity,
+                    splashRadius: itemStyle.checkboxStyle.splashRadius,
+                    overlayColor: itemStyle.checkboxStyle.overlayColor,
+                    hoverColor: itemStyle.checkboxStyle.hoverColor,
+                    focusColor: itemStyle.checkboxStyle.focusColor,
+                    checkColor: itemStyle.checkboxStyle.checkColor,
+                    fillColor: itemStyle.checkboxStyle.fillColor,
+                    activeColor: itemStyle.checkboxStyle.activeColor,
+                    mouseCursor: itemStyle.checkboxStyle.mouseCursor,
+                    materialTapTargetSize:
+                        itemStyle.checkboxStyle.materialTapTargetSize,
                     value: isChecked?.call(item),
                     onChanged: (isSelected) {
                       onToggleSelection?.call(
@@ -256,6 +272,23 @@ final class _ExpandableTile extends StatelessWidget {
                 children: [
                   if (enableMultiSelect)
                     Checkbox.adaptive(
+                      isError: itemStyle.checkboxStyle.isError,
+                      autofocus: itemStyle.checkboxStyle.autofocus,
+                      focusNode: itemStyle.checkboxStyle.focusNode,
+                      shape: itemStyle.checkboxStyle.shape,
+                      side: itemStyle.checkboxStyle.side,
+                      semanticLabel: itemStyle.checkboxStyle.semanticLabel,
+                      visualDensity: itemStyle.checkboxStyle.visualDensity,
+                      splashRadius: itemStyle.checkboxStyle.splashRadius,
+                      overlayColor: itemStyle.checkboxStyle.overlayColor,
+                      hoverColor: itemStyle.checkboxStyle.hoverColor,
+                      focusColor: itemStyle.checkboxStyle.focusColor,
+                      checkColor: itemStyle.checkboxStyle.checkColor,
+                      fillColor: itemStyle.checkboxStyle.fillColor,
+                      activeColor: itemStyle.checkboxStyle.activeColor,
+                      mouseCursor: itemStyle.checkboxStyle.mouseCursor,
+                      materialTapTargetSize:
+                          itemStyle.checkboxStyle.materialTapTargetSize,
                       value: isChecked?.call(item),
                       onChanged: (isSelected) {
                         onToggleSelection?.call(
@@ -263,7 +296,6 @@ final class _ExpandableTile extends StatelessWidget {
                           isChecked: isSelected ?? false,
                         );
                       },
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                   if (itemLeadingBuilder != null)
                     itemLeadingBuilder!.call(context, item),

@@ -271,7 +271,13 @@ class DemoOfNestedChoiceList extends StatelessWidget {
         showNavigationPath: showNavigationPath,
         enableMultiSelect: enableMultiSelect,
         enableSearch: enableSearch,
-        style: const NestedListStyle(),
+        style: NestedListStyle(
+            itemStyle: NestedListItemStyle(
+                checkboxStyle: NestedListCheckboxStyle(
+          checkColor: Colors.red,
+          fillColor: WidgetStateProperty.all<Color>(Colors.white),
+          activeColor: Colors.white,
+        ))),
         // this callback triggers when we are in
         // single select mode (enableMultiSelect = false)
         onTapItem: (item) {

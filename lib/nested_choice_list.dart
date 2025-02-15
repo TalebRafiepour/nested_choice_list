@@ -5,6 +5,7 @@ export 'src/nested_choice_entity.dart';
 export 'src/nested_choice_list.dart';
 export 'src/nested_choice_list_type.dart';
 export 'src/nested_list_style/navigation_path_item_style.dart';
+export 'src/nested_list_style/nested_list_checkbox_style.dart';
 export 'src/nested_list_style/nested_list_item_style.dart';
 export 'src/nested_list_style/nested_list_searchfield_style.dart';
 export 'src/nested_list_style/nested_list_style.dart';
