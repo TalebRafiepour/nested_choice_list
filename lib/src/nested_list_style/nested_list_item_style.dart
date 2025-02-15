@@ -14,15 +14,7 @@ class NestedListItemStyle {
     ),
     this.bgColor = Colors.white,
     this.dense = true,
-    this.shape = const RoundedRectangleBorder(
-      side: BorderSide(
-        color: Color.fromARGB(255, 189, 189, 189),
-        width: 0.7,
-      ),
-      borderRadius: BorderRadius.all(
-        Radius.circular(8),
-      ),
-    ),
+    this.shape,
     this.trailingIcon = const Icon(
       Icons.arrow_right,
       size: 24,
