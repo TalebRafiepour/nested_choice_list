@@ -1,3 +1,7 @@
+## 1.2.1
+
+**Fix:** Corrected broken links in the `README.md` file.
+
 ## 1.2.0 - Enhanced Styling and Customization
 
 This release focuses on providing greater flexibility and customization options for the package.
