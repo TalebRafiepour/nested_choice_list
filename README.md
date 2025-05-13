@@ -7,7 +7,7 @@
 
 A powerful Flutter package designed to simplify the selection of items from deeply nested lists. With its robust features, you can create intuitive and flexible user interfaces that enhance the user experience without the constraints of traditional list handling.
 
-![nested-choice-list-demo](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/sample-1-expandable-multiselect.gif?raw=true)
+![nested-choice-list-demo](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/nested_choice_list/sample-1-expandable-multiselect.gif)
 
 ## Features
 
@@ -27,18 +27,18 @@ A powerful Flutter package designed to simplify the selection of items from deep
 ### Single selection mode
 | showNavigationPath=true | enableSearch=true |
 |-------------------------|-------------------|
-| ![single-select-showNavigationPath](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/single-select-with-navigation-path.gif?raw=true) | ![single-select-enableSearch](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/single-select-with-search.gif?raw=true) |
+| ![single-select-showNavigationPath](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/nested_choice_list/single-select-with-navigation-path.gif) | ![single-select-enableSearch](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/nested_choice_list/single-select-with-search.gif) |
 
 ------------------------------------------------
 
 ### Multiple selection mode
 |enableMultiSelect=true| showSelectedItem=true |
 |----------------------|-----------------------|
-| ![multi-select-with-select-all](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-selection-with-select-all.gif?raw=true) | ![multi-select-with-show-selected-items](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/multi-select-show-selected-item.gif?raw=true) |
+| ![multi-select-with-select-all](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/nested_choice_list/multi-selection-with-select-all.gif) | ![multi-select-with-show-selected-items](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/nested_choice_list/multi-select-show-selected-item.gif) |
 
 |expandable mode|
 |---------------|
-| ![expandable-mode](https://github.com/TalebRafiepour/showcase/blob/main/nested_choice_list/expandable-mode.gif?raw=true) |
+| ![expandable-mode](https://raw.githubusercontent.com/TalebRafiepour/showcase/main/nested_choice_list/expandable-mode.gif) |
 
 
 ## Installation
